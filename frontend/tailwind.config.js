@@ -6,11 +6,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'civora-blue': '#0066CC',
-        'civora-dark': '#1a1a2e',
-        'civora-light': '#f8f9fa',
+        'civora-blue': '#1e40af',
+        'civora-green': '#059669',
+        'civora-orange': '#ea580c',
       },
     },
   },
   plugins: [],
 }
+

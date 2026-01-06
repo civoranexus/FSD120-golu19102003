@@ -25,6 +25,8 @@ const Layout: React.FC = () => {
     menuItems.push({ path: '/admin', label: 'Admin', icon: '⚙️' });
   }
 
+  const isVisitorsPage = location.pathname === '/visitors';
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -38,6 +40,14 @@ const Layout: React.FC = () => {
             </div>
             
             <div className="flex items-center space-x-4">
+              {isVisitorsPage && (
+                <Link
+                  to="/visitors/add"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm font-medium"
+                >
+                  Add Visitor
+                </Link>
+              )}
               <div className="flex items-center space-x-2">
                 <span className="text-sm text-gray-600">Welcome,</span>
                 <span className="text-sm font-medium text-gray-900">{user?.name}</span>
