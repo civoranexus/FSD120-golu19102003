@@ -11,7 +11,6 @@ const Layout = ({ children }) => {
     { path: '/about', label: 'About Us', icon: Building },
     { path: '/contact', label: 'Contact', icon: MessageSquare },
     { path: '/login', label: 'Login', icon: LogIn },
-    { path: '/register', label: 'Register', icon: UserPlus },
     { path: '/visitor-management', label: 'Visitor Management', icon: Users },
     { path: '/maintenance', label: 'Maintenance', icon: Wrench },
     { path: '/finance', label: 'Finance', icon: DollarSign },
