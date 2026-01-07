@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, UserPlus, Menu, X, Building } from 'lucide-react';
+import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Menu, X, Building, ChevronDown } from 'lucide-react';
 
 const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
   const location = useLocation();
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsServicesDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
-    { path: '/about', label: 'About Us', icon: Building },
+    { path: '/about', label: 'About', icon: Building },
     { path: '/contact', label: 'Contact', icon: MessageSquare },
     { path: '/login', label: 'Login', icon: LogIn },
-    { path: '/visitor-management', label: 'Visitor Management', icon: Users },
+  ];
+
+  const servicesItems = [
+    { path: '/visitor-management', label: 'Visitors', icon: Users },
     { path: '/maintenance', label: 'Maintenance', icon: Wrench },
     { path: '/finance', label: 'Finance', icon: DollarSign },
     { path: '/communication', label: 'Communication', icon: MessageSquare },
@@ -23,31 +42,168 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navigation Bar */}
-      <nav className="bg-white shadow-lg border-b border-gray-200">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             {/* Logo and Brand */}
             <div className="flex items-center">
-              <Link to="/" className="flex items-center space-x-2">
-                <Building className="h-8 w-8 text-blue-600" />
-                <span className="text-xl font-bold text-gray-900">Society360</span>
-                <span className="text-xs text-gray-500 ml-1">by Civora Nexus</span>
-              </Link>
-            </div>
+                <img 
+                  src="/Long_logo.png" 
+                  alt="Society360 Logo" 
+                  className="h-8 w-auto mr-2"
+                />
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold" style={{color: '#1B9AAA'}}>Society360</span>
+                  <span className="text-xs text-gray-700">by Civora Nexus</span>
+                </div>
+              </div>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-4">
-              {navigationItems.map((item) => {
+            <div className="hidden md:flex items-center space-x-4 ml-auto">
+              {navigationItems.slice(0, 2).map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
                     key={item.path}
                     to={item.path}
-                    className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                       isActiveLink(item.path)
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
+                        : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
                     }`}
+                    style={{
+                      color: isActiveLink(item.path) ? '#1B9AAA' : undefined
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActiveLink(item.path)) {
+                        e.currentTarget.style.backgroundColor = '#CCE7EC';
+                        e.currentTarget.style.color = '#1B9AAA';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActiveLink(item.path)) {
+                        e.currentTarget.style.backgroundColor = '';
+                        e.currentTarget.style.color = '';
+                      }
+                    }}
+                    onClick={() => {
+                      // Clear hover styles from all navigation items
+                      document.querySelectorAll('a[href^="/"]').forEach(link => {
+                        link.style.backgroundColor = '';
+                        link.style.color = '';
+                      });
+                    }}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
+
+              {/* Services Dropdown */}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
+                  className={`flex items-center space-x-0.5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                    isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path))
+                      ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
+                      : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
+                  }`}
+                  style={{
+                    color: isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path)) ? '#1B9AAA' : undefined
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!(isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path)))) {
+                      e.currentTarget.style.backgroundColor = '#CCE7EC';
+                      e.currentTarget.style.color = '#1B9AAA';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!(isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path)))) {
+                      e.currentTarget.style.backgroundColor = '';
+                      e.currentTarget.style.color = '';
+                    }
+                  }}
+                >
+                  <Settings className="h-4 w-4" />
+                  <span>Services</span>
+                  <ChevronDown className="h-3 w-3" />
+                </button>
+                
+                {isServicesDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 z-50">
+                    <div className="py-1">
+                      {servicesItems.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <Link
+                            key={item.path}
+                            to={item.path}
+                            onClick={() => setIsServicesDropdownOpen(false)}
+                            className={`flex items-center space-x-0.5 px-3 py-2 text-sm font-medium transition-colors ${
+                              isActiveLink(item.path)
+                                ? 'text-[#1B9AAA]'
+                                : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-gray-100'
+                            }`}
+                            style={{
+                              color: isActiveLink(item.path) ? '#1B9AAA' : undefined,
+                              backgroundColor: isActiveLink(item.path) ? '#CCE7EC' : undefined
+                            }}
+                            onMouseEnter={(e) => {
+                              if (!isActiveLink(item.path)) {
+                                e.currentTarget.style.color = '#01181F';
+                              }
+                            }}
+                            onMouseLeave={(e) => {
+                              if (!isActiveLink(item.path)) {
+                                e.currentTarget.style.color = '';
+                              }
+                            }}
+                          >
+                            <Icon className="h-4 w-4" />
+                            <span>{item.label}</span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Remaining Navigation Items */}
+              {navigationItems.slice(2).map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                      isActiveLink(item.path)
+                        ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
+                        : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
+                    }`}
+                    style={{
+                      color: isActiveLink(item.path) ? '#1B9AAA' : undefined
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActiveLink(item.path)) {
+                        e.currentTarget.style.backgroundColor = '#CCE7EC';
+                        e.currentTarget.style.color = '#1B9AAA';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActiveLink(item.path)) {
+                        e.currentTarget.style.backgroundColor = '';
+                        e.currentTarget.style.color = '';
+                      }
+                    }}
+                    onClick={() => {
+                      // Clear hover styles from all navigation items
+                      document.querySelectorAll('a[href^="/"]').forEach(link => {
+                        link.style.backgroundColor = '';
+                        link.style.color = '';
+                      });
+                    }}
                   >
                     <Icon className="h-4 w-4" />
                     <span>{item.label}</span>
@@ -60,7 +216,7 @@ const Layout = ({ children }) => {
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#4C97A8B9AAA]"
               >
                 {isMobileMenuOpen ? (
                   <X className="h-6 w-6" />
@@ -75,19 +231,41 @@ const Layout = ({ children }) => {
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t border-gray-200">
+            <div className="px-2 pt-2 pb-3 space-y-1 bg-transparent border-t border-gray-200">
               {navigationItems.map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
                     key={item.path}
                     to={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                    className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ${
                       isActiveLink(item.path)
-                        ? 'bg-blue-100 text-blue-700'
-                        : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+                        ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
+                        : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
                     }`}
+                    style={{
+                      color: isActiveLink(item.path) ? '#1B9AAA' : undefined
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActiveLink(item.path)) {
+                        e.currentTarget.style.backgroundColor = '#CCE7EC';
+                        e.currentTarget.style.color = '#1B9AAA';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActiveLink(item.path)) {
+                        e.currentTarget.style.backgroundColor = '';
+                        e.currentTarget.style.color = '';
+                      }
+                    }}
+                    onClick={() => {
+                      // Clear hover styles from all navigation items
+                      document.querySelectorAll('a[href^="/"]').forEach(link => {
+                        link.style.backgroundColor = '';
+                        link.style.color = '';
+                      });
+                      setIsMobileMenuOpen(false);
+                    }}
                   >
                     <Icon className="h-5 w-5" />
                     <span>{item.label}</span>
@@ -100,16 +278,91 @@ const Layout = ({ children }) => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
         {children}
       </main>
 
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="text-center text-sm text-gray-500">
-            <p>&copy; 2024 Society360 - Smart Residential Management System</p>
-            <p>Powered by Civora Nexus Pvt. Ltd.</p>
+      <footer className="bg-white text-gray-800 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-8 items-start">
+            {/* Company Info */}
+            <div className="flex flex-col h-full">
+              <div className="flex items-start mb-4">
+                <img 
+                  src="/Short_logo.png" 
+                  alt="Society360 Logo" 
+                  className="h-6 w-auto mr-3"
+                />
+                <div>
+                  <h3 className="text-lg font-bold leading-tight mb-1" style={{color: '#1B9AAA'}}>Society360</h3>
+                </div>
+              </div>
+              <p className="text-gray-600 text-sm mb-4">
+                Smart Residential Management System powered by Civora Nexus Pvt. Ltd.
+              </p>
+              <div className="flex space-x-4">
+                <span className="text-2xl">🏢</span>
+                <span className="text-2xl">🔧</span>
+                <span className="text-2xl">📱</span>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div className="flex flex-col h-full">
+              <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Quick Links</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link to="/" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Home</Link></li>
+                <li><Link to="/about" className="text-gray-600 hover:text-[#4C97A8] transition-colors">About</Link></li>
+                <li><Link to="/contact" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Contact</Link></li>
+                <li><Link to="/dashboard" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Dashboard</Link></li>
+              </ul>
+            </div>
+
+            {/* Services */}
+            <div className="flex flex-col h-full">
+              <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Services</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link to="/visitor-management" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Visitor Management</Link></li>
+                <li><Link to="/maintenance" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Maintenance</Link></li>
+                <li><Link to="/finance" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Finance</Link></li>
+                <li><Link to="/communication" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Communication</Link></li>
+                <li><Link to="/administration" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Administration</Link></li>
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div className="flex flex-col h-full">
+              <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Contact Info</h3>
+              <div className="space-y-2 text-sm text-gray-600">
+                <p>📍 Sangamner, Maharashtra – 422605 India</p>
+                <p>📞 +91 98765 43210</p>
+                <p>✉️ info@society360.com</p>
+                <p>🌐 www.society360.com</p>
+              </div>
+            </div>
+
+            {/* Our Partners */}
+            <div className="flex flex-col h-full">
+              <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Our Partners</h3>
+              <p className="text-gray-600 text-sm">
+                Partnering and Collaborating with an innovative community-tech platform to deliver smart, integrated, and real-world management solutions for modern societies.
+              </p>
+            </div>
+          </div>
+
+          {/* Bottom Footer */}
+          <div className="border-t border-gray-200 mt-8 pt-8">
+            <div className="flex flex-col md:flex-row justify-between items-center">
+              <div className="text-sm text-gray-600">
+                <p>&copy; 2026 Society360. All rights reserved.</p>
+              </div>
+              <div className="flex space-x-6 mt-4 md:mt-0">
+                <Link to="/privacy" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors">Privacy Policy</Link>
+                <Link to="/terms" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors">Terms of Service</Link>
+                <Link to="/support" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors">Support</Link>
+              </div>
+            </div>
           </div>
         </div>
       </footer>

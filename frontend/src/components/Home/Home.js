@@ -6,23 +6,23 @@ const Home = () => {
   return (
     <div className="space-y-6">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-xl p-12 text-white">
+      <div className="bg-gradient-to-r from-[#1B9AAA] to-[#4C97A8] rounded-lg shadow-xl p-12 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
             <Building className="h-16 w-16 text-white" />
           </div>
-          <h1 className="text-5xl font-bold mb-4">Welcome to Civora Nexus</h1>
-          <p className="text-xl mb-8 text-blue-100">Empowering next generation through innovative internship programs</p>
+          <h1 className="text-5xl font-bold mb-4">Welcome to Society360</h1>
+          <p className="text-xl mb-8 text-[#4C97A8]/20">Empowering next generation through innovative internship programs</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/dashboard"
-              className="flex items-center justify-center px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+              className="flex items-center justify-center px-8 py-3 bg-white text-[#1B9AAA] rounded-lg font-semibold hover:bg-[#CCE7EC] transition-colors"
             >
               Explore Society 360
               <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
-            <button className="flex items-center justify-center px-8 py-3 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition-colors">
+            <button className="flex items-center justify-center px-8 py-3 bg-[#1B9AAA] text-white rounded-lg font-semibold hover:bg-[#1B9AAA]/90 transition-colors">
               Submit Session Attendance
               <Users className="ml-2 h-5 w-5" />
             </button>
@@ -34,7 +34,7 @@ const Home = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-lg shadow p-6 text-center">
           <div className="flex justify-center mb-4">
-            <Target className="h-12 w-12 text-blue-600" />
+            <Target className="h-12 w-12 text-[#1B9AAA]" />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Smart Management</h3>
           <p className="text-gray-600">Comprehensive residential society management with modern technology solutions</p>
@@ -62,7 +62,7 @@ const Home = () => {
         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Society360 at a Glance</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">156</div>
+            <div className="text-3xl font-bold text-[#1B9AAA] mb-2">156</div>
             <div className="text-gray-600">Active Residents</div>
           </div>
           <div className="text-center">
@@ -87,13 +87,13 @@ const Home = () => {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             to="/register"
-            className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+            className="px-8 py-3 bg-[#1B9AAA] text-white rounded-lg font-semibold hover:bg-[#1B9AAA]/90 transition-colors"
           >
             Create Account
           </Link>
           <Link
             to="/login"
-            className="px-8 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+            className="px-8 py-3 bg-white text-[#1B9AAA] border border-[#4C97A8] rounded-lg font-semibold hover:bg-[#CCE7EC] transition-colors"
           >
             Sign In
           </Link>

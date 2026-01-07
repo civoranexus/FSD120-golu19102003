@@ -68,7 +68,7 @@ const Contact = () => {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                 placeholder="Enter your full name"
               />
             </div>
@@ -84,7 +84,7 @@ const Contact = () => {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                 placeholder="your.email@example.com"
               />
             </div>
@@ -100,7 +100,7 @@ const Contact = () => {
                 required
                 value={formData.subject}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                 placeholder="How can we help you?"
               />
             </div>
@@ -116,7 +116,7 @@ const Contact = () => {
                 required
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                 placeholder="Tell us more about your needs..."
               ></textarea>
             </div>
@@ -125,7 +125,7 @@ const Contact = () => {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#1B9AAA] hover:bg-[#4C97A8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1B9AAA] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
@@ -146,7 +146,7 @@ const Contact = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>
             <div className="space-y-4">
               <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-blue-600" />
+                <Mail className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Email</p>
                   <p className="text-gray-600">info@civoranexus.com</p>
@@ -154,7 +154,7 @@ const Contact = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-blue-600" />
+                <Phone className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Phone</p>
                   <p className="text-gray-600">+91-7350 675192</p>
@@ -162,7 +162,7 @@ const Contact = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-blue-600" />
+                <MapPin className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Address</p>
                   <p className="text-gray-600">Sangamner, Maharashtra – 422605 India</p>
@@ -170,7 +170,7 @@ const Contact = () => {
               </div>
 
               <div className="flex items-center space-x-3">
-                <MessageSquare className="h-5 w-5 text-blue-600" />
+                <MessageSquare className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Support Hours</p>
                   <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>

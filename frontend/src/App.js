@@ -12,6 +12,7 @@ import Maintenance from './components/Modules/Maintenance';
 import Finance from './components/Modules/Finance';
 import Communication from './components/Modules/Communication';
 import Administration from './components/Modules/Administration';
+import Privacy from './components/Privacy/Privacy';
 import './App.css';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/finance" element={<Finance />} />
           <Route path="/communication" element={<Communication />} />
           <Route path="/administration" element={<Administration />} />
+          <Route path="/privacy" element={<Privacy />} />
         </Routes>
       </Layout>
     </Router>

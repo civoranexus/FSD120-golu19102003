@@ -13,7 +13,7 @@ const About = () => {
       {/* Mission Section */}
       <div className="bg-white rounded-lg shadow p-8">
         <div className="flex items-center mb-6">
-          <Target className="h-8 w-8 text-blue-600 mr-4" />
+          <Target className="h-8 w-8 text-[#1B9AAA] mr-4" />
           <h2 className="text-2xl font-bold text-gray-900">Our Mission</h2>
         </div>
         <p className="text-gray-600 leading-relaxed">
@@ -27,7 +27,7 @@ const About = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center mb-4">
-            <Building className="h-12 w-12 text-blue-600" />
+            <Building className="h-12 w-12 text-[#1B9AAA]" />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Comprehensive Management</h3>
           <p className="text-gray-600">
@@ -83,16 +83,16 @@ const About = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="bg-blue-600 text-white rounded-lg p-8 text-center">
+      <div className="bg-[#1B9AAA] text-white rounded-lg p-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Join the Revolution</h2>
-        <p className="text-blue-100 mb-6">
+        <p className="text-[#4C97A8]/20 mb-6">
           Experience the future of residential society management with Society360
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-8 py-3 bg-white text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
+          <button className="px-8 py-3 bg-white text-[#1B9AAA] rounded-lg font-semibold hover:bg-[#CCE7EC] transition-colors">
             Learn More
           </button>
-          <button className="px-8 py-3 bg-blue-700 text-white rounded-lg font-semibold hover:bg-blue-800 transition-colors">
+          <button className="px-8 py-3 bg-[#1B9AAA] text-white rounded-lg font-semibold hover:bg-[#4C97A8] transition-colors">
             Get Started
           </button>
         </div>

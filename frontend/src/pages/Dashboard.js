@@ -47,7 +47,7 @@ const Dashboard = () => {
   ];
 
   const quickActions = [
-    { title: 'Add Visitor', icon: Users, color: 'bg-blue-100 text-blue-600', href: '/visitor-management' },
+    { title: 'Add Visitor', icon: Users, color: 'bg-[#1B9AAA]/20 text-[#1B9AAA]', href: '/visitor-management' },
     { title: 'Report Issue', icon: Wrench, color: 'bg-yellow-100 text-yellow-600', href: '/maintenance' },
     { title: 'Pay Dues', icon: DollarSign, color: 'bg-green-100 text-green-600', href: '/finance' },
     { title: 'Send Notice', icon: MessageSquare, color: 'bg-purple-100 text-purple-600', href: '/communication' },
@@ -130,7 +130,7 @@ const Dashboard = () => {
               <div key={activity.id} className="flex items-start space-x-3">
                 <div className={`p-2 rounded-full ${
                   activity.type === 'maintenance' ? 'bg-yellow-100' :
-                  activity.type === 'visitor' ? 'bg-blue-100' :
+                  activity.type === 'visitor' ? 'bg-[#4C97A8]/20' :
                   activity.type === 'payment' ? 'bg-green-100' :
                   'bg-red-100'
                 }`}>
@@ -147,7 +147,7 @@ const Dashboard = () => {
                 </div>
                 <span className={`px-2 py-1 text-xs rounded-full ${
                   activity.status === 'completed' ? 'bg-green-100 text-green-800' :
-                  activity.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
+                  activity.status === 'in-progress' ? 'bg-[#4C97A8]/20 text-[#4C97A8]/80' :
                   'bg-yellow-100 text-yellow-800'
                 }`}>
                   {activity.status}
