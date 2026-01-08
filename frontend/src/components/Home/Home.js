@@ -6,13 +6,13 @@ const Home = () => {
   return (
     <div className="space-y-6">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-[#1B9AAA] to-[#4C97A8] rounded-lg shadow-xl p-12 text-white">
+      <div className="bg-gradient-to-r from-[#76D6E1] to-[#76D6E1] rounded-lg shadow-xl p-12 text-white">
         <div className="max-w-4xl mx-auto text-center">
           <div className="flex justify-center mb-6">
-            <Building className="h-16 w-16 text-white" />
+            <img src="/short_logo.png" alt="Society360 Logo" className="h-16 w-16" />
           </div>
           <h1 className="text-5xl font-bold mb-4">Welcome to Society360</h1>
-          <p className="text-xl mb-8 text-[#4C97A8]/20">Empowering next generation through innovative internship programs</p>
+          <p className="text-xl mb-8" style={{color: '#01181F'}}>Building future-ready communities with intelligent management solutions</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
