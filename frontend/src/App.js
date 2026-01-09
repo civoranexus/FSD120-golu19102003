@@ -13,11 +13,13 @@ import Finance from './components/Modules/Finance';
 import Communication from './components/Modules/Communication';
 import Administration from './components/Modules/Administration';
 import Privacy from './components/Privacy/Privacy';
+import Terms from './components/Terms/Terms';
+import Support from './components/Support/Support';
 import './App.css';
 
 function App() {
   return (
-    <Router>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -32,6 +34,8 @@ function App() {
           <Route path="/communication" element={<Communication />} />
           <Route path="/administration" element={<Administration />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/support" element={<Support />} />
         </Routes>
       </Layout>
     </Router>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Menu, X, Building, ChevronDown } from 'lucide-react';
+import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Info, ChevronDown, Menu, X, MapPin, Phone, Mail, Globe } from 'lucide-react';
+import ScrollArrows from '../ScrollArrows/ScrollArrows';
+import Translate from '../Translate/Translate.js';
 
 const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -24,7 +26,7 @@ const Layout = ({ children }) => {
 
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
-    { path: '/about', label: 'About', icon: Building },
+    { path: '/about', label: 'About', icon: Info },
     { path: '/contact', label: 'Contact', icon: MessageSquare },
     { path: '/login', label: 'Login', icon: LogIn },
   ];
@@ -53,8 +55,8 @@ const Layout = ({ children }) => {
                   className="h-8 w-auto mr-2"
                 />
                 <div className="flex flex-col">
-                  <span className="text-xl font-bold" style={{color: '#1B9AAA'}}>Society360</span>
-                  <span className="text-xs text-gray-700">by Civora Nexus</span>
+                  <span className="text-xl font-bold" style={{color: '#16808D'}}>Society360</span>
+                  <span className="text-xs" style={{color: '#020509'}}>by Civora Nexus</span>
                 </div>
               </div>
 
@@ -68,16 +70,16 @@ const Layout = ({ children }) => {
                     to={item.path}
                     className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                       isActiveLink(item.path)
-                        ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
-                        : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
+                        ? 'text-[#147783] underline decoration-2 underline-offset-8'
+                        : 'text-gray-700 hover:text-[#147783] hover:bg-white'
                     }`}
                     style={{
-                      color: isActiveLink(item.path) ? '#1B9AAA' : undefined
+                      color: isActiveLink(item.path) ? '#147783' : undefined
                     }}
                     onMouseEnter={(e) => {
                       if (!isActiveLink(item.path)) {
                         e.currentTarget.style.backgroundColor = '#CCE7EC';
-                        e.currentTarget.style.color = '#1B9AAA';
+                        e.currentTarget.style.color = '#147783';
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -92,6 +94,8 @@ const Layout = ({ children }) => {
                         link.style.backgroundColor = '';
                         link.style.color = '';
                       });
+                      // Scroll to top before navigation
+                      window.scrollTo(0, 0);
                     }}
                   >
                     <Icon className="h-4 w-4" />
@@ -106,16 +110,16 @@ const Layout = ({ children }) => {
                   onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
                   className={`flex items-center space-x-0.5 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                     isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path))
-                      ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
-                      : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
+                      ? 'text-[#147783] underline decoration-2 underline-offset-8'
+                      : 'text-gray-700 hover:text-[#147783] hover:bg-white'
                   }`}
                   style={{
-                    color: isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path)) ? '#1B9AAA' : undefined
+                    color: isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path)) ? '#147783' : undefined
                   }}
                   onMouseEnter={(e) => {
                     if (!(isActiveLink('/services') || servicesItems.some(item => isActiveLink(item.path)))) {
                       e.currentTarget.style.backgroundColor = '#CCE7EC';
-                      e.currentTarget.style.color = '#1B9AAA';
+                      e.currentTarget.style.color = '#147783';
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -142,11 +146,11 @@ const Layout = ({ children }) => {
                             onClick={() => setIsServicesDropdownOpen(false)}
                             className={`flex items-center space-x-0.5 px-3 py-2 text-sm font-medium transition-colors ${
                               isActiveLink(item.path)
-                                ? 'text-[#1B9AAA]'
-                                : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-gray-100'
+                                ? 'text-[#147783]'
+                                : 'text-gray-700 hover:text-[#147783] hover:bg-gray-100'
                             }`}
                             style={{
-                              color: isActiveLink(item.path) ? '#1B9AAA' : undefined,
+                              color: isActiveLink(item.path) ? '#147783' : undefined,
                               backgroundColor: isActiveLink(item.path) ? '#CCE7EC' : undefined
                             }}
                             onMouseEnter={(e) => {
@@ -179,16 +183,16 @@ const Layout = ({ children }) => {
                     to={item.path}
                     className={`flex items-center space-x-1 px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
                       isActiveLink(item.path)
-                        ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
-                        : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
+                        ? 'text-[#147783] underline decoration-2 underline-offset-8'
+                        : 'text-gray-700 hover:text-[#147783] hover:bg-white'
                     }`}
                     style={{
-                      color: isActiveLink(item.path) ? '#1B9AAA' : undefined
+                      color: isActiveLink(item.path) ? '#147783' : undefined
                     }}
                     onMouseEnter={(e) => {
                       if (!isActiveLink(item.path)) {
                         e.currentTarget.style.backgroundColor = '#CCE7EC';
-                        e.currentTarget.style.color = '#1B9AAA';
+                        e.currentTarget.style.color = '#147783';
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -203,6 +207,8 @@ const Layout = ({ children }) => {
                         link.style.backgroundColor = '';
                         link.style.color = '';
                       });
+                      // Scroll to top before navigation
+                      window.scrollTo(0, 0);
                     }}
                   >
                     <Icon className="h-4 w-4" />
@@ -240,16 +246,16 @@ const Layout = ({ children }) => {
                     to={item.path}
                     className={`flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ${
                       isActiveLink(item.path)
-                        ? 'text-[#1B9AAA] underline decoration-2 underline-offset-8'
-                        : 'text-gray-700 hover:text-[#1B9AAA] hover:bg-white'
+                        ? 'text-[#147783] underline decoration-2 underline-offset-8'
+                        : 'text-gray-700 hover:text-[#147783] hover:bg-white'
                     }`}
                     style={{
-                      color: isActiveLink(item.path) ? '#1B9AAA' : undefined
+                      color: isActiveLink(item.path) ? '#147783' : undefined
                     }}
                     onMouseEnter={(e) => {
                       if (!isActiveLink(item.path)) {
                         e.currentTarget.style.backgroundColor = '#CCE7EC';
-                        e.currentTarget.style.color = '#1B9AAA';
+                        e.currentTarget.style.color = '#147783';
                       }
                     }}
                     onMouseLeave={(e) => {
@@ -288,23 +294,39 @@ const Layout = ({ children }) => {
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-8 items-start">
             {/* Company Info */}
             <div className="flex flex-col h-full">
-              <div className="flex items-start mb-4">
+              <div className="flex items-center mb-4">
                 <img 
                   src="/Short_logo.png" 
                   alt="Society360 Logo" 
                   className="h-6 w-auto mr-3"
                 />
                 <div>
-                  <h3 className="text-lg font-bold leading-tight mb-1" style={{color: '#1B9AAA'}}>Society360</h3>
+                  <h3 className="text-lg font-bold leading-tight mb-1" style={{color: '#16808D'}}>Society360</h3>
+                  <h4 className="text-xs font-medium leading-tight" style={{color: '#020509'}}>by Civora Nexus</h4>
                 </div>
               </div>
               <p className="text-gray-600 text-sm mb-4">
                 Smart Residential Management System powered by Civora Nexus Pvt. Ltd.
               </p>
               <div className="flex space-x-4">
-                <span className="text-2xl">🏢</span>
-                <span className="text-2xl">🔧</span>
-                <span className="text-2xl">📱</span>
+                <a href="https://facebook.com/society360" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
+                  <img src="/facebook.png" alt="Facebook" className="w-5 h-5" />
+                </a>
+                <a href="https://instagram.com/society360" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
+                  <img src="/instagram.png" alt="Instagram" className="w-5 h-5" />
+                </a>
+                <a href="https://twitter.com/society360" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
+                  <img src="/twitter.png" alt="Twitter" className="w-5 h-5" />
+                </a>
+                <a href="https://linkedin.com/company/society360" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
+                  <img src="/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
+                </a>
+                <a href="https://youtube.com/society360" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
+                  <img src="/youtube.png" alt="YouTube" className="w-5 h-5" />
+                </a>
+                <a href="https://github.com/society360" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
+                  <img src="/github.png" alt="GitHub" className="w-5 h-5" />
+                </a>
               </div>
             </div>
 
@@ -312,10 +334,10 @@ const Layout = ({ children }) => {
             <div className="flex flex-col h-full">
               <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Quick Links</h3>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Home</Link></li>
-                <li><Link to="/about" className="text-gray-600 hover:text-[#4C97A8] transition-colors">About</Link></li>
-                <li><Link to="/contact" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Contact</Link></li>
-                <li><Link to="/dashboard" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Dashboard</Link></li>
+                <li><Link to="/" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Home</Link></li>
+                <li><Link to="/about" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>About</Link></li>
+                <li><Link to="/contact" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Contact</Link></li>
+                <li><Link to="/dashboard" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Dashboard</Link></li>
               </ul>
             </div>
 
@@ -323,11 +345,11 @@ const Layout = ({ children }) => {
             <div className="flex flex-col h-full">
               <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Services</h3>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/visitor-management" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Visitor Management</Link></li>
-                <li><Link to="/maintenance" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Maintenance</Link></li>
-                <li><Link to="/finance" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Finance</Link></li>
-                <li><Link to="/communication" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Communication</Link></li>
-                <li><Link to="/administration" className="text-gray-600 hover:text-[#4C97A8] transition-colors">Administration</Link></li>
+                <li><Link to="/visitor-management" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Visitor Management</Link></li>
+                <li><Link to="/maintenance" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Maintenance</Link></li>
+                <li><Link to="/finance" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Finance</Link></li>
+                <li><Link to="/communication" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Communication</Link></li>
+                <li><Link to="/administration" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Administration</Link></li>
               </ul>
             </div>
 
@@ -335,10 +357,22 @@ const Layout = ({ children }) => {
             <div className="flex flex-col h-full">
               <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Contact Info</h3>
               <div className="space-y-2 text-sm text-gray-600">
-                <p>📍 Sangamner, Maharashtra – 422605 India</p>
-                <p>📞 +91 98765 43210</p>
-                <p>✉️ info@society360.com</p>
-                <p>🌐 www.society360.com</p>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="h-4 w-4 text-[#147783]" />
+                  <span>Jaipur, Rajasthan</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Phone className="h-4 w-4 text-[#147783]" />
+                  <span>+91 98765 43210</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="h-4 w-4 text-[#147783]" />
+                  <span>info@society360.com</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Globe className="h-4 w-4 text-[#147783]" />
+                  <span>www.society360.com</span>
+                </div>
               </div>
             </div>
 
@@ -358,14 +392,20 @@ const Layout = ({ children }) => {
                 <p>&copy; 2026 Society360. All rights reserved.</p>
               </div>
               <div className="flex space-x-6 mt-4 md:mt-0">
-                <Link to="/privacy" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors">Privacy Policy</Link>
-                <Link to="/terms" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors">Terms of Service</Link>
-                <Link to="/support" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors">Support</Link>
+                <Link to="/privacy" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Privacy & Policy</Link>
+                <Link to="/terms" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Terms of Service</Link>
+                <Link to="/support" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Support</Link>
               </div>
             </div>
           </div>
         </div>
       </footer>
+      
+      {/* Translate Component */}
+      <Translate />
+      
+      {/* Scroll Arrows */}
+      <ScrollArrows />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Building, Users, Target, Award } from 'lucide-react';
+import { Info, Users, Target, Award } from 'lucide-react';
 
 const About = () => {
   return (
@@ -27,7 +27,7 @@ const About = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center mb-4">
-            <Building className="h-12 w-12 text-[#1B9AAA]" />
+            <Info className="h-12 w-12 text-[#1B9AAA]" />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Comprehensive Management</h3>
           <p className="text-gray-600">
@@ -63,9 +63,9 @@ const About = () => {
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Contact Information</h3>
             <div className="space-y-2 text-gray-600">
-              <p><strong>Email:</strong> info@civoranexus.com</p>
-              <p><strong>Phone:</strong> +91-7350 675192</p>
-              <p><strong>Address:</strong> Sangamner, Maharashtra – 422605 India</p>
+              <p><strong>Email:</strong> info@society360.com</p>
+              <p><strong>Phone:</strong> +91 98765 43210</p>
+              <p><strong>Address:</strong> Jaipur, Rajasthan</p>
               <p><strong>URN:</strong> UDYAM-MH-01-0075817</p>
             </div>
           </div>
@@ -83,16 +83,19 @@ const About = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="bg-[#1B9AAA] text-white rounded-lg p-8 text-center">
-        <h2 className="text-2xl font-bold mb-4">Join the Revolution</h2>
-        <p className="text-[#4C97A8]/20 mb-6">
+      <div className="bg-[#E0F7FA] text-white rounded-lg p-8 text-center">
+        <h2 className="text-2xl font-bold mb-4">
+          <span style={{color: '#16808D'}}>Join the</span>{' '}
+          <span style={{color: '#071426', textDecoration: 'underline', textUnderlineOffset: '4px', textDecorationThickness: '2px'}}>Revolution</span>
+        </h2>
+        <p className="text-gray-600 mb-6">
           Experience the future of residential society management with Society360
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <button className="px-8 py-3 bg-white text-[#1B9AAA] rounded-lg font-semibold hover:bg-[#CCE7EC] transition-colors">
+          <button className="px-8 py-3 bg-white text-[#1B9AAA] rounded-lg font-semibold hover:bg-[#1B9AAA] hover:text-white transition-colors">
             Learn More
           </button>
-          <button className="px-8 py-3 bg-[#1B9AAA] text-white rounded-lg font-semibold hover:bg-[#4C97A8] transition-colors">
+          <button className="px-8 py-3 bg-[#16808D] text-white rounded-lg font-semibold hover:bg-[#1B9AAA] hover:text-white transition-colors">
             Get Started
           </button>
         </div>

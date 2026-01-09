@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Shield, Eye, Database, UserCheck, Lock } from 'lucide-react';
+import { ArrowLeft, Shield, Eye, Database, UserCheck, Lock, MessageSquare } from 'lucide-react';
 
 const Privacy = () => {
   return (
@@ -93,12 +93,15 @@ const Privacy = () => {
 
           {/* Contact Information */}
           <div className="bg-white rounded-lg shadow-lg p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Contact Us</h2>
+            <div className="flex items-center mb-4">
+              <MessageSquare className="h-6 w-6 text-[#1B9AAA] mr-2" />
+              <h2 className="text-xl font-semibold text-gray-900">Contact Us</h2>
+            </div>
             <div className="space-y-2 text-gray-700">
               <p>If you have questions about this Privacy Policy or our data practices, please contact us:</p>
               <p><strong>Email:</strong> privacy@society360.com</p>
               <p><strong>Phone:</strong> +91 98765 43210</p>
-              <p><strong>Address:</strong> 123 Society Street, City, State 12345</p>
+              <p><strong>Address:</strong> Jaipur, Rajasthan</p>
             </div>
           </div>
         </div>

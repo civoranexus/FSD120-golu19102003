@@ -1,7 +1,3 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
   --civora-primary: #1e40af;
   --civora-secondary: #3b82f6;

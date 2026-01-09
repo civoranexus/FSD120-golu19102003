@@ -149,7 +149,7 @@ const Contact = () => {
                 <Mail className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Email</p>
-                  <p className="text-gray-600">info@civoranexus.com</p>
+                  <p className="text-gray-600">info@society360.com</p>
                 </div>
               </div>
 
@@ -157,7 +157,7 @@ const Contact = () => {
                 <Phone className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Phone</p>
-                  <p className="text-gray-600">+91-7350 675192</p>
+                  <p className="text-gray-600">+91 98765 43210</p>
                 </div>
               </div>
 
@@ -165,7 +165,7 @@ const Contact = () => {
                 <MapPin className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Address</p>
-                  <p className="text-gray-600">Sangamner, Maharashtra – 422605 India</p>
+                  <p className="text-gray-600">Jaipur, Rajasthan</p>
                 </div>
               </div>
 
@@ -185,7 +185,7 @@ const Contact = () => {
             <div className="space-y-4">
               <div>
                 <h3 className="font-semibold text-gray-900 mb-2">Head Office</h3>
-                <p className="text-gray-600">Sangamner, Maharashtra</p>
+                <p className="text-gray-600">Jaipur, Rajasthan</p>
                 <p className="text-sm text-gray-500">Main operations and development center</p>
               </div>
               
