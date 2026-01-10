@@ -21,10 +21,13 @@ const VisitorManagement = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Visitor Management</h1>
-        <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-          <Plus className="h-4 w-4" />
-          <span>Add Visitor</span>
+        <h1 className="text-3xl font-bold">
+          <span style={{color: '#147783'}}>Visitor</span>
+          <span style={{color: '#020509'}}> Management</span>
+        </h1>
+        <button className="flex items-center justify-center px-8 py-3 bg-[#16808D] text-white rounded-lg font-semibold hover:bg-[#1B9AAA] hover:text-white transition-colors">
+          <Plus className="ml-2 h-5 w-5" />
+          Add Visitor
         </button>
       </div>
 
@@ -38,13 +41,13 @@ const VisitorManagement = () => {
                 placeholder="Search visitors..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#0C4A50] focus:border-[#0C4A50]"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#0C4A50] focus:border-[#0C4A50]"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -71,8 +74,8 @@ const VisitorManagement = () => {
                 <tr key={visitor.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="h-8 w-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Users className="h-4 w-4 text-blue-600" />
+                      <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#CCE7EC', color: '#147783'}}>
+                        <Users className="h-4 w-4" />
                       </div>
                       <div className="ml-3">
                         <div className="text-sm font-medium text-gray-900">{visitor.name}</div>
@@ -85,15 +88,15 @@ const VisitorManagement = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       visitor.status === 'approved' ? 'bg-green-100 text-green-800' :
-                      visitor.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                      visitor.status === 'pending' ? 'bg-[#E0F7FA] text-[#142C52]' :
                       'bg-gray-100 text-gray-800'
                     }`}>
                       {visitor.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-blue-600 hover:text-blue-900 mr-3">View</button>
-                    <button className="text-gray-600 hover:text-gray-900">Edit</button>
+                    <button className="mr-3" style={{color: '#1B9AAA'}} onMouseEnter={(e) => e.target.style.color = '#147783'} onMouseLeave={(e) => e.target.style.color = '#1B9AAA'}>View</button>
+                    <button style={{color: '#4A5563'}} onMouseEnter={(e) => e.target.style.color = '#020509'} onMouseLeave={(e) => e.target.style.color = '#4A5563'}>Edit</button>
                   </td>
                 </tr>
               ))}

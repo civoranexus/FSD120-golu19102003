@@ -35,15 +35,18 @@ const Communication = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Communication & Announcements</h1>
+        <h1 className="text-3xl font-bold">
+          <span style={{color: '#147783'}}>Communication</span>
+          <span style={{color: '#020509'}}> & Announcements</span>
+        </h1>
         <div className="flex space-x-3">
-          <button className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+          <button className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg" style={{backgroundColor: '#178740'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#22C55E'} onMouseLeave={(e) => e.target.style.backgroundColor = '#178740'}>
             <Megaphone className="h-4 w-4" />
             <span>New Announcement</span>
           </button>
-          <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-            <MessageSquare className="h-4 w-4" />
-            <span>New Discussion</span>
+          <button className="flex items-center justify-center px-8 py-3 bg-[#16808D] text-white rounded-lg font-semibold hover:bg-[#1B9AAA] hover:text-white transition-colors">
+            <MessageSquare className="ml-2 h-5 w-5" />
+            New Discussion
           </button>
         </div>
       </div>
@@ -56,7 +59,7 @@ const Communication = () => {
           </div>
           <div className="p-6 space-y-4">
             {announcements.map((announcement) => (
-              <div key={announcement.id} className="border-l-4 border-blue-500 pl-4">
+              <div key={announcement.id} className="border-l-4 pl-4" style={{borderColor: '#1B9AAA'}}>
                 <div className="flex items-start justify-between">
                   <div>
                     <h3 className="text-sm font-medium text-gray-900">{announcement.title}</h3>
@@ -67,8 +70,8 @@ const Communication = () => {
                     </div>
                   </div>
                   <span className={`px-2 py-1 text-xs rounded-full ${
-                    announcement.priority === 'High' ? 'bg-red-100 text-red-800' :
-                    announcement.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                    announcement.priority === 'High' ? 'bg-red-100 text-[#EF4444]' :
+                    announcement.priority === 'Medium' ? 'bg-[#E0F7FA] text-[#142C52]' :
                     'bg-green-100 text-green-800'
                   }`}>
                     {announcement.priority}
@@ -86,7 +89,7 @@ const Communication = () => {
           </div>
           <div className="p-6 space-y-4">
             {discussions.map((discussion) => (
-              <div key={discussion.id} className="border-l-4 border-green-500 pl-4">
+              <div key={discussion.id} className="border-l-4 pl-4" style={{borderColor: '#178740'}}>
                 <div>
                   <h3 className="text-sm font-medium text-gray-900">{discussion.title}</h3>
                   <div className="flex items-center space-x-2 mt-1">
@@ -112,7 +115,7 @@ const Communication = () => {
             <select
               value={selectedRecipients}
               onChange={(e) => setSelectedRecipients(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#0C4A50] focus:border-[#0C4A50]"
             >
               <option value="all">All Residents</option>
               <option value="block-a">Block A</option>
@@ -129,13 +132,13 @@ const Communication = () => {
               value={notificationMessage}
               onChange={(e) => setNotificationMessage(e.target.value)}
               placeholder="Type your message here..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#0C4A50] focus:border-[#0C4A50]"
             ></textarea>
           </div>
           
           <button
             onClick={handleSendNotification}
-            className="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full flex items-center justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white hover:bg-[#1B9AAA] focus:outline-none focus:ring-2 focus:ring-offset-2" style={{backgroundColor: '#1B9AAA'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#147783'} onMouseLeave={(e) => e.target.style.backgroundColor = '#1B9AAA'}
           >
             <Send className="h-4 w-4 mr-2" />
             Send Notification

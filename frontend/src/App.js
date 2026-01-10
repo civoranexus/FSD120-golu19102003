@@ -6,7 +6,7 @@ import About from './components/About/About';
 import Contact from './components/Contact/Contact';
 import Login from './components/Auth/Login';
 import Register from './components/Auth/Register';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './components/Dashboard/Dashboard';
 import VisitorManagement from './components/Modules/VisitorManagement';
 import Maintenance from './components/Modules/Maintenance';
 import Finance from './components/Modules/Finance';

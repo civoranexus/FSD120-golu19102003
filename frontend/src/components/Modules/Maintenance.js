@@ -23,10 +23,13 @@ const Maintenance = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-900">Maintenance Requests</h1>
-        <button className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
-          <Plus className="h-4 w-4" />
-          <span>New Request</span>
+        <h1 className="text-3xl font-bold">
+          <span style={{color: '#147783'}}>Maintenance</span>
+          <span style={{color: '#020509'}}> Requests</span>
+        </h1>
+        <button className="flex items-center justify-center px-8 py-3 bg-[#16808D] text-white rounded-lg font-semibold hover:bg-[#1B9AAA] hover:text-white transition-colors">
+          <Plus className="ml-2 h-5 w-5" />
+          New Request
         </button>
       </div>
 
@@ -40,13 +43,13 @@ const Maintenance = () => {
                 placeholder="Search maintenance requests..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#0C4A50] focus:border-[#0C4A50]"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#0C4A50] focus:border-[#0C4A50]"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -56,7 +59,7 @@ const Maintenance = () => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#0C4A50] focus:border-[#0C4A50]"
             >
               <option value="all">All Priority</option>
               <option value="High">High</option>
@@ -83,8 +86,8 @@ const Maintenance = () => {
                 <tr key={request.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="h-8 w-8 bg-yellow-100 rounded-full flex items-center justify-center">
-                        <Wrench className="h-4 w-4 text-yellow-600" />
+                      <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#CCE7EC', color: '#147783'}}>
+                        <Wrench className="h-4 w-4" />
                       </div>
                       <div className="ml-3">
                         <div className="text-sm font-medium text-gray-900">{request.title}</div>
@@ -94,8 +97,8 @@ const Maintenance = () => {
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{request.unit}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      request.priority === 'High' ? 'bg-red-100 text-red-800' :
-                      request.priority === 'Medium' ? 'bg-yellow-100 text-yellow-800' :
+                      request.priority === 'High' ? 'bg-red-100 text-[#EF4444]' :
+                      request.priority === 'Medium' ? 'bg-[#E0F7FA] text-[#142C52]' :
                       'bg-green-100 text-green-800'
                     }`}>
                       {request.priority}
@@ -105,15 +108,15 @@ const Maintenance = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                       request.status === 'completed' ? 'bg-green-100 text-green-800' :
-                      request.status === 'in-progress' ? 'bg-blue-100 text-blue-800' :
-                      'bg-yellow-100 text-yellow-800'
+                      request.status === 'pending' ? 'bg-[#E0F7FA] text-[#142C52]' :
+                      'bg-[#D4DBE9] text-[#142C52]'
                     }`}>
                       {request.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="text-blue-600 hover:text-blue-900 mr-3">View</button>
-                    <button className="text-gray-600 hover:text-gray-900">Edit</button>
+                    <button className="mr-3" style={{color: '#1B9AAA'}} onMouseEnter={(e) => e.target.style.color = '#147783'} onMouseLeave={(e) => e.target.style.color = '#1B9AAA'}>View</button>
+                    <button style={{color: '#4A5563'}} onMouseEnter={(e) => e.target.style.color = '#020509'} onMouseLeave={(e) => e.target.style.color = '#4A5563'}>Edit</button>
                   </td>
                 </tr>
               ))}

@@ -1,8 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Info, ChevronDown, Menu, X, MapPin, Phone, Mail, Globe } from 'lucide-react';
+import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Info, ChevronDown, Menu, X, MapPin, Phone, Mail, Globe, BarChart3 } from 'lucide-react';
 import ScrollArrows from '../ScrollArrows/ScrollArrows';
 import Translate from '../Translate/Translate.js';
+import Chatbot from '../Chatbot/Chatbot.js';
+import Notifications from '../Notifications/Notifications';
+import { NotificationsProvider } from '../../contexts/NotificationsContext';
 
 const Layout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -26,6 +29,7 @@ const Layout = ({ children }) => {
 
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
+    { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
     { path: '/about', label: 'About', icon: Info },
     { path: '/contact', label: 'Contact', icon: MessageSquare },
     { path: '/login', label: 'Login', icon: LogIn },
@@ -42,7 +46,8 @@ const Layout = ({ children }) => {
   const isActiveLink = (path) => location.pathname === path;
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <NotificationsProvider>
+      <div className="min-h-screen bg-gray-50">
       {/* Navigation Bar */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -103,7 +108,7 @@ const Layout = ({ children }) => {
                   </Link>
                 );
               })}
-
+              
               {/* Services Dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -216,6 +221,9 @@ const Layout = ({ children }) => {
                   </Link>
                 );
               })}
+              
+              {/* Notifications */}
+              <Notifications />
             </div>
 
             {/* Mobile menu button */}
@@ -404,9 +412,16 @@ const Layout = ({ children }) => {
       {/* Translate Component */}
       <Translate />
       
+      {/* Notifications Component */}
+      <Notifications />
+      
+      {/* Chatbot Component */}
+      <Chatbot />
+      
       {/* Scroll Arrows */}
       <ScrollArrows />
     </div>
+    </NotificationsProvider>
   );
 };
 
