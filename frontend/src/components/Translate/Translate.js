@@ -241,7 +241,7 @@ const Translate = () => {
     <>
       <div id="google_translate_element" style={{ position: 'absolute', top: '-9999px', left: '-9999px', width: '1px', height: '1px' }}></div>
       
-      <div className="fixed bottom-6 left-6 z-50 language-selector-container">
+      <div className="fixed bottom-2 left-6 z-50 language-selector-container">
         <AnimatePresence>
           {isOpen && (
             <motion.div 

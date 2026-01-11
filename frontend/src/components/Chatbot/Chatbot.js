@@ -1,27 +1,105 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Send, Bot, User } from "lucide-react";
+import { X, Send, Bot, User, Clock, Map, Phone, Calendar, FileText, AlertCircle, CheckCircle, Search, Filter, Download, Upload, Camera, Mic, Settings, HelpCircle, Star, TrendingUp, Users, DollarSign, Shield, Zap, Home, Car, Package, MessageSquare, Activity, BarChart3, PieChart, FileCheck, CreditCard, Wrench, Hammer, PaintBucket, Wifi, Battery, Droplets, Thermometer, Wind, Sun, Cloud, Umbrella, Heart, Brain, Cpu, Database, Globe, Lock, Key, Eye, Bell, Volume2, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, Plus, Minus, RefreshCw, Copy, Share2, Bookmark, Archive, Trash2, Edit3, MoreHorizontal, Grid, List, Filter as FilterIcon, Moon, Paperclip } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Chatbot = () => {
+  const navigate = useNavigate();
   const [chatExpanded, setChatExpanded] = useState(false);
   const [messages, setMessages] = useState([
     {
-      text: "Hello 👋 Welcome to **Society360**! How can I assist you today?",
+      text: "Hello 👋 Welcome to **Society360**! I'm your advanced AI assistant. I can help with maintenance, visitor management, billing, amenities, security, and much more. How can I assist you today?",
       sender: "bot",
+      timestamp: new Date(),
+      category: "greeting"
     },
   ]);
 
   const [userInput, setUserInput] = useState("");
   const [suggestions, setSuggestions] = useState([
-    "Maintenance issue",
-    "Garbage problem",
-    "Security concern",
-    "Visitor entry",
-    "Maintenance bill",
+    "🔧 Maintenance issue",
+    "👥 Add visitor",
+    "💳 Pay maintenance",
+    "🏊 Book amenities",
+    "🔐 Security help",
+    "📊 View dashboard",
+    "📋 Track complaint",
+    "🆘 Emergency"
   ]);
-
+  
   const [isTyping, setIsTyping] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const [showAdvancedOptions, setShowAdvancedOptions] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [chatHistory, setChatHistory] = useState([]);
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+  const [language, setLanguage] = useState("en");
+  const [userPreferences, setUserPreferences] = useState({
+    quickReplies: true,
+    soundEnabled: true,
+    autoScroll: true,
+    compactMode: false
+  });
+  
+  // Chatbot window size controls
+  const [chatbotWidth, setChatbotWidth] = useState(400);
+  const [chatbotHeight, setChatbotHeight] = useState(500);
+  
+  // Service menu state
+  const [showServiceMenu, setShowServiceMenu] = useState(false);
+  
   const messagesEndRef = useRef(null);
+  const recognitionRef = useRef(null);
+
+  // Navigation function
+  const navigateToService = (serviceName, route) => {
+    addMessage(`Navigating to ${serviceName}...`, "user");
+    setShowServiceMenu(false);
+    setTimeout(() => {
+      navigate(route);
+      setChatExpanded(false); // Auto-close chatbot
+    }, 1000);
+  };
+
+  // Handle click outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const chatbotElement = document.getElementById('chatbot-container');
+      const externalMenuElement = document.getElementById('external-service-menu');
+      const threeDotButton = event.target.closest('.fixed.top-\\[78\\%\\].right-6');
+      
+      // Close service menu if clicking outside and not on 3-dot button
+      if (externalMenuElement && !externalMenuElement.contains(event.target) && !threeDotButton) {
+        setShowServiceMenu(false);
+      }
+      
+      // Close chatbot if clicking outside when chat is open
+      if (chatExpanded && chatbotElement && !chatbotElement.contains(event.target) && !threeDotButton) {
+        setChatExpanded(false);
+        setShowServiceMenu(false);
+      }
+    };
+
+    if (chatExpanded || showServiceMenu) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [chatExpanded, showServiceMenu]);
+
+  // Auto-scroll to bottom when new messages are added
+  useEffect(() => {
+    const messagesContainer = document.getElementById('chatbot-messages');
+    if (messagesContainer) {
+      // Scroll to show both user message and bot response completely
+      setTimeout(() => {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight - 150;
+      }, 100);
+    }
+  }, [messages]);
 
   // 🔹 ALL RESPONSES
   const responses = {
@@ -264,12 +342,71 @@ const Chatbot = () => {
       "Hello! 😊 I'm your **Society360 Assistant** and I can help you with:\n\n🏘️ **About Society360**: Features, benefits, platform details\n🔧 **Maintenance**: Repairs, plumbing, electrical, carpentry\n🧹 **Housekeeping**: Cleaning, garbage, pest control, sanitation\n🔐 **Security**: Guards, CCTV, emergencies, fire safety\n🚰 **Utilities**: Water, electricity, gas, internet\n🚗 **Parking**: Rules, vehicle management, towing\n👥 **Visitors**: Passes, delivery, domestic help\n🏊 **Amenities**: Gym, pool, clubhouse, garden, sports\n💳 **Billing**: Payments, charges, receipts, refunds\n📋 **Rules**: Society regulations, office, meetings, certificates\n🔍 **Tracking**: Complaint status, feedback\n🏥 **Health**: Medical facilities, pharmacy, doctors\n🎉 **Events**: Festivals, community activities\n🌿 **Environment**: Green initiatives, waste management, solar\n📱 **Technology**: App features, smart society, digital services\n👶 **Kids**: Play areas, education, tuition\n🛍️ **Shopping**: Store, ATM, services\n🚗 **Transport**: Metro, bus, society shuttle\n🏢 **Property**: Rental, NOC, property services\n🎯 **Support**: Help, contact, feedback, complaints\n🎊 **Fun**: Jokes, weather, quotes, relaxation\n\n**How may I assist you today?** Just ask me anything!",
   };
 
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-
-  const toggleChat = () => setChatExpanded((prev) => !prev);
+  // 🎨 Enhanced UI Functions
+  const toggleChat = () => {
+    setChatExpanded((prev) => !prev);
+    if (!chatExpanded && userPreferences.soundEnabled) {
+      playNotificationSound();
+    }
+  };
+  
   const closeChat = () => setChatExpanded(false);
+  const minimizeChat = () => setIsMinimized(!isMinimized);
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+  const clearChat = () => {
+    setMessages([{
+      text: "Chat cleared! How can I help you today?",
+      sender: "bot",
+      timestamp: new Date(),
+      category: "system"
+    }]);
+  };
+  
+  const playNotificationSound = () => {
+    if (userPreferences.soundEnabled) {
+      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+      audio.play().catch(() => {});
+    }
+  };
+
+  // 🎤 Voice Recognition
+  const startListening = () => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = false;
+      recognition.lang = language === 'hi' ? 'hi-IN' : 'en-US';
+      
+      recognition.onstart = () => {
+        setIsListening(true);
+      };
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        setUserInput(transcript);
+        setIsListening(false);
+      };
+      
+      recognition.onerror = () => {
+        setIsListening(false);
+      };
+      
+      recognition.onend = () => {
+        setIsListening(false);
+      };
+      
+      recognition.start();
+      recognitionRef.current = recognition;
+    }
+  };
+  
+  const stopListening = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    }
+  };
 
   const getBotResponse = (input) => {
     const lowerInput = input.toLowerCase();
@@ -294,13 +431,19 @@ const Chatbot = () => {
     setTimeout(() => {
       setIsTyping(false);
       addMessage(getBotResponse(userMessage), "bot");
-      setSuggestions([
-        "Track complaint",
-        "Maintenance issue",
-        "Visitor entry",
-        "Pay maintenance bill",
-        "Emergency help",
-      ]);
+      // Automatically show a random question after user sends a message
+      const questions = [
+        "How can I help you with maintenance today?",
+        "Do you need assistance with visitor management?",
+        "Would you like to check your maintenance dues?",
+        "Is there any security concern I can help with?",
+        "Need help booking society amenities?",
+        "How can I assist you with billing inquiries?",
+        "Do you have any complaints to track?",
+        "Would you like information about society events?"
+      ];
+      const randomQuestion = questions[Math.floor(Math.random() * questions.length)];
+      setSuggestions([randomQuestion]);
     }, 1000);
   };
 
@@ -308,119 +451,573 @@ const Chatbot = () => {
     text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
 
   return (
-    <div className="z-50">
-      {/* Floating Button - Positioned above scroll arrows with equal spacing */}
+    <div className="z-50" onClick={() => {
+      // Close chatbot when clicking outside
+      if (chatExpanded) {
+        setChatExpanded(false);
+        setShowServiceMenu(false);
+      }
+    }}>
+      {/* External 3-Dot Service Button */}
       <motion.div
-        className="fixed bottom-32 right-6 cursor-pointer z-50"
-        onClick={toggleChat}
+        className="fixed top-[78%] right-6 cursor-pointer z-[999]"
         whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+        animate={{
+          y: [0, -3, 0],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowServiceMenu(!showServiceMenu);
+        }}
       >
-        <div className="bg-white text-[#147783] hover:bg-[#1B9AAA] hover:text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 font-semibold">
-          <img src="/logo.svg" alt="Society360" className="h-6 w-6" />
+        <div className={`relative ${darkMode ? 'bg-gray-800' : 'bg-white'} text-[#147783] hover:bg-[#1B9AAA] hover:text-white p-3 rounded-full shadow-2xl transition-all duration-300 font-semibold border-2 border-[#1B9AAA]`}>
+          <MoreHorizontal className="h-5 w-5" />
+          {/* Notification Badge */}
+          <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-white animate-pulse" style={{backgroundColor: '#147783'}}></div>
         </div>
       </motion.div>
+
+      {/* External Service Menu */}
+      <AnimatePresence>
+        {showServiceMenu && !chatExpanded && (
+          <motion.div
+            id="external-service-menu"
+            className={`fixed top-[56%] right-20 w-[200px] ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-2xl border border-gray-200 z-[999] p-3`}
+            initial={{ opacity: 0, scale: 0.8, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -10 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="space-y-1">
+              <button
+                onClick={() => navigateToService("Dashboard", "/dashboard")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>📊</span>
+                <span>Dashboard</span>
+              </button>
+              <button
+                onClick={() => navigateToService("Maintenance", "/maintenance")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>🔧</span>
+                <span>Maintenance</span>
+              </button>
+              <button
+                onClick={() => navigateToService("Visitors", "/visitor-management")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>👥</span>
+                <span>Visitors</span>
+              </button>
+              <button
+                onClick={() => navigateToService("Finance", "/finance")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>💳</span>
+                <span>Finance</span>
+              </button>
+              <button
+                onClick={() => navigateToService("Amenities", "/amenities")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>🏊</span>
+                <span>Amenities</span>
+              </button>
+              <button
+                onClick={() => navigateToService("Security", "/security")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>🔐</span>
+                <span>Security</span>
+              </button>
+              <button
+                onClick={() => navigateToService("Complaints", "/complaints")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>📋</span>
+                <span>Complaints</span>
+              </button>
+              <button
+                onClick={() => navigateToService("Emergency", "/emergency")}
+                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
+                  darkMode 
+                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
+                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
+                }`}
+              >
+                <span>🆘</span>
+                <span>Emergency</span>
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Button with Advanced Features */}
+      {!chatExpanded && (
+        <motion.div
+          className="fixed top-[68%] right-[14px] cursor-pointer z-[998]"
+          onClick={toggleChat}
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.95 }}
+          animate={{
+            y: [0, -5, 0],
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        >
+          <div className={`relative ${darkMode ? 'bg-gray-800' : 'bg-white'} text-[#147783] hover:bg-[#1B9AAA] hover:text-white p-4 rounded-full shadow-2xl transition-all duration-300 font-semibold border-2 border-[#1B9AAA]`}>
+            <img src="/logo.svg" alt="Society360" className="h-8 w-8" />
+            {/* Notification Badge */}
+            {messages.length > 1 && (
+              <motion.div
+                className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.5 }}
+              >
+                {messages.length - 1}
+              </motion.div>
+            )}
+            {/* Online Indicator */}
+            <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white animate-pulse" style={{backgroundColor: '#147783'}}></div>
+          </div>
+        </motion.div>
+      )}
 
       {/* Chat Window */}
       <AnimatePresence>
         {chatExpanded && (
           <motion.div
-            className="fixed bottom-40 right-6 w-96 h-[500px] bg-white rounded-2xl shadow-xl flex flex-col"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
+            id="chatbot-container"
+            className={`fixed top-16 right-0 ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-2xl flex flex-col border border-gray-200 z-10`}
+            style={{width: `${chatbotWidth}px`, height: `${chatbotHeight}px`}}
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 50 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            onClick={(e) => e.stopPropagation()}
           >
-            {/* Header */}
-            <div className="bg-[#16808D] hover:bg-[#1B9AAA] text-white p-4 flex justify-between transition-colors">
-              <div className="flex items-center space-x-2">
-                <Bot className="h-5 w-5" />
-                <h2 className="font-semibold">Society360 Assistant</h2>
+            {/* Enhanced Header */}
+            <div className={`${darkMode ? 'bg-gradient-to-r from-blue-600 to-purple-600' : 'bg-gradient-to-r from-[#16808D] to-[#1B9AAA]'} text-white p-4 flex justify-between items-center transition-all`}>
+              <div className="flex items-center space-x-3">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <Bot className="h-6 w-6" />
+                </motion.div>
+                <div>
+                  <h2 className="font-bold text-lg">Society360 AI</h2>
+                  <div className="flex items-center space-x-2 text-xs opacity-90">
+                    <div className="h-2 w-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span>Online • Advanced AI</span>
+                  </div>
+                </div>
               </div>
-              <button 
-                onClick={closeChat}
-                className="hover:bg-white hover:bg-opacity-20 rounded-full p-1 transition-colors font-semibold"
-              >
-                <X className="h-4 w-4" />
-              </button>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={minimizeChat}
+                  className="hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all"
+                  title="Minimize"
+                >
+                  {isMinimized ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                </button>
+                <button
+                  onClick={toggleDarkMode}
+                  className="hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all"
+                  title="Toggle Dark Mode"
+                >
+                  {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+                </button>
+                <button
+                  onClick={() => setShowAdvancedOptions(!showAdvancedOptions)}
+                  className="hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all"
+                  title="More Options"
+                >
+                  <Settings className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={() => setShowServiceMenu(!showServiceMenu)}
+                  className="hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all"
+                  title="Services"
+                >
+                  <MoreHorizontal className="h-4 w-4" />
+                </button>
+                <button 
+                  onClick={closeChat}
+                  className="hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all"
+                  title="Close"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
             </div>
 
-            {/* Messages */}
-            <div className="flex-1 p-4 overflow-y-auto bg-gray-50 space-y-3">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex items-start space-x-2 ${
-                    msg.sender === "user" ? "flex-row-reverse space-x-reverse" : ""
-                  }`}
+            {/* Advanced Options Panel */}
+            <AnimatePresence>
+              {showAdvancedOptions && (
+                <motion.div
+                  className={`border-b ${darkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'} p-3`}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
-                    msg.sender === "user" 
-                      ? "bg-[#16808D] text-white" 
-                      : "bg-gray-200 text-gray-600"
-                  }`}>
-                    {msg.sender === "user" ? (
-                      <User className="h-4 w-4" />
-                    ) : (
-                      <Bot className="h-4 w-4" />
-                    )}
-                  </div>
-                  <div
-                    className={`p-3 rounded-lg max-w-[75%] ${
-                      msg.sender === "user"
-                        ? "bg-[#16808D] text-white"
-                        : "bg-white border border-gray-200"
-                    }`}
-                    dangerouslySetInnerHTML={{
-                      __html: formatMessage(msg.text),
-                    }}
-                  />
-                </div>
-              ))}
-              {isTyping && (
-                <div className="flex items-start space-x-2">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center">
-                    <Bot className="h-4 w-4" />
-                  </div>
-                  <div className="bg-white border border-gray-200 p-3 rounded-lg">
-                    <div className="flex space-x-1">
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <select
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        className={`text-sm rounded px-2 py-1 ${darkMode ? 'bg-gray-700 text-white' : 'bg-white'} border ${darkMode ? 'border-gray-600' : 'border-gray-300'}`}
+                      >
+                        <option value="all">All Categories</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="security">Security</option>
+                        <option value="billing">Billing</option>
+                        <option value="amenities">Amenities</option>
+                      </select>
+                      <button
+                        onClick={clearChat}
+                        className="text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-full transition-colors"
+                      >
+                        Clear Chat
+                      </button>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setLanguage(language === 'en' ? 'hi' : 'en')}
+                        className="text-sm bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-full transition-colors"
+                      >
+                        {language === 'en' ? 'हिंदी' : 'English'}
+                      </button>
                     </div>
                   </div>
-                </div>
+                  {/* Size Controls */}
+                  <div className="flex items-center justify-between mt-3 space-x-3">
+                    <div className="flex items-center space-x-2">
+                      <label className="text-xs font-medium">Width:</label>
+                      <input
+                        type="range"
+                        min="300"
+                        max="600"
+                        value={chatbotWidth}
+                        onChange={(e) => setChatbotWidth(Number(e.target.value))}
+                        className="w-20"
+                      />
+                      <span className="text-xs w-8">{chatbotWidth}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <label className="text-xs font-medium">Height:</label>
+                      <input
+                        type="range"
+                        min="300"
+                        max="600"
+                        value={chatbotHeight}
+                        onChange={(e) => setChatbotHeight(Number(e.target.value))}
+                        className="w-20"
+                      />
+                      <span className="text-xs w-8">{chatbotHeight}</span>
+                    </div>
+                  </div>
+                </motion.div>
               )}
-              <div ref={messagesEndRef} />
-            </div>
+            </AnimatePresence>
 
-            {/* Suggestions */}
-            <div className="p-2 flex flex-wrap gap-2 border-t border-gray-200">
-              {suggestions.map((s, i) => (
-                <button
-                  key={i}
-                  onClick={() => sendMessage(s)}
-                  className="text-xs bg-[#16808D] hover:bg-[#1B9AAA] text-white px-3 py-1 rounded-full transition-colors font-semibold"
+            {/* Service Menu */}
+            <AnimatePresence>
+              {showServiceMenu && (
+                <motion.div
+                  className={`border-b ${darkMode ? 'border-gray-700 bg-gray-800' : 'border-gray-200 bg-gray-50'} p-3`}
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: 'auto', opacity: 1 }}
+                  exit={{ height: 0, opacity: 0 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  {s}
-                </button>
-              ))}
-            </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      onClick={() => navigateToService("Dashboard", "/dashboard")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      📊 Dashboard
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Maintenance", "/maintenance")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      🔧 Maintenance
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Visitors", "/visitor-management")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      👥 Visitors
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Finance", "/finance")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      💳 Finance
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Amenities", "/amenities")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      🏊 Amenities
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Security", "/security")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      🔐 Security
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Complaints", "/complaints")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      📋 Complaints
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Emergency", "/emergency")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      🆘 Emergency
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            {/* Input */}
-            <div className="p-3 flex border-t border-gray-200">
-              <input
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                placeholder="Type a message..."
-                className="flex-1 border border-gray-300 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-[#16808D]"
-              />
-              <button
-                onClick={() => sendMessage()}
-                className="ml-2 bg-[#16808D] hover:bg-[#1B9AAA] text-white p-2 rounded-full transition-colors font-semibold"
-              >
-                <Send className="h-4 w-4" />
-              </button>
-            </div>
+            {/* Messages Area */}
+            {!isMinimized && (
+              <div id="chatbot-messages" className={`flex-1 p-4 overflow-y-auto ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} space-y-3 max-h-[400px]`}>
+                {messages.map((msg, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                    className={`flex items-start space-x-2 ${
+                      msg.sender === "user" ? "flex-row-reverse space-x-reverse" : ""
+                    }`}
+                  >
+                    <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                      msg.sender === "user" 
+                        ? darkMode 
+                          ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white"
+                          : "bg-gradient-to-r from-[#16808D] to-[#1B9AAA] text-white"
+                        : darkMode 
+                          ? "bg-gradient-to-r from-green-500 to-blue-500 text-white"
+                          : "bg-gradient-to-r from-[#16808D] to-[#1B9AAA] text-white"
+                    }`}>
+                      {msg.sender === "user" ? (
+                        <User className="h-5 w-5" />
+                      ) : (
+                        <Bot className="h-5 w-5" />
+                      )}
+                    </div>
+                    <div className="flex flex-col max-w-[75%]">
+                      <div
+                        className={`p-3 rounded-2xl ${
+                          msg.sender === "user"
+                            ? darkMode
+                              ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white"
+                              : "bg-gradient-to-r from-[#16808D] to-[#1B9AAA] text-white"
+                            : darkMode
+                              ? "bg-gray-700 text-white border border-gray-600"
+                              : "bg-white border border-gray-200 shadow-sm"
+                        }`}
+                        dangerouslySetInnerHTML={{
+                          __html: formatMessage(msg.text),
+                        }}
+                      />
+                      {msg.timestamp && (
+                        <span className={`text-xs mt-1 ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                          {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                        </span>
+                      )}
+                    </div>
+                  </motion.div>
+                ))}
+                
+                {/* Typing Indicator */}
+                {isTyping && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-start space-x-2"
+                  >
+                    <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-white flex items-center justify-center">
+                      <Bot className="h-5 w-5" />
+                    </div>
+                    <div className={`p-3 rounded-2xl ${darkMode ? 'bg-gray-700' : 'bg-white'} border ${darkMode ? 'border-gray-600' : 'border-gray-200'}`}>
+                      <div className="flex space-x-1">
+                        <motion.div
+                          className="w-2 h-2 bg-blue-500 rounded-full"
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 0.8, repeat: Infinity }}
+                        />
+                        <motion.div
+                          className="w-2 h-2 bg-blue-500 rounded-full"
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}
+                        />
+                        <motion.div
+                          className="w-2 h-2 bg-blue-500 rounded-full"
+                          animate={{ scale: [1, 1.2, 1] }}
+                          transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}
+                        />
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+                <div ref={messagesEndRef} />
+              </div>
+            )}
+
+            {/* Enhanced Suggestions */}
+            {!isMinimized && (
+              <div className={`p-3 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border-t`}>
+                <div className="flex flex-wrap gap-2">
+                  {suggestions.map((s, i) => (
+                    <motion.button
+                      key={i}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => sendMessage(s)}
+                      className={`text-sm px-3 py-2 rounded-full transition-all font-medium ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-gradient-to-r from-[#16808D] to-[#1B9AAA] hover:from-[#1B9AAA] hover:to-[#16808D] text-white'
+                      } shadow-sm`}
+                    >
+                      {s}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Enhanced Input Area */}
+            {!isMinimized && (
+              <div className={`p-3 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t flex items-center space-x-2`}>
+                <button
+                  onClick={startListening}
+                  className={`p-2 rounded-full transition-all ${
+                    isListening 
+                      ? 'bg-red-500 text-white animate-pulse' 
+                      : darkMode 
+                        ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  }`}
+                  title="Voice Input"
+                >
+                  {isListening ? <Mic className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                </button>
+                
+                <input
+                  value={userInput}
+                  onChange={(e) => setUserInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                  placeholder={isListening ? "Listening..." : "Type or speak your message..."}
+                  className={`flex-1 rounded-full px-4 py-2 text-sm focus:outline-none transition-all ${
+                    darkMode 
+                      ? 'bg-gray-700 text-white placeholder-gray-400 border-gray-600' 
+                      : 'bg-gray-100 text-gray-800 placeholder-gray-500 border-gray-300'
+                  } border focus:border-[#16808D]`}
+                />
+                
+                <button
+                  onClick={() => sendMessage()}
+                  className="bg-gradient-to-r from-[#16808D] to-[#1B9AAA] hover:from-[#1B9AAA] hover:to-[#16808D] text-white p-2 rounded-full transition-all shadow-sm"
+                  title="Send Message"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+                
+                <button
+                  className={`p-2 rounded-full transition-all ${
+                    darkMode 
+                      ? 'bg-gray-700 hover:bg-gray-600 text-white'
+                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  }`}
+                  title="Attach File"
+                >
+                  <Paperclip className="h-4 w-4" />
+                </button>
+              </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

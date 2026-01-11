@@ -412,9 +412,6 @@ const Layout = ({ children }) => {
       {/* Translate Component */}
       <Translate />
       
-      {/* Notifications Component */}
-      <Notifications />
-      
       {/* Chatbot Component */}
       <Chatbot />
       
