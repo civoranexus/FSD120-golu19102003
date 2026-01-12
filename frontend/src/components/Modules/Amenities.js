@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Pool, Dumbbell, Calendar, Clock, Users, Star, Search, Filter, CheckCircle, XCircle } from 'lucide-react';
+import { Building, Dumbbell, Calendar, Clock, Users, Star, Search, Filter, CheckCircle, XCircle } from 'lucide-react';
 
 const Amenities = () => {
   const [amenities, setAmenities] = useState([
@@ -23,17 +23,20 @@ const Amenities = () => {
   });
 
   const stats = [
-    { title: 'Total Amenities', value: '6', icon: Pool, color: 'text-blue-600' },
-    { title: 'Available Now', value: '5', icon: CheckCircle, color: 'text-green-600' },
-    { title: 'Avg Rating', value: '4.5', icon: Star, color: 'text-yellow-600' },
+    { title: 'Total Amenities', value: '6', icon: Building, color: '#142C52' },
+    { title: 'Available Now', value: '5', icon: CheckCircle, color: '#178740' },
+    { title: 'Avg Rating', value: '4.5', icon: Star, color: '#16808D' },
   ];
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold" style={{color: '#147783'}}>
-          <span style={{color: '#1B9AAA'}}>Amenities</span>
-        </h1>
+        <div className="flex items-center">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-12 w-auto mr-4" />
+          <h1 className="text-3xl font-bold" style={{color: '#147783'}}>
+            <span style={{color: '#020509'}}>Amenities</span>
+          </h1>
+        </div>
         <button className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg" style={{backgroundColor: '#178740'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#22C55E'} onMouseLeave={(e) => e.target.style.backgroundColor = '#178740'}>
           <Calendar className="h-4 w-4" />
           <span>Book Facility</span>
@@ -49,9 +52,9 @@ const Amenities = () => {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className={`text-2xl font-bold ${stat.color}`}>{stat.value}</p>
+                  <p className="text-2xl font-bold" style={{color: stat.color}}>{stat.value}</p>
                 </div>
-                <Icon className={`h-8 w-8 ${stat.color}`} />
+                <Icon className="h-8 w-8" style={{color: stat.color}} />
               </div>
             </div>
           );
@@ -110,7 +113,7 @@ const Amenities = () => {
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-lg font-semibold text-gray-900">{amenity.name}</h3>
                   <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                    amenity.available ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    amenity.available ? 'bg-green-100 text-[#22C55E]' : 'bg-red-100 text-[#EF4444]'
                   }`}>
                     {amenity.available ? 'Available' : 'Unavailable'}
                   </span>
@@ -121,7 +124,7 @@ const Amenities = () => {
                     {amenity.time}
                   </span>
                   <span className="flex items-center space-x-1">
-                    <Star className="h-4 w-4 text-yellow-500" />
+                    <Star className="h-4 w-4" style={{color: '#1B9AAA'}} />
                     {amenity.rating}
                   </span>
                 </div>
@@ -135,6 +138,7 @@ const Amenities = () => {
                 </div>
               </div>
             </div>
+          </div>
         ))}
       </div>
     </div>

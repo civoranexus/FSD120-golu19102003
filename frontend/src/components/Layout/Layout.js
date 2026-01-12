@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Info, ChevronDown, Menu, X, MapPin, Phone, Mail, Globe, BarChart3 } from 'lucide-react';
+import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Info, ChevronDown, Menu, X, MapPin, Phone, Mail, Globe, BarChart3, Building, Shield, AlertTriangle, FileText } from 'lucide-react';
 import ScrollArrows from '../ScrollArrows/ScrollArrows';
 import Translate from '../Translate/Translate.js';
 import Chatbot from '../Chatbot/Chatbot.js';
@@ -29,8 +29,8 @@ const Layout = ({ children }) => {
 
   const navigationItems = [
     { path: '/', label: 'Home', icon: Home },
-    { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
     { path: '/about', label: 'About', icon: Info },
+    { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
     { path: '/contact', label: 'Contact', icon: MessageSquare },
     { path: '/login', label: 'Login', icon: LogIn },
   ];
@@ -41,6 +41,10 @@ const Layout = ({ children }) => {
     { path: '/finance', label: 'Finance', icon: DollarSign },
     { path: '/communication', label: 'Communication', icon: MessageSquare },
     { path: '/administration', label: 'Administration', icon: Settings },
+    { path: '/amenities', label: 'Amenities', icon: Building },
+    { path: '/security', label: 'Security', icon: Shield },
+    { path: '/complaints', label: 'Complaints', icon: FileText },
+    { path: '/emergency', label: 'Emergency', icon: AlertTriangle },
   ];
 
   const isActiveLink = (path) => location.pathname === path;
@@ -67,7 +71,7 @@ const Layout = ({ children }) => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-4 ml-auto">
-              {navigationItems.slice(0, 2).map((item) => {
+              {navigationItems.slice(0, 3).map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -180,7 +184,7 @@ const Layout = ({ children }) => {
               </div>
 
               {/* Remaining Navigation Items */}
-              {navigationItems.slice(2).map((item) => {
+              {navigationItems.slice(3).map((item) => {
                 const Icon = item.icon;
                 return (
                   <Link
@@ -371,7 +375,7 @@ const Layout = ({ children }) => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Phone className="h-4 w-4 text-[#147783]" />
-                  <span>+91 98765 43210</span>
+                  <span>+91 9680211602</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail className="h-4 w-4 text-[#147783]" />

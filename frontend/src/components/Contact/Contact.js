@@ -41,6 +41,9 @@ const Contact = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center mb-8">
+        <div className="flex justify-center mb-4">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-16 w-auto mr-3" />
+        </div>
         <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
         <p className="text-xl text-gray-600">Get in touch with Society360 team</p>
       </div>
@@ -157,7 +160,7 @@ const Contact = () => {
                 <Phone className="h-5 w-5 text-[#1B9AAA]" />
                 <div>
                   <p className="font-medium text-gray-900">Phone</p>
-                  <p className="text-gray-600">+91 98765 43210</p>
+                  <p className="text-gray-600">+91 9680211602</p>
                 </div>
               </div>
 

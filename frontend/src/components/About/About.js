@@ -6,6 +6,9 @@ const About = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center mb-8">
+        <div className="flex justify-center mb-4">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-16 w-auto mr-3" />
+        </div>
         <h1 className="text-4xl font-bold text-gray-900 mb-4">About Society360</h1>
         <p className="text-xl text-gray-600">Smart Residential Management System</p>
       </div>
@@ -37,7 +40,7 @@ const About = () => {
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center mb-4">
-            <Users className="h-12 w-12 text-green-600" />
+            <Users className="h-12 w-12" style={{color: '#178740'}} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Role-Based Access</h3>
           <p className="text-gray-600">
@@ -47,7 +50,7 @@ const About = () => {
 
         <div className="bg-white rounded-lg shadow p-6">
           <div className="flex items-center mb-4">
-            <Award className="h-12 w-12 text-purple-600" />
+            <Award className="h-12 w-12" style={{color: '#142C52'}} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">Professional Excellence</h3>
           <p className="text-gray-600">
@@ -64,7 +67,7 @@ const About = () => {
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Contact Information</h3>
             <div className="space-y-2 text-gray-600">
               <p><strong>Email:</strong> info@society360.com</p>
-              <p><strong>Phone:</strong> +91 98765 43210</p>
+              <p><strong>Phone:</strong> +91 9680211602</p>
               <p><strong>Address:</strong> Jaipur, Rajasthan</p>
               <p><strong>URN:</strong> UDYAM-MH-01-0075817</p>
             </div>

@@ -18,7 +18,7 @@ const Terms = () => {
         {/* Header */}
         <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
           <div className="flex items-center mb-6">
-            <FileText className="h-8 w-8 text-[#1B9AAA] mr-3" />
+            <img src="/short_logo.png" alt="Society360 Logo" className="h-12 w-auto mr-4" />
             <h1 className="text-3xl font-bold text-gray-900">Terms of Service</h1>
           </div>
           <p className="text-gray-600 mb-4">
@@ -116,7 +116,7 @@ const Terms = () => {
             <div className="space-y-3 text-gray-700">
               <p>If you have any questions about these Terms of Service, please contact us:</p>
               <p><strong>Email:</strong> info@society360.com</p>
-              <p><strong>Phone:</strong> +91 98765 43210</p>
+              <p><strong>Phone:</strong> +91 9680211602</p>
               <p><strong>Address:</strong> Jaipur, Rajasthan</p>
             </div>
           </div>

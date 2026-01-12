@@ -3,7 +3,8 @@ import {
   Users, Building, DollarSign, Clock, AlertCircle, TrendingUp, 
   Activity, BarChart3, PieChart, Calendar, Filter, Download, 
   RefreshCw, Settings, Bell, Search, ChevronUp, ChevronDown,
-  Home, Wrench, CreditCard, Shield, FileText, Zap, Target
+  Home, Wrench, CreditCard, Shield, FileText, Zap, Target,
+  MessageSquare, Megaphone
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -21,105 +22,132 @@ const Dashboard = () => {
   });
   const [filteredData, setFilteredData] = useState(null);
   const [chartTimePeriod, setChartTimePeriod] = useState('monthly');
-  const [realTimeData, setRealTimeData] = useState({
-    totalUsers: 1247,
-    activeUnits: 892,
-    totalRevenue: 2847500,
-    pendingTasks: 23,
-    occupancy: 78,
-    satisfaction: 94
-  });
 
-  // Chart data for different time periods - Equal heights (बराबर) with different values (अलग)
-  const chartDatasets = {
-    daily: [
-      { label: 'Mon', revenue: 45000, target: 50000 },    // Different values
-      { label: 'Tue', revenue: 62000, target: 55000 },    // Same height
-      { label: 'Wed', revenue: 78000, target: 60000 },    // Equal bars
-      { label: 'Thu', revenue: 95000, target: 65000 },    // बराबर appearance
-      { label: 'Fri', revenue: 112000, target: 70000 },    // अलग values
-      { label: 'Sat', revenue: 128000, target: 75000 },     // Consistent look
-      { label: 'Sun', revenue: 145000, target: 80000 }      // Professional chart
-    ],
-    weekly: [
-      { label: 'Week 1', revenue: 320000, target: 350000 },    // Different values
-      { label: 'Week 2', revenue: 410000, target: 400000 },    // Same height
-      { label: 'Week 3', revenue: 485000, target: 450000 },    // Equal bars
-      { label: 'Week 4', revenue: 560000, target: 500000 }     // बराबर appearance
-    ],
-    monthly: [
-      { month: 'Jan', revenue: 800000, target: 900000 },    // Different values
-      { month: 'Feb', revenue: 1100000, target: 1000000 },    // Same height
-      { month: 'Mar', revenue: 1450000, target: 1100000 },    // Equal bars
-      { month: 'Apr', revenue: 1850000, target: 1200000 },    // बराबर appearance
-      { month: 'May', revenue: 2250000, target: 1300000 },    // अलग values
-      { month: 'Jun', revenue: 2847500, target: 1400000 }     // Consistent look
-    ],
-    yearly: [
-      { year: '2020', revenue: 4500000, target: 5000000 },    // Different values
-      { year: '2021', revenue: 7800000, target: 6000000 },    // Same height
-      { year: '2022', revenue: 12300000, target: 7000000 },    // Equal bars
-      { year: '2023', revenue: 18900000, target: 8000000 },    // बराबर appearance
-      { year: '2024', revenue: 22400000, target: 9000000 }    // अलग values
-    ]
-  };
-
-  // Advanced color palettes
+  // Color palettes
   const colorPalettes = {
     primary: {
-      dark: '#070D15',
-      medium: '#142C52',
       light: '#02394A',
-      accent: '#1B9AAA',
-      background: '#E0F7FA'
+      medium: '#142C52',
+      dark: '#070D15'
     },
     skyBlue: {
-      lightest: '#E0F7FA',
-      light: '#76D6E1',
+      light: '#E0F7FA',
       medium: '#1B9AAA',
-      dark: '#147783',
-      darkest: '#0C4A50'
+      dark: '#147783'
     },
     darkBlack: {
       light: '#C9D0DA',
       medium: '#4A5563',
-      dark: '#070D15',
-      darker: '#040A10',
-      darkest: '#020509'
+      dark: '#070D15'
     },
     darkBlue: {
       light: '#D4DBE9',
       medium: '#5B74A3',
-      dark: '#142C52',
-      darker: '#0E2140',
-      darkest: '#071426'
+      dark: '#142C52'
     },
     tealNavy: {
       light: '#CCE7EC',
       medium: '#4C97A8',
-      dark: '#02394A',
-      darker: '#012136',
-      darkest: '#01181F'
+      dark: '#02394A'
     }
   };
-
+  const [displayData, setDisplayData] = useState({
+    totalUsers: 1247,
+    activeUnits: 156,
+    totalRevenue: 2847500,
+    pendingTasks: 23
+  });
+  const [realTimeData, setRealTimeData] = useState({
+    totalUsers: 1247,
+    activeUnits: 156,
+    totalRevenue: 2847500,
+    pendingTasks: 23,
+    occupancy: 87,
+    satisfaction: 94,
+    newVisitors: 8,
+    pendingMaintenance: 12,
+    openComplaints: 5,
+    recentPayments: 3
+  });
   const [chartData, setChartData] = useState({
-    revenue: chartDatasets.monthly,
+    revenue: [
+      { label: 'Mon', revenue: 6500, target: 7000 },        // Start of week
+      { label: 'Tue', revenue: 5800, target: 6500 },        // Decrease
+      { label: 'Wed', revenue: 7200, target: 6800 },        // Increase
+      { label: 'Thu', revenue: 6100, target: 7200 },        // Decrease
+      { label: 'Fri', revenue: 8200, target: 7500 },        // Increase (weekend)
+      { label: 'Sat', revenue: 7500, target: 8000 },        // Decrease
+      { label: 'Sun', revenue: 6800, target: 7500 }         // Decrease
+    ],
+    weekly: [
+      { label: 'Week 1', revenue: 45000, target: 50000 },     // Start point
+      { label: 'Week 2', revenue: 38000, target: 45000 },     // Decrease
+      { label: 'Week 3', revenue: 52000, target: 48000 },     // Increase
+      { label: 'Week 4', revenue: 41000, target: 52000 }     // Decrease
+    ],
+    monthly: [
+      { month: 'Jan', revenue: 120000, target: 90000 },      // Start point
+      { month: 'Feb', revenue: 95000, target: 100000 },     // Decrease
+      { month: 'Mar', revenue: 135000, target: 110000 },     // Increase
+      { month: 'Apr', revenue: 115000, target: 120000 },     // Decrease
+      { month: 'May', revenue: 165000, target: 130000 },     // Increase
+      { month: 'Jun', revenue: 145000, target: 140000 }      // Decrease
+    ],
+    yearly: [
+      { year: '2020', revenue: 450000, target: 500000 },      // Base year
+      { year: '2021', revenue: 520000, target: 600000 },      // Increase
+      { year: '2022', revenue: 480000, target: 700000 },      // Decrease
+      { year: '2023', revenue: 580000, target: 800000 },      // Increase
+      { year: '2024', revenue: 550000, target: 900000 }      // Decrease
+    ],
     occupancy: [
-      { block: 'A', occupied: 45, total: 60, color: '#1B9AAA' },
-      { block: 'B', occupied: 38, total: 60, color: '#178740' },
-      { block: 'C', occupied: 52, total: 60, color: '#5B74A3' },
-      { block: 'D', occupied: 29, total: 60, color: '#142C52' },
-      { block: 'E', occupied: 41, total: 60, color: '#4C97A8' }
+      { block: 'A', occupied: 42, total: 48, color: '#1B9AAA' },
+      { block: 'B', occupied: 38, total: 48, color: '#178740' },
+      { block: 'C', occupied: 45, total: 48, color: '#5B74A3' },
+      { block: 'D', occupied: 31, total: 48, color: '#142C52' }
     ],
     activities: [
-      { id: 1, type: 'visitor', message: 'New visitor registered - John Smith', time: '2 mins ago', icon: Users, color: '#1B9AAA' },
-      { id: 2, type: 'maintenance', message: 'AC repair completed in Block A', time: '15 mins ago', icon: Wrench, color: '#178740' },
-      { id: 3, type: 'payment', message: 'Payment received for Unit B-305', time: '1 hour ago', icon: CreditCard, color: '#178740' },
-      { id: 4, type: 'alert', message: 'Water leakage reported in Block C', time: '2 hours ago', icon: AlertCircle, color: '#EF4444' },
-      { id: 5, type: 'system', message: 'Monthly report generated', time: '3 hours ago', icon: FileText, color: '#5B74A3' }
+      { id: 1, type: 'visitor', message: 'New visitor registration: John Smith', time: '2 mins ago', icon: Users, color: '#1B9AAA' },
+      { id: 2, type: 'payment', message: 'Payment received for Unit A-101', time: '15 mins ago', icon: CreditCard, color: '#178740' },
+      { id: 3, type: 'maintenance', message: 'Maintenance request submitted for B-205', time: '1 hour ago', icon: Wrench, color: '#5B74A3' },
+      { id: 4, type: 'complaint', message: 'New complaint: Water leakage in C-302', time: '2 hours ago', icon: FileText, color: '#142C52' },
+      { id: 5, type: 'system', message: 'Monthly report generated', time: '3 hours ago', icon: FileText, color: '#02394A' }
     ]
   });
+
+  // Initialize chart datasets after chartData is set
+  const chartDatasets = {
+    daily: [
+      { label: 'Mon', revenue: 6500, target: 7000 },
+      { label: 'Tue', revenue: 5800, target: 6500 },
+      { label: 'Wed', revenue: 7200, target: 6800 },
+      { label: 'Thu', revenue: 6100, target: 7200 },
+      { label: 'Fri', revenue: 8200, target: 7500 },
+      { label: 'Sat', revenue: 7500, target: 8000 },
+      { label: 'Sun', revenue: 6800, target: 7500 }
+    ],
+    weekly: [
+      { label: 'Week 1', revenue: 45000, target: 50000 },
+      { label: 'Week 2', revenue: 38000, target: 45000 },
+      { label: 'Week 3', revenue: 52000, target: 48000 },
+      { label: 'Week 4', revenue: 41000, target: 52000 }
+    ],
+    monthly: [
+      { month: 'Jan', revenue: 120000, target: 90000 },
+      { month: 'Feb', revenue: 95000, target: 100000 },
+      { month: 'Mar', revenue: 135000, target: 110000 },
+      { month: 'Apr', revenue: 115000, target: 120000 },
+      { month: 'May', revenue: 165000, target: 130000 },
+      { month: 'Jun', revenue: 145000, target: 140000 }
+    ],
+    yearly: [
+      { year: '2020', revenue: 450000, target: 500000 },
+      { year: '2021', revenue: 520000, target: 600000 },
+      { year: '2022', revenue: 480000, target: 700000 },
+      { year: '2023', revenue: 580000, target: 800000 },
+      { year: '2024', revenue: 550000, target: 900000 }
+    ]
+  };
 
   const handleQuickAction = (actionId) => {
     switch(actionId) {
@@ -127,13 +155,19 @@ const Dashboard = () => {
         window.location.href = '/visitor-management';
         break;
       case 2: // Schedule Maintenance
-        window.location.href = '/administration';
+        window.location.href = '/maintenance';
         break;
       case 3: // Generate Report
         window.location.href = '/finance';
         break;
       case 4: // Send Notification
         window.location.href = '/announcements';
+        break;
+      case 5: // +New Discussion
+        window.location.href = '/communication#new-discussion';
+        break;
+      case 6: // +New Announcement
+        window.location.href = '/communication#new-announcement';
         break;
       default:
         console.log('Unknown action:', actionId);
@@ -144,7 +178,9 @@ const Dashboard = () => {
     { id: 1, title: 'Add Visitor', icon: Users, color: '#1B9AAA', bgColor: '#E0F7FA' },
     { id: 2, title: 'Schedule Maintenance', icon: Wrench, color: '#178740', bgColor: '#E0F7FA' },
     { id: 3, title: 'Generate Report', icon: FileText, color: '#5B74A3', bgColor: '#E0F7FA' },
-    { id: 4, title: 'Send Notification', icon: Bell, color: '#142C52', bgColor: '#E0F7FA' }
+    { id: 4, title: 'Send Notification', icon: Bell, color: '#142C52', bgColor: '#E0F7FA' },
+    { id: 5, title: '+New Discussion', icon: MessageSquare, color: '#02394A', bgColor: '#E0F7FA' },
+    { id: 6, title: '+New Announcement', icon: Megaphone, color: '#02394A', bgColor: '#E0F7FA' }
   ]);
 
   // Simulate real-time updates
@@ -252,7 +288,12 @@ const Dashboard = () => {
     setFilteredData(null);
   };
 
-  const displayData = filteredData || realTimeData;
+  const currentDisplayData = filteredData || realTimeData || {
+  totalUsers: 1247,
+  activeUnits: 156,
+  totalRevenue: 2847500,
+  pendingTasks: 23
+};
 
   const handleChartTimePeriodChange = (period) => {
     setChartTimePeriod(period);
@@ -303,13 +344,43 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="min-h-screen" style={{backgroundColor: colorPalettes.primary.background}} p-6>
+    <div className="min-h-screen p-6" style={{
+      backgroundColor: '#E0F7FA',
+      backgroundImage: `
+        linear-gradient(rgba(224, 247, 250, 0.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224, 247, 250, 0.8) 1px, transparent 1px)
+      `,
+      backgroundSize: '50px 50px',
+      backgroundPosition: '0 0, 0 0',
+      borderRadius: '2rem',
+      overflow: 'hidden',
+      width: '110%',
+      marginLeft: '-4rem',
+      paddingLeft: '2rem',
+      marginRight: '-3rem',
+      paddingRight: '2rem'
+    }}>
+      {/* Main Dashboard Container */}
+      <div className="max-w-full mx-auto">
+        <div className="bg-white rounded-3xl shadow-2xl p-8" style={{
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(10px)',
+          width: '100%'
+        }}>
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
-          <div>
-            <h1 className="text-3xl font-bold" style={{color: colorPalettes.primary.dark}} mb-2>Society360 Dashboard</h1>
-            <p style={{color: colorPalettes.darkBlack.medium}}>Real-time overview of your society management system</p>
+          <div className="flex items-center">
+            <img 
+              src="/short_logo.png" 
+              alt="Society360 Logo" 
+              className="h-12 w-auto mr-3"
+            />
+            <div>
+              <h1 className="text-3xl font-bold" style={{color: colorPalettes.primary.dark}} mb-2>Society360 Dashboard</h1>
+              <p style={{color: colorPalettes.darkBlack.medium}}>Real-time overview of your society management system</p>
+            </div>
           </div>
           <div className="flex items-center space-x-4">
             {/* Search */}
@@ -320,8 +391,8 @@ const Dashboard = () => {
                 placeholder="Search dashboard..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white"
-                style={{borderColor: colorPalettes.skyBlue.darkest, focusRingColor: colorPalettes.skyBlue.medium}}
+                className="pl-10 pr-4 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white border-2"
+                style={{borderColor: colorPalettes.skyBlue.medium, focusRingColor: colorPalettes.skyBlue.light}}
               />
             </div>
             
@@ -329,8 +400,8 @@ const Dashboard = () => {
             <select
               value={selectedTimeRange}
               onChange={(e) => setSelectedTimeRange(e.target.value)}
-              className="px-4 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white"
-              style={{borderColor: colorPalettes.skyBlue.darkest, focusRingColor: colorPalettes.skyBlue.medium, color: colorPalettes.primary.light}}
+              className="px-4 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white border-2"
+              style={{borderColor: colorPalettes.skyBlue.medium, focusRingColor: colorPalettes.skyBlue.light, color: colorPalettes.primary.light}}
             >
               <option value="24h">Last 24 hours</option>
               <option value="7d">Last 7 days</option>
@@ -341,7 +412,7 @@ const Dashboard = () => {
             {/* Actions */}
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-white"
+              className="px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-white border-2 hover:bg-[#1B9AAA] hover:text-white"
               style={{backgroundColor: colorPalettes.skyBlue.medium}}
             >
               <Filter className="h-4 w-4" />
@@ -351,14 +422,14 @@ const Dashboard = () => {
             <button
               onClick={handleRefresh}
               disabled={isLoading}
-              className="px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-white disabled:opacity-50"
+              className="px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-white disabled:opacity-50 border-2 hover:bg-[#1B9AAA] hover:text-white"
               style={{backgroundColor: colorPalettes.tealNavy.medium}}
             >
               <RefreshCw className={`h-4 w-4 ${isLoading ? 'animate-spin' : ''}`} />
               <span>Refresh</span>
             </button>
 
-            <button className="px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-white" style={{backgroundColor: colorPalettes.darkBlue.medium}}>
+            <button className="px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-white border-2 hover:bg-[#1B9AAA] hover:text-white" style={{backgroundColor: colorPalettes.darkBlue.medium}}>
               <Download className="h-4 w-4" />
               <span>Export</span>
             </button>
@@ -367,15 +438,15 @@ const Dashboard = () => {
 
         {/* Filters Panel */}
         {showFilters && (
-          <div className="rounded-lg shadow-md p-4 mb-6 border" style={{backgroundColor: 'white', borderColor: colorPalettes.primary.background}}>
+          <div className="rounded-lg shadow-md p-4 mb-6 border" style={{backgroundColor: 'white', borderColor: colorPalettes.skyBlue.medium}}>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
               <div>
                 <label className="block text-sm font-medium mb-2" style={{color: colorPalettes.primary.light}}>Block</label>
                 <select 
                   value={filters.block}
                   onChange={(e) => setFilters(prev => ({...prev, block: e.target.value}))}
-                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white" 
-                  style={{borderColor: colorPalettes.skyBlue.darkest, focusRingColor: colorPalettes.skyBlue.medium}}
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white border-2" 
+                  style={{borderColor: colorPalettes.skyBlue.medium, focusRingColor: colorPalettes.skyBlue.light}}
                 >
                   <option value="all">All Blocks</option>
                   <option value="A">Block A</option>
@@ -390,8 +461,8 @@ const Dashboard = () => {
                 <select 
                   value={filters.status}
                   onChange={(e) => setFilters(prev => ({...prev, status: e.target.value}))}
-                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white" 
-                  style={{borderColor: colorPalettes.skyBlue.darkest, focusRingColor: colorPalettes.skyBlue.medium}}
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white border-2" 
+                  style={{borderColor: colorPalettes.skyBlue.medium, focusRingColor: colorPalettes.skyBlue.light}}
                 >
                   <option value="all">All Status</option>
                   <option value="active">Active</option>
@@ -404,8 +475,8 @@ const Dashboard = () => {
                 <select 
                   value={filters.priority}
                   onChange={(e) => setFilters(prev => ({...prev, priority: e.target.value}))}
-                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white" 
-                  style={{borderColor: colorPalettes.skyBlue.darkest, focusRingColor: colorPalettes.skyBlue.medium}}
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white border-2" 
+                  style={{borderColor: colorPalettes.skyBlue.medium, focusRingColor: colorPalettes.skyBlue.light}}
                 >
                   <option value="all">All Priorities</option>
                   <option value="high">High</option>
@@ -418,8 +489,8 @@ const Dashboard = () => {
                 <select 
                   value={filters.dateRange}
                   onChange={(e) => setFilters(prev => ({...prev, dateRange: e.target.value}))}
-                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white" 
-                  style={{borderColor: colorPalettes.skyBlue.darkest, focusRingColor: colorPalettes.skyBlue.medium}}
+                  className="w-full px-3 py-2 rounded-lg focus:outline-none focus:ring-2 bg-white border-2" 
+                  style={{borderColor: colorPalettes.skyBlue.medium, focusRingColor: colorPalettes.skyBlue.light}}
                 >
                   <option value="all">All Time</option>
                   <option value="7d">Last 7 Days</option>
@@ -455,7 +526,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium" style={{color: colorPalettes.tealNavy.dark}}>Total Users</p>
-              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{displayData.totalUsers.toLocaleString()}</p>
+              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{currentDisplayData.totalUsers.toLocaleString()}</p>
               <p className="text-sm flex items-center mt-2" style={{color: '#178740'}}>
                 <TrendingUp className="h-3 w-3 mr-1" />
                 +12% from last month
@@ -471,7 +542,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium" style={{color: colorPalettes.tealNavy.dark}}>Active Units</p>
-              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{displayData.activeUnits}</p>
+              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{currentDisplayData.activeUnits}</p>
               <p className="text-sm flex items-center mt-2" style={{color: '#EF4444'}}>
                 <ChevronDown className="h-3 w-3 mr-1" />
                 -5% from last month
@@ -487,7 +558,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium" style={{color: colorPalettes.tealNavy.dark}}>Total Revenue</p>
-              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{formatCurrency(displayData.totalRevenue)}</p>
+              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{formatCurrency(currentDisplayData.totalRevenue)}</p>
               <p className="text-sm flex items-center mt-2" style={{color: '#178740'}}>
                 <TrendingUp className="h-3 w-3 mr-1" />
                 +18% from last month
@@ -503,7 +574,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium" style={{color: colorPalettes.tealNavy.dark}}>Pending Tasks</p>
-              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{displayData.pendingTasks}</p>
+              <p className="text-2xl font-bold" style={{color: colorPalettes.tealNavy.dark}}>{currentDisplayData.pendingTasks}</p>
               <p className="text-sm flex items-center mt-2" style={{color: '#EF4444'}}>
                 <ChevronDown className="h-3 w-3 mr-1" />
                 -8% from last month
@@ -518,17 +589,16 @@ const Dashboard = () => {
 
       {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Revenue Chart */}
-        <div className="rounded-lg shadow-md p-6" style={{backgroundColor: 'white'}}>
+        {/* Revenue Overview - Fresh Implementation */}
+        <div className="rounded-lg shadow-md p-6 bg-white">
           <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg font-semibold" style={{color: colorPalettes.primary.light}}>Revenue Overview</h3>
+            <h3 className="text-lg font-semibold" style={{color: '#02394A'}}>Revenue Overview</h3>
             <div className="flex items-center space-x-2">
-              <BarChart3 className="h-5 w-5" style={{color: colorPalettes.tealNavy.medium}} />
+              <BarChart3 className="h-5 w-5" style={{color: '#4C97A8'}} />
               <select 
                 value={chartTimePeriod}
                 onChange={(e) => handleChartTimePeriodChange(e.target.value)}
-                className="text-sm rounded px-2 py-1 focus:outline-none focus:ring-2 bg-white" 
-                style={{borderColor: colorPalettes.skyBlue.darkest, focusRingColor: colorPalettes.skyBlue.medium}}
+                className="text-sm rounded px-3 py-1 border border-[#E0F7FA] focus:outline-none focus:ring-2 focus:ring-[#1B9AAA]"
               >
                 <option value="daily">Daily</option>
                 <option value="weekly">Weekly</option>
@@ -537,38 +607,76 @@ const Dashboard = () => {
               </select>
             </div>
           </div>
-          <div className="h-64 flex items-end justify-between space-x-2">
+          
+          {/* Chart Container */}
+          <div className="h-64 flex items-end justify-between space-x-3 px-4">
             {chartData.revenue.map((data, index) => {
-              const colors = ['#1B9AAA', '#178740', '#5B74A3', '#142C52', '#4C97A8', '#76D6E1'];
-              const barColor = colors[index % colors.length];
-              const fixedHeight = 60; // Fixed height for all bars
-              const targetHeight = fixedHeight * 0.6; // Target bar slightly smaller
+              // Mix colors from different palettes
+              const mixedColors = [
+                { from: '#1B9AAA', to: '#147783', hover: '#0C4A50' },  // Sky Blue palette
+                { from: '#178740', to: '#0F4C2A', hover: '#0A3420' },  // Green (from existing)
+                { from: '#5B74A3', to: '#415A8A', hover: '#364A75' },  // Dark Blue palette
+                { from: '#142C52', to: '#0E2140', hover: '#071426' },  // Dark Blue palette
+                { from: '#4C97A8', to: '#02394A', hover: '#01181F' },  // Teal Navy palette
+                { from: '#76D6E1', to: '#4C97A8', hover: '#1B9AAA' }   // Sky Blue palette
+              ];
+              const colorScheme = mixedColors[index % mixedColors.length];
+              
+              // Calculate height based on revenue value - ensure continuous scaling
+              const maxRevenue = Math.max(...chartData.revenue.map(d => d.revenue));
+              const minRevenue = Math.min(...chartData.revenue.map(d => d.revenue));
+              const revenueRange = maxRevenue - minRevenue;
+              
+              // Normalize to 0-1 range, then scale to 15-180px
+              const normalizedValue = revenueRange > 0 ? (data.revenue - minRevenue) / revenueRange : 0;
+              const barHeight = normalizedValue * 165 + 15; // 15-180px range for continuous scaling
               
               return (
                 <div key={index} className="flex-1 flex flex-col items-center">
-                  <div className="w-full flex flex-col space-y-1">
+                  <div className="w-full">
                     <div 
-                      className="w-full rounded-t transition-all duration-500"
+                      className="w-full rounded-t-lg transition-all duration-300"
                       style={{ 
-                        height: `${fixedHeight}%`, 
-                        backgroundColor: barColor,
-                        minHeight: '20px'
+                        background: `linear-gradient(to top, ${colorScheme.from}, ${colorScheme.to})`,
+                        height: `${barHeight}px`
                       }}
-                    ></div>
-                    <div 
-                      className="w-full rounded-b opacity-50 transition-all duration-500"
-                      style={{ 
-                        height: `${targetHeight}%`, 
-                        backgroundColor: colorPalettes.tealNavy.light,
-                        minHeight: '12px'
+                      onMouseEnter={(e) => {
+                        e.target.style.background = `linear-gradient(to top, ${colorScheme.hover}, ${colorScheme.to})`;
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.background = `linear-gradient(to top, ${colorScheme.from}, ${colorScheme.to})`;
                       }}
                     ></div>
                   </div>
-                  <p className="text-xs mt-2" style={{color: colorPalettes.darkBlack.medium}}>{getChartLabel(data)}</p>
-                  <p className="text-xs font-semibold" style={{color: colorPalettes.primary.light}}>{formatCurrency(data.revenue)}</p>
+                  <div className="mt-3 text-center">
+                    <p className="text-xs font-medium" style={{color: '#4A5563'}}>{getChartLabel(data)}</p>
+                    <p className="text-sm font-bold" style={{color: '#02394A'}}>{formatCurrency(data.revenue)}</p>
+                  </div>
                 </div>
               );
             })}
+          </div>
+          
+          {/* Summary Stats */}
+          <div className="mt-6 pt-4 border-t border-[#E0F7FA]">
+            <div className="grid grid-cols-3 gap-4">
+              <div className="text-center">
+                <p className="text-xs" style={{color: '#4A5563'}}>Total Revenue</p>
+                <p className="text-lg font-bold" style={{color: '#02394A'}}>
+                  {formatCurrency(chartData.revenue.reduce((sum, item) => sum + item.revenue, 0))}
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs" style={{color: '#4A5563'}}>Average</p>
+                <p className="text-lg font-bold" style={{color: '#02394A'}}>
+                  {formatCurrency(Math.round(chartData.revenue.reduce((sum, item) => sum + item.revenue, 0) / chartData.revenue.length))}
+                </p>
+              </div>
+              <div className="text-center">
+                <p className="text-xs" style={{color: '#4A5563'}}>Growth</p>
+                <p className="text-lg font-bold" style={{color: '#178740'}}>+12.5%</p>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -618,13 +726,13 @@ const Dashboard = () => {
               <button
                 key={action.id}
                 onClick={() => handleQuickAction(action.id)}
-                className="p-4 rounded-lg border border-[#E0F7FA] hover:shadow-md transition-all hover:scale-105 flex flex-col items-center space-y-2"
+                className="p-4 rounded-lg border border-[#E0F7FA] hover:shadow-md transition-all hover:scale-105 flex flex-col items-center space-y-2 min-h-[120px]"
                 style={{ backgroundColor: action.bgColor }}
               >
                 <div className="h-8 w-8 rounded-full flex items-center justify-center mx-auto mb-2">
                   <action.icon className="h-5 w-5" />
                 </div>
-                <span className="text-sm font-medium text-[#02394A]">{action.title}</span>
+                <span className="text-sm font-medium text-[#02394A] text-center">{action.title}</span>
               </button>
             ))}
           </div>
@@ -922,6 +1030,8 @@ const Dashboard = () => {
           </div>
           <p className="text-2xl font-bold text-[#02394A]">94%</p>
           <p className="text-xs text-[#4A5563]">Growth</p>
+        </div>
+      </div>
         </div>
       </div>
     </div>

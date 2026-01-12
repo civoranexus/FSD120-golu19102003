@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Shield, AlertTriangle, Users, MapPin, Clock, CheckCircle, XCircle, Send, Ambulance, Fire, Droplets } from 'lucide-react';
+import { Phone, Shield, AlertTriangle, Users, MapPin, Clock, CheckCircle, XCircle, Send, Ambulance, Fire, Droplets, Search } from 'lucide-react';
 
 const Emergency = () => {
   const [emergencies, setEmergencies] = useState([
@@ -22,10 +22,10 @@ const Emergency = () => {
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'critical': return 'text-red-600 bg-red-100';
+      case 'critical': return 'text-[#EB1414] bg-red-100';
       case 'high': return 'text-orange-600 bg-orange-100';
-      case 'medium': return 'text-yellow-600 bg-yellow-100';
-      case 'low': return 'text-blue-600 bg-blue-100';
+      case 'medium': return 'text-[#142C52] bg-blue-100';
+      case 'low': return 'text-[#142C52] bg-blue-100';
       default: return 'text-gray-600 bg-gray-100';
     }
   };
@@ -47,11 +47,14 @@ const Emergency = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-red-600">
-          <span style={{color: '#147783'}}>Emergency</span>
-          <span style={{color: '#EF4444'}}> Services</span>
-        </h1>
-        <button className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700">
+        <div className="flex items-center">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-12 w-auto mr-4" />
+          <h1 className="text-3xl font-bold text-red-600">
+            <span style={{color: '#147783'}}>Emergency</span>
+            <span style={{color: '#020509'}}> Services</span>
+          </h1>
+        </div>
+        <button className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg bg-[#EF4444] hover:bg-[#EB1414]">
           <Phone className="h-4 w-4" />
           <span>Call Emergency: 911</span>
         </button>
@@ -61,22 +64,22 @@ const Emergency = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <AlertTriangle className="h-12 w-12 text-red-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-red-600">Critical</p>
+            <AlertTriangle className="h-12 w-12 mx-auto mb-2" style={{color: '#EB1414'}} />
+            <p className="text-2xl font-bold" style={{color: '#EB1414'}}>Critical</p>
             <p className="text-sm text-gray-600">Active Emergencies</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <Shield className="h-12 w-12 text-orange-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-orange-600">High</p>
+            <Shield className="h-12 w-12 mx-auto mb-2" style={{color: '#EF4444'}} />
+            <p className="text-2xl font-bold" style={{color: '#EF4444'}}>High</p>
             <p className="text-sm text-gray-600">Priority Issues</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-green-600">Resolved</p>
+            <CheckCircle className="h-12 w-12 mx-auto mb-2" style={{color: '#178740'}} />
+            <p className="text-2xl font-bold" style={{color: '#178740'}}>Resolved</p>
             <p className="text-sm text-gray-600">This Month</p>
           </div>
         </div>
@@ -120,15 +123,15 @@ const Emergency = () => {
           <div className="flex items-center space-x-3 p-4 bg-red-50 rounded-lg">
             <Phone className="h-6 w-6 text-red-600" />
             <div>
-              <p className="font-semibold text-red-800">Emergency: 911</p>
-              <p className="text-sm text-red-600">Police, Fire, Medical</p>
+              <p className="font-semibold" style={{color: '#EB1414'}}>Emergency: 911</p>
+              <p className="text-sm" style={{color: '#EB1414'}}>Police, Fire, Medical</p>
             </div>
           </div>
           <div className="flex items-center space-x-3 p-4 bg-blue-50 rounded-lg">
-            <Shield className="h-6 w-6 text-blue-600" />
+            <Shield className="h-6 w-6" style={{color: '#1B9AAA'}} />
             <div>
-              <p className="font-semibold text-blue-800">Security: 022-1234567</p>
-              <p className="text-sm text-blue-600">24/7 Security Desk</p>
+              <p className="font-semibold" style={{color: '#1B9AAA'}}>Security: 022-1234567</p>
+              <p className="text-sm" style={{color: '#1B9AAA'}}>24/7 Security Desk</p>
             </div>
           </div>
         </div>
@@ -140,10 +143,10 @@ const Emergency = () => {
           <div key={emergency.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
             <div className="relative">
               <div className={`h-32 flex items-center justify-center text-white text-4xl ${
-                emergency.priority === 'critical' ? 'bg-red-600' :
-                emergency.priority === 'high' ? 'bg-orange-600' :
-                emergency.priority === 'medium' ? 'bg-yellow-600' :
-                'bg-blue-600'
+                emergency.priority === 'critical' ? 'bg-[#EB1414]' :
+                emergency.priority === 'high' ? 'bg-[#1B9AAA]' :
+                emergency.priority === 'medium' ? 'bg-[#178740]' :
+                'bg-[#0E2140]'
               }`}>
                 {emergency.icon}
               </div>
@@ -163,7 +166,7 @@ const Emergency = () => {
                   <div className="flex space-x-2">
                     <button 
                       onClick={() => handleEmergencyCall(emergency.contact)}
-                      className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm font-medium"
+                      className="bg-[#EF4444] hover:bg-[#EB1414] text-white px-3 py-1 rounded text-sm font-medium"
                     >
                       Call Now
                     </button>
@@ -174,6 +177,7 @@ const Emergency = () => {
                 </div>
               </div>
             </div>
+          </div>
         ))}
       </div>
     </div>

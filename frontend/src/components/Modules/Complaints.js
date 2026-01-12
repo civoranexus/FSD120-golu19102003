@@ -25,17 +25,17 @@ const Complaints = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'open': return 'text-red-600 bg-red-100';
-      case 'in-progress': return 'text-blue-600 bg-blue-100';
-      case 'resolved': return 'text-green-600 bg-green-100';
+      case 'open': return 'text-[#EB1414] bg-red-100';
+      case 'in-progress': return 'text-[#178740] bg-blue-100';
+      case 'resolved': return 'text-[#178740] bg-green-100';
       default: return 'text-gray-600 bg-gray-100';
     }
   };
 
   const getPriorityColor = (priority) => {
     switch (priority) {
-      case 'high': return 'text-red-600 bg-red-100';
-      case 'medium': return 'text-orange-600 bg-orange-100';
+      case 'high': return 'text-[#EB1414] bg-red-100';
+      case 'medium': return 'text-[#142C52] bg-[#D4DBE9]';
       case 'low': return 'text-yellow-600 bg-yellow-100';
       default: return 'text-gray-600 bg-gray-100';
     }
@@ -70,9 +70,12 @@ const Complaints = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold" style={{color: '#147783'}}>
-          <span style={{color: '#1B9AAA'}}>Complaints</span>
-        </h1>
+        <div className="flex items-center">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-12 w-auto mr-4" />
+          <h1 className="text-3xl font-bold" style={{color: '#147783'}}>
+            <span style={{color: '#020509'}}>Complaints</span>
+          </h1>
+        </div>
         <button className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg" style={{backgroundColor: '#178740'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#22C55E'} onMouseLeave={(e) => e.target.style.backgroundColor = '#178740'}>
           <FileText className="h-4 w-4" />
           <span>File Complaint</span>
@@ -83,29 +86,29 @@ const Complaints = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <TrendingUp className="h-12 w-12 text-red-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-red-600">Open</p>
+            <TrendingUp className="h-12 w-12 mx-auto mb-2" style={{color: '#EB1414'}} />
+            <p className="text-2xl font-bold" style={{color: '#EB1414'}}>Open</p>
             <p className="text-sm text-gray-600">Active Complaints</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <TrendingDown className="h-12 w-12 text-green-600 mx-auto mb-2" />
+            <TrendingDown className="h-12 w-12 mx-auto mb-2" style={{color: '#178740'}} />
             <p className="text-2xl font-bold text-green-600">Resolved</p>
             <p className="text-sm text-gray-600">This Month</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <AlertCircle className="h-12 w-12 text-orange-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-orange-600">High</p>
+            <AlertCircle className="h-12 w-12 mx-auto mb-2" style={{color: '#142C52'}} />
+            <p className="text-2xl font-bold" style={{color: '#142C52'}}>High</p>
             <p className="text-sm text-gray-600">Priority</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <CheckCircle className="h-12 w-12 text-blue-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-blue-600">Total</p>
+            <CheckCircle className="h-12 w-12 mx-auto mb-2" style={{color: '#5B74A3'}} />
+            <p className="text-2xl font-bold" style={{color: '#5B74A3'}}>Total</p>
             <p className="text-sm text-gray-600">Complaints</p>
           </div>
         </div>
@@ -153,17 +156,7 @@ const Complaints = () => {
         </div>
       </div>
 
-      {/* File Complaint Button */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <button 
-          onClick={handleNewComplaint}
-          className="w-full bg-[#147783] hover:bg-[#1B9AAA] text-white py-3 rounded-lg font-semibold transition-colors"
-        >
-          <Send className="h-4 w-4" />
-          <span>Submit New Complaint</span>
-        </button>
-      </div>
-
+      
       {/* Complaints List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredComplaints.map((complaint) => (
@@ -206,7 +199,7 @@ const Complaints = () => {
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(complaint.status)}`}>
                   {complaint.status.toUpperCase()}
                 </span>
-                <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm">
+                <button className="bg-[#EF4444] hover:bg-[#EB1414] text-white px-3 py-1 rounded text-sm">
                   View Details
                 </button>
               </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Wrench, Clock, CheckCircle, AlertCircle, Plus, Search, Home, User, Calendar, MapPin, Save, X, Tool, Zap, Droplets, Wind, Thermometer, Lightbulb, Wrench as ToolIcon } from 'lucide-react';
+import { Wrench, Clock, CheckCircle, AlertCircle, Plus, Search, Home, User, Calendar, MapPin, Save, X, Zap, Droplets, Wind, Thermometer, Lightbulb } from 'lucide-react';
 
 const Maintenance = () => {
   const [requests, setRequests] = useState([]);
@@ -169,21 +169,24 @@ const Maintenance = () => {
 
   const getCategoryIcon = (category) => {
     switch (category) {
-      case 'HVAC': return Thermometer;
+      case 'HVAC': return Wind;
       case 'Plumbing': return Droplets;
       case 'Electrical': return Zap;
       case 'General': return Wrench;
-      default: return Tool;
+      default: return Wrench;
     }
   };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">
-          <span style={{color: '#147783'}}>Maintenance</span>
-          <span style={{color: '#020509'}}> Requests</span>
-        </h1>
+        <div className="flex items-center">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-12 w-auto mr-4" />
+          <h1 className="text-3xl font-bold">
+            <span style={{color: '#1B9AAA'}}>Maintenance</span>
+            <span style={{color: '#020509'}}> Requests</span>
+          </h1>
+        </div>
         <button 
           onClick={() => setShowAddForm(true)}
           className="flex items-center justify-center px-8 py-3 bg-[#16808D] text-white rounded-lg font-semibold hover:bg-[#1B9AAA] hover:text-white transition-colors"
@@ -196,9 +199,12 @@ const Maintenance = () => {
       {/* Add Request Modal */}
       {showAddForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border-2" style={{boxShadow: '0 20px 25px -5px rgba(20, 119, 131, 0.1), 0 10px 10px -5px rgba(20, 119, 131, 0.04)', borderColor: '#1B9AAA'}}>
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">Submit Maintenance Request</h2>
+              <div className="flex items-center">
+                <img src="/short_logo.png" alt="Society360 Logo" className="h-8 w-auto mr-3" />
+                <h2 className="text-xl font-semibold text-gray-900">Submit Maintenance Request</h2>
+              </div>
               <button 
                 onClick={() => setShowAddForm(false)}
                 className="text-gray-400 hover:text-gray-600"
@@ -211,7 +217,7 @@ const Maintenance = () => {
               {/* Request Details */}
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <Wrench className="h-5 w-5 mr-2" style={{color: '#147783'}} />
+                  <Wrench className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
                   Request Details
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -224,9 +230,10 @@ const Maintenance = () => {
                       name="title"
                       value={formData.title}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.title ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.title ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="Brief description of the issue"
                     />
                     {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
@@ -241,9 +248,10 @@ const Maintenance = () => {
                       value={formData.description}
                       onChange={handleInputChange}
                       rows={4}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.description ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.description ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="Provide detailed information about the maintenance issue..."
                     />
                     {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
@@ -257,9 +265,10 @@ const Maintenance = () => {
                       name="category"
                       value={formData.category}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.category ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.category ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                     >
                       <option value="">Select category</option>
                       <option value="HVAC">Air Conditioning & Heating</option>
@@ -282,9 +291,10 @@ const Maintenance = () => {
                       name="unit"
                       value={formData.unit}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.unit ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.unit ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="A-101"
                     />
                     {errors.unit && <p className="text-red-500 text-sm mt-1">{errors.unit}</p>}
@@ -298,7 +308,8 @@ const Maintenance = () => {
                       name="priority"
                       value={formData.priority}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                     >
                       <option value="High">High - Emergency</option>
                       <option value="Medium">Medium - Urgent</option>
@@ -311,7 +322,7 @@ const Maintenance = () => {
               {/* Scheduling */}
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <Calendar className="h-5 w-5 mr-2" style={{color: '#147783'}} />
+                  <Calendar className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
                   Preferred Schedule
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -324,9 +335,10 @@ const Maintenance = () => {
                       name="preferredDate"
                       value={formData.preferredDate}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.preferredDate ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.preferredDate ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                     />
                     {errors.preferredDate && <p className="text-red-500 text-sm mt-1">{errors.preferredDate}</p>}
                   </div>
@@ -339,7 +351,8 @@ const Maintenance = () => {
                       name="preferredTime"
                       value={formData.preferredTime}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                     >
                       <option value="">Select time</option>
                       <option value="08:00">8:00 AM</option>
@@ -360,7 +373,7 @@ const Maintenance = () => {
               {/* Contact Information */}
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <User className="h-5 w-5 mr-2" style={{color: '#147783'}} />
+                  <User className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
                   Contact Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -373,9 +386,10 @@ const Maintenance = () => {
                       name="contactName"
                       value={formData.contactName}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.contactName ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.contactName ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="Your full name"
                     />
                     {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
@@ -390,9 +404,10 @@ const Maintenance = () => {
                       name="contactPhone"
                       value={formData.contactPhone}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.contactPhone ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.contactPhone ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="9876543210"
                     />
                     {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
@@ -407,9 +422,10 @@ const Maintenance = () => {
                       name="contactEmail"
                       value={formData.contactEmail}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.contactEmail ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.contactEmail ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="your.email@example.com"
                     />
                     {errors.contactEmail && <p className="text-red-500 text-sm mt-1">{errors.contactEmail}</p>}
@@ -427,7 +443,8 @@ const Maintenance = () => {
                   value={formData.accessInstructions}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
+                  style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                   placeholder="Any special instructions for maintenance staff (e.g., call before arrival, pet information, etc.)"
                 />
               </div>
@@ -444,7 +461,7 @@ const Maintenance = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-[#147783] text-white rounded-lg hover:bg-[#1B9AAA] disabled:opacity-50 flex items-center"
+                  className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#1B9AAA] disabled:opacity-50 flex items-center"
                 >
                   {loading ? (
                     <>
@@ -468,29 +485,29 @@ const Maintenance = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <Wrench className="h-12 w-12 text-blue-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-blue-600">{requests.length}</p>
+            <Wrench className="h-12 w-12 mx-auto mb-2" style={{color: '#5B74A3'}} />
+            <p className="text-2xl font-bold" style={{color: '#5B74A3'}}>{requests.length}</p>
             <p className="text-sm text-gray-600">Total Requests</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <Clock className="h-12 w-12 text-yellow-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-yellow-600">{requests.filter(r => r.status === 'pending').length}</p>
+            <Clock className="h-12 w-12 mx-auto mb-2" style={{color: '#142C52'}} />
+            <p className="text-2xl font-bold" style={{color: '#142C52'}}>{requests.filter(r => r.status === 'pending').length}</p>
             <p className="text-sm text-gray-600">Pending</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <AlertCircle className="h-12 w-12 text-orange-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-orange-600">{requests.filter(r => r.status === 'in-progress').length}</p>
+            <AlertCircle className="h-12 w-12 mx-auto mb-2" style={{color: '#EF4444'}} />
+            <p className="text-2xl font-bold" style={{color: '#EF4444'}}>{requests.filter(r => r.status === 'in-progress').length}</p>
             <p className="text-sm text-gray-600">In Progress</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-green-600">{requests.filter(r => r.status === 'completed').length}</p>
+            <CheckCircle className="h-12 w-12 mx-auto mb-2" style={{color: '#178740'}} />
+            <p className="text-2xl font-bold" style={{color: '#178740'}}>{requests.filter(r => r.status === 'completed').length}</p>
             <p className="text-sm text-gray-600">Completed</p>
           </div>
         </div>
@@ -507,13 +524,13 @@ const Maintenance = () => {
                 placeholder="Search requests by title, description, or unit..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -523,7 +540,7 @@ const Maintenance = () => {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
             >
               <option value="all">All Priority</option>
               <option value="High">High</option>
@@ -559,7 +576,7 @@ const Maintenance = () => {
                   <tr key={request.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#CCE7EC', color: '#147783'}}>
+                        <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#CCE7EC', color: '#1B9AAA'}}>
                           {React.createElement(getCategoryIcon(request.category), { className: "h-4 w-4" })}
                         </div>
                         <div className="ml-3">

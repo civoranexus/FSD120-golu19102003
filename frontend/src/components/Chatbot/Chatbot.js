@@ -16,6 +16,8 @@ const Chatbot = () => {
   ]);
 
   const [userInput, setUserInput] = useState("");
+  const [uploadedImage, setUploadedImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [suggestions, setSuggestions] = useState([
     "🔧 Maintenance issue",
     "👥 Add visitor",
@@ -44,7 +46,7 @@ const Chatbot = () => {
   
   // Chatbot window size controls
   const [chatbotWidth, setChatbotWidth] = useState(400);
-  const [chatbotHeight, setChatbotHeight] = useState(500);
+  const [chatbotHeight, setChatbotHeight] = useState(550);
   
   // Service menu state
   const [showServiceMenu, setShowServiceMenu] = useState(false);
@@ -416,21 +418,64 @@ const Chatbot = () => {
     return responses.default;
   };
 
-  const addMessage = (text, sender) => {
-    setMessages((prev) => [...prev, { text, sender }]);
+  const addMessage = (content, sender) => {
+    const message = typeof content === 'string' 
+      ? { text: content, sender, timestamp: new Date() }
+      : { ...content, sender, timestamp: new Date() };
+    setMessages((prev) => [...prev, message]);
+  };
+
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setUploadedImage(file);
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const clearImage = () => {
+    setUploadedImage(null);
+    setImagePreview(null);
   };
 
   const sendMessage = (message) => {
     const userMessage = message || userInput.trim();
-    if (!userMessage) return;
+    const hasImage = uploadedImage !== null;
+    
+    if (!userMessage && !hasImage) return;
 
-    addMessage(userMessage, "user");
+    // Add user message with image if present
+    if (hasImage) {
+      addMessage({ text: userMessage, sender: "user", image: imagePreview });
+    } else {
+      addMessage(userMessage, "user");
+    }
+    
     setUserInput("");
     setIsTyping(true);
 
     setTimeout(() => {
       setIsTyping(false);
-      addMessage(getBotResponse(userMessage), "bot");
+      
+      // Handle image response
+      if (hasImage) {
+        const imageResponses = [
+          "I can see the image you've shared! 📸 This appears to be related to society management. Could you please describe what you'd like me to help you with regarding this image?",
+          "Thank you for sharing this image! 🏘️ I can help you with maintenance issues, visitor management, or other society services. What specific assistance do you need?",
+          "I've received your image upload! 📋 If this is related to a maintenance request, complaint, or society issue, please provide more details so I can assist you better.",
+          "Image received successfully! ✨ I can help process this for society management purposes. What would you like me to do with this image?"
+        ];
+        const randomImageResponse = imageResponses[Math.floor(Math.random() * imageResponses.length)];
+        addMessage(randomImageResponse, "bot");
+        clearImage();
+      } else {
+        addMessage(getBotResponse(userMessage), "bot");
+      }
+      
       // Automatically show a random question after user sends a message
       const questions = [
         "How can I help you with maintenance today?",
@@ -458,141 +503,10 @@ const Chatbot = () => {
         setShowServiceMenu(false);
       }
     }}>
-      {/* External 3-Dot Service Button */}
-      <motion.div
-        className="fixed top-[78%] right-6 cursor-pointer z-[999]"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.95 }}
-        animate={{
-          y: [0, -3, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-        onClick={(e) => {
-          e.stopPropagation();
-          setShowServiceMenu(!showServiceMenu);
-        }}
-      >
-        <div className={`relative ${darkMode ? 'bg-gray-800' : 'bg-white'} text-[#147783] hover:bg-[#1B9AAA] hover:text-white p-3 rounded-full shadow-2xl transition-all duration-300 font-semibold border-2 border-[#1B9AAA]`}>
-          <MoreHorizontal className="h-5 w-5" />
-          {/* Notification Badge */}
-          <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-white animate-pulse" style={{backgroundColor: '#147783'}}></div>
-        </div>
-      </motion.div>
-
-      {/* External Service Menu */}
-      <AnimatePresence>
-        {showServiceMenu && !chatExpanded && (
-          <motion.div
-            id="external-service-menu"
-            className={`fixed top-[56%] right-20 w-[200px] ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-2xl border border-gray-200 z-[999] p-3`}
-            initial={{ opacity: 0, scale: 0.8, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: -10 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="space-y-1">
-              <button
-                onClick={() => navigateToService("Dashboard", "/dashboard")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>📊</span>
-                <span>Dashboard</span>
-              </button>
-              <button
-                onClick={() => navigateToService("Maintenance", "/maintenance")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>🔧</span>
-                <span>Maintenance</span>
-              </button>
-              <button
-                onClick={() => navigateToService("Visitors", "/visitor-management")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>👥</span>
-                <span>Visitors</span>
-              </button>
-              <button
-                onClick={() => navigateToService("Finance", "/finance")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>💳</span>
-                <span>Finance</span>
-              </button>
-              <button
-                onClick={() => navigateToService("Amenities", "/amenities")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>🏊</span>
-                <span>Amenities</span>
-              </button>
-              <button
-                onClick={() => navigateToService("Security", "/security")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>🔐</span>
-                <span>Security</span>
-              </button>
-              <button
-                onClick={() => navigateToService("Complaints", "/complaints")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>📋</span>
-                <span>Complaints</span>
-              </button>
-              <button
-                onClick={() => navigateToService("Emergency", "/emergency")}
-                className={`w-full text-left text-xs p-2 rounded transition-all flex items-center space-x-2 ${
-                  darkMode 
-                    ? 'bg-gray-800 hover:bg-gray-700 text-white' 
-                    : 'bg-gray-50 hover:bg-gray-100 text-gray-800'
-                }`}
-              >
-                <span>🆘</span>
-                <span>Emergency</span>
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Floating Button with Advanced Features */}
       {!chatExpanded && (
         <motion.div
-          className="fixed top-[68%] right-[14px] cursor-pointer z-[998]"
+          className="fixed top-[75%] right-[14px] cursor-pointer z-[998]"
           onClick={toggleChat}
           whileHover={{ scale: 1.1, rotate: 5 }}
           whileTap={{ scale: 0.95 }}
@@ -629,8 +543,8 @@ const Chatbot = () => {
         {chatExpanded && (
           <motion.div
             id="chatbot-container"
-            className={`fixed top-16 right-0 ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-2xl shadow-2xl flex flex-col border border-gray-200 z-10`}
-            style={{width: `${chatbotWidth}px`, height: `${chatbotHeight}px`}}
+            className={`fixed top-16 right-0 ${darkMode ? 'bg-gray-900' : 'bg-white'} rounded-full shadow-2xl flex flex-col border-2 z-10`}
+            style={{width: `${chatbotWidth}px`, height: `${chatbotHeight}px`, borderColor: '#0C4A50'}}
             initial={{ opacity: 0, scale: 0.8, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
@@ -678,10 +592,13 @@ const Chatbot = () => {
                 </button>
                 <button
                   onClick={() => setShowServiceMenu(!showServiceMenu)}
-                  className="hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all"
+                  className={`relative hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all border-2 animate-pulse`}
                   title="Services"
+                  style={{borderColor: '#0C4A50'}}
                 >
                   <MoreHorizontal className="h-4 w-4" />
+                  {/* Notification Badge */}
+                  <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-white animate-pulse text-[#0C4A50]" style={{backgroundColor: 'currentColor'}}></div>
                 </button>
                 <button 
                   onClick={closeChat}
@@ -854,6 +771,26 @@ const Chatbot = () => {
                     >
                       🆘 Emergency
                     </button>
+                    <button
+                      onClick={() => navigateToService("Communication", "/communication")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      📢 Communication
+                    </button>
+                    <button
+                      onClick={() => navigateToService("Administration", "/administration")}
+                      className={`text-xs p-2 rounded transition-all ${
+                        darkMode 
+                          ? 'bg-gray-700 hover:bg-gray-600 text-white' 
+                          : 'bg-white hover:bg-gray-100 text-gray-800 border border-gray-300'
+                      }`}
+                    >
+                      ⚙️ Administration
+                    </button>
                   </div>
                 </motion.div>
               )}
@@ -888,6 +825,17 @@ const Chatbot = () => {
                       )}
                     </div>
                     <div className="flex flex-col max-w-[75%]">
+                      {/* Show image if present */}
+                      {msg.image && (
+                        <div className="mb-2">
+                          <img 
+                            src={msg.image} 
+                            alt="Uploaded image" 
+                            className="max-w-full h-auto rounded-lg shadow-md"
+                            style={{maxHeight: '200px'}}
+                          />
+                        </div>
+                      )}
                       <div
                         className={`p-3 rounded-2xl ${
                           msg.sender === "user"
@@ -971,51 +919,86 @@ const Chatbot = () => {
 
             {/* Enhanced Input Area */}
             {!isMinimized && (
-              <div className={`p-3 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t flex items-center space-x-2`}>
-                <button
-                  onClick={startListening}
-                  className={`p-2 rounded-full transition-all ${
-                    isListening 
-                      ? 'bg-red-500 text-white animate-pulse' 
-                      : darkMode 
-                        ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                  }`}
-                  title="Voice Input"
-                >
-                  {isListening ? <Mic className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-                </button>
+              <div className={`p-3 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
+                {/* Image Preview */}
+                {imagePreview && (
+                  <div className="mb-3 p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Image Preview</span>
+                      <button
+                        onClick={clearImage}
+                        className="text-red-500 hover:text-red-600 text-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <img 
+                      src={imagePreview} 
+                      alt="Preview" 
+                      className="max-w-full h-auto rounded"
+                      style={{maxHeight: '100px'}}
+                    />
+                  </div>
+                )}
                 
-                <input
-                  value={userInput}
-                  onChange={(e) => setUserInput(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-                  placeholder={isListening ? "Listening..." : "Type or speak your message..."}
-                  className={`flex-1 rounded-full px-4 py-2 text-sm focus:outline-none transition-all ${
-                    darkMode 
-                      ? 'bg-gray-700 text-white placeholder-gray-400 border-gray-600' 
-                      : 'bg-gray-100 text-gray-800 placeholder-gray-500 border-gray-300'
-                  } border focus:border-[#16808D]`}
-                />
-                
-                <button
-                  onClick={() => sendMessage()}
-                  className="bg-gradient-to-r from-[#16808D] to-[#1B9AAA] hover:from-[#1B9AAA] hover:to-[#16808D] text-white p-2 rounded-full transition-all shadow-sm"
-                  title="Send Message"
-                >
-                  <Send className="h-4 w-4" />
-                </button>
-                
-                <button
-                  className={`p-2 rounded-full transition-all ${
-                    darkMode 
-                      ? 'bg-gray-700 hover:bg-gray-600 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                  }`}
-                  title="Attach File"
-                >
-                  <Paperclip className="h-4 w-4" />
-                </button>
+                <div className="flex items-center space-x-2">
+                  <button
+                    onClick={startListening}
+                    className={`p-2 rounded-full transition-all ${
+                      isListening 
+                        ? 'bg-red-500 text-white animate-pulse' 
+                        : darkMode 
+                          ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                          : "bg-gradient-to-r from-[#16808D] to-[#1B9AAA] hover:from-[#1B9AAA] hover:to-[#16808D] text-white"
+                    }`}
+                    title="Voice Input"
+                  >
+                    {isListening ? <Mic className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
+                  </button>
+                  
+                  <input
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+                    placeholder={isListening ? "Listening..." : "Type or speak your message..."}
+                    className={`flex-1 rounded-full px-4 py-2 text-sm focus:outline-none transition-all ${
+                      darkMode 
+                        ? 'bg-gray-700 text-white placeholder-gray-400 border-gray-600' 
+                        : 'bg-gray-100 text-gray-800 placeholder-gray-500 border-gray-300'
+                    } border focus:border-[#16808D]`}
+                  />
+                  
+                  <button
+                    onClick={() => sendMessage()}
+                    className={`p-2 rounded-full transition-all shadow-sm ${
+                      darkMode 
+                        ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                        : "bg-gradient-to-r from-[#16808D] to-[#1B9AAA] hover:from-[#1B9AAA] hover:to-[#16808D] text-white"
+                    }`}
+                    title="Send Message"
+                  >
+                    <Send className="h-4 w-4" />
+                  </button>
+                  
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    id="file-upload"
+                  />
+                  <label
+                    htmlFor="file-upload"
+                    className={`p-2 rounded-full transition-all cursor-pointer ${
+                      darkMode 
+                        ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white"
+                        : "bg-gradient-to-r from-[#16808D] to-[#1B9AAA] hover:from-[#1B9AAA] hover:to-[#16808D] text-white"
+                    }`}
+                    title="Attach File"
+                  >
+                    <Paperclip className="h-4 w-4" />
+                  </label>
+                </div>
               </div>
             )}
           </motion.div>

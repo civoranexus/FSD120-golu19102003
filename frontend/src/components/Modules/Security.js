@@ -23,9 +23,9 @@ const Security = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'active': return 'text-red-600 bg-red-100';
-      case 'resolved': return 'text-green-600 bg-green-100';
-      case 'investigating': return 'text-yellow-600 bg-yellow-100';
+      case 'active': return 'text-[#EB1414] bg-red-100';
+      case 'resolved': return 'text-[#178740] bg-green-100';
+      case 'investigating': return 'text-[#1B9AAA] bg-yellow-100';
       default: return 'text-gray-600 bg-gray-100';
     }
   };
@@ -43,9 +43,12 @@ const Security = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold" style={{color: '#147783'}}>
-          <span style={{color: '#1B9AAA'}}>Security</span>
-        </h1>
+        <div className="flex items-center">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-12 w-auto mr-4" />
+          <h1 className="text-3xl font-bold" style={{color: '#147783'}}>
+            <span style={{color: '#020509'}}>Security</span>
+          </h1>
+        </div>
         <button className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg" style={{backgroundColor: '#178740'}} onMouseEnter={(e) => e.target.style.backgroundColor = '#22C55E'} onMouseLeave={(e) => e.target.style.backgroundColor = '#178740'}>
           <Shield className="h-4 w-4" />
           <span>Security Control</span>
@@ -56,22 +59,22 @@ const Security = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <AlertTriangle className="h-12 w-12 text-red-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-red-600">Active</p>
+            <AlertTriangle className="h-12 w-12 mx-auto mb-2" style={{color: '#EB1414'}} />
+            <p className="text-2xl font-bold" style={{color: '#EB1414'}}>Active</p>
             <p className="text-sm text-gray-600">Security Alerts</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-green-600">Resolved</p>
+            <CheckCircle className="h-12 w-12 mx-auto mb-2" style={{color: '#178740'}} />
+            <p className="text-2xl font-bold" style={{color: '#178740'}}>Resolved</p>
             <p className="text-sm text-gray-600">This Week</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <Camera className="h-12 w-12 text-blue-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-blue-600">12</p>
+            <Camera className="h-12 w-12 mx-auto mb-2" style={{color: '#1B9AAA'}} />
+            <p className="text-2xl font-bold" style={{color: '#1B9AAA'}}>12</p>
             <p className="text-sm text-gray-600">Total Cameras</p>
           </div>
         </div>
@@ -136,8 +139,8 @@ const Security = () => {
                   </div>
                 </div>
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                  alert.priority === 'high' ? 'bg-red-100 text-red-800' :
-                  alert.priority === 'medium' ? 'bg-yellow-100 text-yellow-800' :
+                  alert.priority === 'high' ? 'bg-red-100 text-[#EB1414]' :
+                  alert.priority === 'medium' ? 'bg-[#E0F7FA] text-[#142C52]' :
                   'bg-blue-100 text-blue-800'
                 }`}>
                   {alert.priority.toUpperCase()}
@@ -160,7 +163,7 @@ const Security = () => {
                   {alert.camera}
                 </div>
                 <div className="flex space-x-2">
-                  <button className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm font-medium">
+                  <button className="bg-[#EF4444] hover:bg-[#EB1414] text-white px-3 py-1 rounded text-sm font-medium">
                     Investigate
                   </button>
                   <button className={`text-[#147783] hover:text-[#1B9AAA] px-3 py-1 rounded text-sm font-medium`}>

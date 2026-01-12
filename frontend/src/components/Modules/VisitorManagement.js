@@ -138,7 +138,7 @@ const VisitorManagement = () => {
   };
 
   const deleteVisitor = (id) => {
-    if (confirm('Are you sure you want to delete this visitor?')) {
+    if (window.confirm('Are you sure you want to delete this visitor?')) {
       const updatedVisitors = visitors.filter(visitor => visitor.id !== id);
       setVisitors(updatedVisitors);
       localStorage.setItem('visitors', JSON.stringify(updatedVisitors));
@@ -158,10 +158,13 @@ const VisitorManagement = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">
-          <span style={{color: '#147783'}}>Visitor</span>
-          <span style={{color: '#020509'}}> Management</span>
-        </h1>
+        <div className="flex items-center">
+          <img src="/short_logo.png" alt="Society360 Logo" className="h-12 w-auto mr-4" />
+          <h1 className="text-3xl font-bold">
+            <span style={{color: '#1B9AAA'}}>Visitor</span>
+            <span style={{color: '#020509'}}> Management</span>
+          </h1>
+        </div>
         <button 
           onClick={() => setShowAddForm(true)}
           className="flex items-center justify-center px-8 py-3 bg-[#16808D] text-white rounded-lg font-semibold hover:bg-[#1B9AAA] hover:text-white transition-colors"
@@ -174,9 +177,12 @@ const VisitorManagement = () => {
       {/* Add Visitor Modal */}
       {showAddForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{boxShadow: '0 20px 25px -5px rgba(20, 119, 131, 0.1), 0 10px 10px -5px rgba(20, 119, 131, 0.04)', borderColor: '#1B9AAA'}}>
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-              <h2 className="text-xl font-semibold text-gray-900">Add New Visitor</h2>
+              <div className="flex items-center">
+                <img src="/short_logo.png" alt="Society360 Logo" className="h-8 w-auto mr-3" />
+                <h2 className="text-xl font-semibold text-gray-900">Add New Visitor</h2>
+              </div>
               <button 
                 onClick={() => setShowAddForm(false)}
                 className="text-gray-400 hover:text-gray-600"
@@ -189,7 +195,7 @@ const VisitorManagement = () => {
               {/* Personal Information */}
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <User className="h-5 w-5 mr-2" style={{color: '#147783'}} />
+                  <User className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
                   Personal Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,9 +208,10 @@ const VisitorManagement = () => {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.name ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.name ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="Enter visitor's full name"
                     />
                     {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
@@ -219,9 +226,10 @@ const VisitorManagement = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.email ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.email ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="visitor@email.com"
                     />
                     {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
@@ -236,9 +244,10 @@ const VisitorManagement = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.phone ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.phone ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="9876543210"
                     />
                     {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
@@ -253,7 +262,8 @@ const VisitorManagement = () => {
                       name="vehicleNumber"
                       value={formData.vehicleNumber}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="MH-12-AB-1234"
                     />
                   </div>
@@ -263,7 +273,7 @@ const VisitorManagement = () => {
               {/* Visit Details */}
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <Calendar className="h-5 w-5 mr-2" style={{color: '#147783'}} />
+                  <Calendar className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
                   Visit Details
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -275,9 +285,10 @@ const VisitorManagement = () => {
                       name="purpose"
                       value={formData.purpose}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.purpose ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.purpose ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                     >
                       <option value="">Select purpose</option>
                       <option value="Guest">Guest Visit</option>
@@ -299,9 +310,10 @@ const VisitorManagement = () => {
                       name="unit"
                       value={formData.unit}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.unit ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.unit ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="A-101"
                     />
                     {errors.unit && <p className="text-red-500 text-sm mt-1">{errors.unit}</p>}
@@ -316,9 +328,10 @@ const VisitorManagement = () => {
                       name="expectedArrival"
                       value={formData.expectedArrival}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.expectedArrival ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.expectedArrival ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                     />
                     {errors.expectedArrival && <p className="text-red-500 text-sm mt-1">{errors.expectedArrival}</p>}
                   </div>
@@ -332,7 +345,8 @@ const VisitorManagement = () => {
                       name="expectedDeparture"
                       value={formData.expectedDeparture}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                     />
                   </div>
                 </div>
@@ -341,7 +355,7 @@ const VisitorManagement = () => {
               {/* Host Information */}
               <div>
                 <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
-                  <Users className="h-5 w-5 mr-2" style={{color: '#147783'}} />
+                  <Users className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
                   Host Information
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -354,9 +368,10 @@ const VisitorManagement = () => {
                       name="hostName"
                       value={formData.hostName}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.hostName ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.hostName ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="Host's full name"
                     />
                     {errors.hostName && <p className="text-red-500 text-sm mt-1">{errors.hostName}</p>}
@@ -371,9 +386,10 @@ const VisitorManagement = () => {
                       name="hostUnit"
                       value={formData.hostUnit}
                       onChange={handleInputChange}
-                      className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783] ${
-                        errors.hostUnit ? 'border-red-500' : 'border-gray-300'
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.hostUnit ? 'border-red-500' : 'border-[#16808D]'
                       }`}
+                      style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                       placeholder="A-101"
                     />
                     {errors.hostUnit && <p className="text-red-500 text-sm mt-1">{errors.hostUnit}</p>}
@@ -391,7 +407,8 @@ const VisitorManagement = () => {
                   value={formData.notes}
                   onChange={handleInputChange}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                  className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
+                  style={{boxShadow: '0 1px 3px 0 rgba(20, 119, 131, 0.1), 0 1px 2px 0 rgba(20, 119, 131, 0.06)'}}
                   placeholder="Any additional information about the visit..."
                 />
               </div>
@@ -408,7 +425,7 @@ const VisitorManagement = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-[#147783] text-white rounded-lg hover:bg-[#1B9AAA] disabled:opacity-50 flex items-center"
+                  className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#1B9AAA] disabled:opacity-50 flex items-center"
                 >
                   {loading ? (
                     <>
@@ -432,29 +449,29 @@ const VisitorManagement = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <Users className="h-12 w-12 text-blue-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-blue-600">{visitors.length}</p>
+            <Users className="h-12 w-12 mx-auto mb-2" style={{color: '#147783'}} />
+            <p className="text-2xl font-bold" style={{color: '#147783'}}>{visitors.length}</p>
             <p className="text-sm text-gray-600">Total Visitors</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <Clock className="h-12 w-12 text-yellow-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-yellow-600">{visitors.filter(v => v.status === 'pending').length}</p>
+            <Clock className="h-12 w-12 mx-auto mb-2" style={{color: '#EF4444'}} />
+            <p className="text-2xl font-bold" style={{color: '#EF4444'}}>{visitors.filter(v => v.status === 'pending').length}</p>
             <p className="text-sm text-gray-600">Pending</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <CheckCircle className="h-12 w-12 text-green-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-green-600">{visitors.filter(v => v.status === 'approved').length}</p>
+            <CheckCircle className="h-12 w-12 mx-auto mb-2" style={{color: '#178740'}} />
+            <p className="text-2xl font-bold" style={{color: '#178740'}}>{visitors.filter(v => v.status === 'approved').length}</p>
             <p className="text-sm text-gray-600">Approved</p>
           </div>
         </div>
         <div className="bg-white rounded-lg shadow p-6">
           <div className="text-center">
-            <Shield className="h-12 w-12 text-purple-600 mx-auto mb-2" />
-            <p className="text-2xl font-bold text-purple-600">{visitors.filter(v => v.status === 'completed').length}</p>
+            <Shield className="h-12 w-12 mx-auto mb-2" style={{color: '#142C52'}} />
+            <p className="text-2xl font-bold" style={{color: '#142C52'}}>{visitors.filter(v => v.status === 'completed').length}</p>
             <p className="text-sm text-gray-600">Completed</p>
           </div>
         </div>
@@ -471,13 +488,13 @@ const VisitorManagement = () => {
                 placeholder="Search visitors by name, purpose, or unit..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+                className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
               />
             </div>
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#147783]"
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA]"
             >
               <option value="all">All Status</option>
               <option value="pending">Pending</option>
@@ -514,7 +531,7 @@ const VisitorManagement = () => {
                   <tr key={visitor.id}>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
-                        <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#CCE7EC', color: '#147783'}}>
+                        <div className="h-8 w-8 rounded-full flex items-center justify-center" style={{backgroundColor: '#CCE7EC', color: '#1B9AAA'}}>
                           <Users className="h-4 w-4" />
                         </div>
                         <div className="ml-3">
