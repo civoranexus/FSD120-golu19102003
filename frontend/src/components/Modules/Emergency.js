@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Phone, Shield, AlertTriangle, Users, MapPin, Clock, CheckCircle, XCircle, Send, Ambulance, Fire, Droplets, Search } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { Phone, Shield, AlertTriangle, Users, MapPin, Clock, CheckCircle, XCircle, Send, Truck, Droplets, Search, X, User, MessageSquare, Bell, Activity, Zap, Radio } from 'lucide-react';
 
 const Emergency = () => {
+  const emergencyModalRef = useRef(null);
   const [emergencies, setEmergencies] = useState([
     { id: 1, type: 'Medical', title: 'Emergency Medical', description: 'Call doctor or ambulance immediately', priority: 'critical', contact: '108', icon: '🏥', available: true },
     { id: 2, type: 'Fire', title: 'Fire Emergency', description: 'Evacuate building and call fire department', priority: 'critical', contact: '101', icon: '🔥', available: true },
@@ -12,6 +13,30 @@ const Emergency = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('all');
+  const [showEmergencyForm, setShowEmergencyForm] = useState(false);
+  const [isCalling, setIsCalling] = useState(false);
+  const [activeEmergency, setActiveEmergency] = useState(null);
+  const [emergencyLogs, setEmergencyLogs] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Emergency form state
+  const [emergencyData, setEmergencyData] = useState({
+    type: '',
+    description: '',
+    location: '',
+    severity: 'medium',
+    contactName: '',
+    contactPhone: '',
+    unit: '',
+    urgency: 'normal',
+    needsAssistance: false,
+    additionalInfo: ''
+  });
+
+  // Emergency call state
+  const [callStatus, setCallStatus] = useState('idle'); // idle, calling, connected, ended
+  const [callDuration, setCallDuration] = useState(0);
+  const [callTimer, setCallTimer] = useState(null);
 
   const filteredEmergencies = emergencies.filter(emergency => {
     const matchesSearch = emergency.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -44,6 +69,187 @@ const Emergency = () => {
     window.open(`tel:${contact}`);
   };
 
+  // Click outside to close modal
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showEmergencyForm && emergencyModalRef.current && !emergencyModalRef.current.contains(event.target)) {
+        setShowEmergencyForm(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showEmergencyForm]);
+
+  // Call timer effect
+  useEffect(() => {
+    if (callStatus === 'connected') {
+      const timer = setInterval(() => {
+        setCallDuration(prev => prev + 1);
+      }, 1000);
+      setCallTimer(timer);
+    } else {
+      if (callTimer) {
+        clearInterval(callTimer);
+        setCallTimer(null);
+      }
+      if (callStatus === 'ended') {
+        setCallDuration(0);
+      }
+    }
+
+    return () => {
+      if (callTimer) {
+        clearInterval(callTimer);
+      }
+    };
+  }, [callStatus]);
+
+  const handleInputChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setEmergencyData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleEmergencySubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Simulate API call to emergency system
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Create emergency log
+      const emergencyLog = {
+        id: emergencyLogs.length + 1,
+        type: emergencyData.type,
+        description: emergencyData.description,
+        location: emergencyData.location,
+        severity: emergencyData.severity,
+        contactName: emergencyData.contactName,
+        contactPhone: emergencyData.contactPhone,
+        unit: emergencyData.unit,
+        urgency: emergencyData.urgency,
+        needsAssistance: emergencyData.needsAssistance,
+        additionalInfo: emergencyData.additionalInfo,
+        status: 'active',
+        timestamp: new Date().toISOString(),
+        resolvedAt: null
+      };
+
+      // Add to emergency logs
+      setEmergencyLogs([emergencyLog, ...emergencyLogs]);
+
+      // Set as active emergency
+      setActiveEmergency(emergencyLog);
+
+      // Reset form
+      setEmergencyData({
+        type: '',
+        description: '',
+        location: '',
+        severity: 'medium',
+        contactName: '',
+        contactPhone: '',
+        unit: '',
+        urgency: 'normal',
+        needsAssistance: false,
+        additionalInfo: ''
+      });
+
+      setShowEmergencyForm(false);
+      setIsSubmitting(false);
+      
+      // Show success and trigger emergency call
+      alert(`Emergency reported successfully! Reference ID: #${emergencyLog.id}\n\nEmergency services have been notified.`);
+      
+      // Auto-call emergency services if critical
+      if (emergencyData.severity === 'critical') {
+        handleEmergencyCall('911');
+      }
+    } catch (error) {
+      console.error('Error submitting emergency:', error);
+      setIsSubmitting(false);
+      alert('Error submitting emergency report. Please try again or call emergency services directly.');
+    }
+  };
+
+  const handleCallEmergency = async (emergency) => {
+    setIsCalling(true);
+    setCallStatus('calling');
+    
+    try {
+      // Simulate call connection
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setCallStatus('connected');
+      
+      // Log the call
+      const callLog = {
+        id: emergencyLogs.length + 1,
+        type: 'call',
+        emergencyType: emergency.type,
+        contact: emergency.contact,
+        timestamp: new Date().toISOString(),
+        duration: 0,
+        status: 'connected'
+      };
+      
+      setEmergencyLogs([callLog, ...emergencyLogs]);
+      
+      // Auto-end call after 10 seconds for demo
+      setTimeout(() => {
+        setCallStatus('ended');
+        setIsCalling(false);
+        setCallDuration(0);
+      }, 10000);
+      
+    } catch (error) {
+      console.error('Error making emergency call:', error);
+      setCallStatus('ended');
+      setIsCalling(false);
+    }
+  };
+
+  const handleEndCall = () => {
+    setCallStatus('ended');
+    setIsCalling(false);
+    setCallDuration(0);
+  };
+
+  const handleResolveEmergency = (emergencyId) => {
+    setEmergencyLogs(prev => 
+      prev.map(log => 
+        log.id === emergencyId 
+          ? { ...log, status: 'resolved', resolvedAt: new Date().toISOString() }
+          : log
+      )
+    );
+    
+    if (activeEmergency && activeEmergency.id === emergencyId) {
+      setActiveEmergency(null);
+    }
+  };
+
+  const formatCallDuration = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getEmergencyIcon = (type) => {
+    switch (type) {
+      case 'Medical': return Truck;
+      case 'Fire': return AlertTriangle;
+      case 'Security': return Shield;
+      case 'Maintenance': return Zap;
+      default: return AlertTriangle;
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -54,10 +260,22 @@ const Emergency = () => {
             <span style={{color: '#020509'}}> Services</span>
           </h1>
         </div>
-        <button className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg bg-[#EF4444] hover:bg-[#EB1414]">
-          <Phone className="h-4 w-4" />
-          <span>Call Emergency: 911</span>
-        </button>
+        <div className="flex space-x-3">
+          <button 
+            onClick={() => setShowEmergencyForm(true)}
+            className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg bg-[#EF4444] hover:bg-[#EB1414]"
+          >
+            <AlertTriangle className="h-4 w-4" />
+            <span>Report Emergency</span>
+          </button>
+          <button 
+            onClick={() => handleEmergencyCall('911')}
+            className="flex items-center space-x-2 text-white px-4 py-2 rounded-lg bg-[#EB1414] hover:bg-[#DC2626]"
+          >
+            <Phone className="h-4 w-4" />
+            <span>Call 911</span>
+          </button>
+        </div>
       </div>
 
       {/* Emergency Stats */}
@@ -165,10 +383,21 @@ const Emergency = () => {
                   </div>
                   <div className="flex space-x-2">
                     <button 
-                      onClick={() => handleEmergencyCall(emergency.contact)}
-                      className="bg-[#EF4444] hover:bg-[#EB1414] text-white px-3 py-1 rounded text-sm font-medium"
+                      onClick={() => handleCallEmergency(emergency)}
+                      disabled={isCalling}
+                      className="bg-[#EF4444] hover:bg-[#EB1414] text-white px-3 py-1 rounded text-sm font-medium disabled:opacity-50 flex items-center"
                     >
-                      Call Now
+                      {isCalling ? (
+                        <>
+                          <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
+                          Calling...
+                        </>
+                      ) : (
+                        <>
+                          <Phone className="h-3 w-3 mr-1" />
+                          Call Now
+                        </>
+                      )}
                     </button>
                     <button className={`text-[#147783] hover:text-[#1B9AAA] px-3 py-1 rounded text-sm font-medium`}>
                       Details
@@ -180,6 +409,334 @@ const Emergency = () => {
           </div>
         ))}
       </div>
+
+      {/* Emergency Call Status */}
+      {isCalling && (
+        <div className="fixed top-4 right-4 bg-white rounded-lg shadow-2xl p-4 z-50 border-2 border-red-500">
+          <div className="flex items-center space-x-3">
+            <div className={`w-3 h-3 rounded-full ${
+              callStatus === 'calling' ? 'bg-yellow-500 animate-pulse' :
+              callStatus === 'connected' ? 'bg-green-500 animate-pulse' :
+              'bg-red-500'
+            }`}></div>
+            <div>
+              <p className="font-semibold text-gray-900">
+                {callStatus === 'calling' ? 'Connecting...' :
+                 callStatus === 'connected' ? 'Connected' :
+                 'Call Ended'}
+              </p>
+              <p className="text-sm text-gray-600">
+                {callStatus === 'connected' ? formatCallDuration(callDuration) : 'Emergency Services'}
+              </p>
+            </div>
+            <button
+              onClick={handleEndCall}
+              className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm"
+            >
+              End Call
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Report Emergency Modal */}
+      {showEmergencyForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div ref={emergencyModalRef} className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{boxShadow: '0 20px 25px -5px rgba(239, 68, 68, 0.1), 0 10px 10px -5px rgba(239, 68, 68, 0.04)', borderColor: '#EF4444'}}>
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+              <div className="flex items-center">
+                <img 
+                  src="/short_logo.png" 
+                  alt="Society360 Logo" 
+                  className="h-8 w-auto mr-3"
+                />
+                <h2 className="text-xl font-semibold text-red-600">Report Emergency</h2>
+              </div>
+              <button
+                onClick={() => setShowEmergencyForm(false)}
+                className="p-2 rounded-full hover:bg-gray-100 transition-colors"
+              >
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            </div>
+
+            <form onSubmit={handleEmergencySubmit} className="p-6 space-y-6">
+              {/* Emergency Type */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <AlertTriangle className="h-5 w-5 mr-2" style={{color: '#EF4444'}} />
+                  Emergency Type
+                </h3>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Select Emergency Type <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    name="type"
+                    value={emergencyData.type}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                    style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                    required
+                  >
+                    <option value="">Choose emergency type...</option>
+                    <option value="Medical">Medical Emergency</option>
+                    <option value="Fire">Fire Emergency</option>
+                    <option value="Security">Security Threat</option>
+                    <option value="Maintenance">Building Emergency</option>
+                    <option value="Other">Other Emergency</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Emergency Details */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <MessageSquare className="h-5 w-5 mr-2" style={{color: '#EF4444'}} />
+                  Emergency Details
+                </h3>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Description <span className="text-red-500">*</span>
+                  </label>
+                  <textarea
+                    name="description"
+                    value={emergencyData.description}
+                    onChange={handleInputChange}
+                    rows={4}
+                    className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                    style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                    placeholder="Describe the emergency situation..."
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Location Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <MapPin className="h-5 w-5 mr-2" style={{color: '#EF4444'}} />
+                  Location Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Specific Location <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="location"
+                      value={emergencyData.location}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                      placeholder="e.g., Building A, Floor 3, Room 301"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Unit/Apartment
+                    </label>
+                    <input
+                      type="text"
+                      name="unit"
+                      value={emergencyData.unit}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                      placeholder="e.g., A-101"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Contact Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <User className="h-5 w-5 mr-2" style={{color: '#EF4444'}} />
+                  Contact Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Your Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="contactName"
+                      value={emergencyData.contactName}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                      placeholder="Your full name"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      name="contactPhone"
+                      value={emergencyData.contactPhone}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                      placeholder="9876543210"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Severity and Urgency */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <Activity className="h-5 w-5 mr-2" style={{color: '#EF4444'}} />
+                  Severity Assessment
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Severity Level <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="severity"
+                      value={emergencyData.severity}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                      required
+                    >
+                      <option value="low">Low - Minor Issue</option>
+                      <option value="medium">Medium - Urgent Attention</option>
+                      <option value="high">High - Serious Concern</option>
+                      <option value="critical">Critical - Life Threatening</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Urgency Level
+                    </label>
+                    <select
+                      name="urgency"
+                      value={emergencyData.urgency}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                      style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                    >
+                      <option value="normal">Normal Response</option>
+                      <option value="urgent">Urgent Response</option>
+                      <option value="immediate">Immediate Response</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      name="needsAssistance"
+                      checked={emergencyData.needsAssistance}
+                      onChange={handleInputChange}
+                      className="mr-2 h-4 w-4 text-[#EF4444] focus:ring-[#EF4444] border-gray-300 rounded"
+                    />
+                    <span className="text-sm text-gray-700">Immediate assistance required</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Additional Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <Bell className="h-5 w-5 mr-2" style={{color: '#EF4444'}} />
+                  Additional Information
+                </h3>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Additional Details
+                  </label>
+                  <textarea
+                    name="additionalInfo"
+                    value={emergencyData.additionalInfo}
+                    onChange={handleInputChange}
+                    rows={3}
+                    className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#EF4444] transition-all border-[#DC2626]"
+                    style={{boxShadow: '0 1px 3px 0 rgba(239, 68, 68, 0.1), 0 1px 2px 0 rgba(239, 68, 68, 0.06)'}}
+                    placeholder="Any additional information that may help emergency services..."
+                  />
+                </div>
+              </div>
+
+              {/* Form Actions */}
+              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setShowEmergencyForm(false)}
+                  className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="px-6 py-2 bg-[#EF4444] text-white rounded-lg hover:bg-[#DC2626] disabled:opacity-50 flex items-center"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Submitting...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-4 w-4 mr-2" />
+                      Submit Emergency Report
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Emergency Logs */}
+      {emergencyLogs.length > 0 && (
+        <div className="bg-white rounded-lg shadow p-6">
+          <h2 className="text-xl font-semibold mb-4 text-gray-900">Emergency Activity Log</h2>
+          <div className="space-y-3">
+            {emergencyLogs.slice(0, 5).map((log) => (
+              <div key={log.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-2 h-2 rounded-full ${
+                    log.status === 'active' ? 'bg-red-500' :
+                    log.status === 'connected' ? 'bg-green-500' :
+                    'bg-gray-500'
+                  }`}></div>
+                  <div>
+                    <p className="font-medium text-gray-900">
+                      {log.type === 'call' ? `Emergency Call to ${log.contact}` : log.type}
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {new Date(log.timestamp).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+                {log.status === 'active' && (
+                  <button
+                    onClick={() => handleResolveEmergency(log.id)}
+                    className="text-green-600 hover:text-green-800 text-sm font-medium"
+                  >
+                    Mark Resolved
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

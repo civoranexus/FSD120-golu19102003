@@ -52,7 +52,7 @@ const Translate = () => {
           new window.google.translate.TranslateElement(
             {
               pageLanguage: 'en',
-              includedLanguages: 'en,hi,mr,ta,te,kn,gu,fr,ru,de,es,zh-CN,zh-cn,sa',
+              includedLanguages: 'en,hi,mr,ta,te,kn,gu,fr,ru,de,es,zh-CN,sa',
               layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE,
               autoDisplay: false,
               multilanguagePage: true
@@ -74,9 +74,25 @@ const Translate = () => {
             if (savedLang) {
               const langCode = savedLang.split('/').pop() || 'en';
               console.log('Setting current language to:', langCode);
-              setCurrentLanguage(langCode === 'zh-CN' ? 'zh-cn' : langCode);
+              
+              // Normalize language codes
+              const normalizedLangCode = langCode === 'zh-CN' ? 'zh-cn' : langCode;
+              setCurrentLanguage(normalizedLangCode);
               document.cookie = `googtrans=${savedLang};path=/;domain=${window.location.hostname}`;
-              document.documentElement.lang = langCode === 'zh-CN' ? 'zh-cn' : langCode;
+              document.documentElement.lang = normalizedLangCode;
+              
+              // Try to set the Google Translate combo
+              if (googleTranslateCombo) {
+                for (let i = 0; i < googleTranslateCombo.options.length; i++) {
+                  const option = googleTranslateCombo.options[i];
+                  if (option.value === langCode || option.value === normalizedLangCode) {
+                    console.log('Found matching language option:', option.value);
+                    googleTranslateCombo.value = option.value;
+                    googleTranslateCombo.dispatchEvent(new Event('change'));
+                    break;
+                  }
+                }
+              }
             }
           }, 1000);
           
@@ -126,72 +142,6 @@ const Translate = () => {
     
     console.log('Changing language to:', langCode); // Debug log
     
-    // Special handling for Chinese - multiple methods
-    if (langCode === 'zh-cn') {
-      console.log('Applying Chinese translation methods...');
-      
-      // Method 1: Direct Google Translate URL redirect
-      const currentUrl = window.location.href;
-      const translateUrl = `https://translate.google.com/translate?sl=en&tl=zh-CN&u=${encodeURIComponent(currentUrl)}`;
-      
-      // Method 2: Try to use Google Translate combo
-      const googleTranslateCombo = document.querySelector('.goog-te-combo');
-      if (googleTranslateCombo) {
-        console.log('Found Google Translate combo, trying to set Chinese...');
-        // Find and select the Chinese option
-        for (let i = 0; i < googleTranslateCombo.options.length; i++) {
-          const option = googleTranslateCombo.options[i];
-          console.log(`Checking option ${i}: ${option.value} - ${option.text}`);
-          if (option.value === 'zh-CN' || 
-              option.value === 'zh-cn' ||
-              option.text.toLowerCase().includes('chinese') ||
-              option.text.includes('中文') ||
-              option.text.includes('中国')) {
-            console.log('Found Chinese option, setting it...');
-            googleTranslateCombo.value = option.value;
-            googleTranslateCombo.dispatchEvent(new Event('change'));
-            break;
-          }
-        }
-      }
-      
-      // Method 3: Update storage and reload
-      localStorage.setItem('googtrans', '/en/zh-cn');
-      document.cookie = `googtrans=/en/zh-cn;path=/;domain=${window.location.hostname}`;
-      document.documentElement.lang = 'zh-cn';
-      
-      // Method 4: Try to trigger Google Translate manually
-      setTimeout(() => {
-        const translateElement = document.querySelector('#google_translate_element');
-        if (translateElement) {
-          const selectElement = translateElement.querySelector('select');
-          if (selectElement) {
-            console.log('Found translate select, trying Chinese options...');
-            for (let i = 0; i < selectElement.options.length; i++) {
-              if (selectElement.options[i].value === 'zh-CN' || 
-                  selectElement.options[i].value === 'zh-cn') {
-                selectElement.value = selectElement.options[i].value;
-                selectElement.dispatchEvent(new Event('change'));
-                console.log('Chinese translation triggered via select element');
-                break;
-              }
-            }
-          }
-        }
-      }, 200);
-      
-      // Update UI
-      setCurrentLanguage('zh-cn');
-      setIsOpen(false);
-      
-      // Force reload after delay to allow translation to apply
-      setTimeout(() => {
-        console.log('Reloading page for Chinese translation...');
-        window.location.reload();
-      }, 1000);
-      return;
-    }
-    
     // Handle other languages normally
     const newLang = langCode === 'en' ? '' : `/${langCode}`;
     const googtransValue = `/en${newLang}`;
@@ -207,9 +157,30 @@ const Translate = () => {
     setCurrentLanguage(langCode);
     setIsOpen(false);
     
-    // Force a page reload to apply the translation
+    // Try to trigger Google Translate immediately
+    setTimeout(() => {
+      const googleTranslateCombo = document.querySelector('.goog-te-combo');
+      if (googleTranslateCombo) {
+        console.log('Attempting to set Google Translate combo to:', langCode);
+        for (let i = 0; i < googleTranslateCombo.options.length; i++) {
+          const option = googleTranslateCombo.options[i];
+          if (option.value === langCode || 
+              option.value === `zh-CN` && langCode === 'zh-cn' ||
+              option.value === `zh-cn` && langCode === 'zh-cn') {
+            console.log('Found matching option:', option.value, option.text);
+            googleTranslateCombo.value = option.value;
+            googleTranslateCombo.dispatchEvent(new Event('change'));
+            break;
+          }
+        }
+      }
+    }, 500);
+    
+    // Force a page reload to apply translation
     console.log('Reloading page for translation:', googtransValue); // Debug log
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const getFlagEmoji = (langCode) => {

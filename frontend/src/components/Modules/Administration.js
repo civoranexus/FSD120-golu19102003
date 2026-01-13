@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Settings, Users, Building, Shield, Download, Search, BarChart, FileText, X, Plus, Mail, Lock, UserCheck } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 const Administration = () => {
+  const adminModalRef = useRef(null);
   const [users, setUsers] = useState([
     { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Resident', unit: 'A-101', status: 'Active' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'Management', unit: 'Admin', status: 'Active' },
@@ -13,6 +14,8 @@ const Administration = () => {
   const [roleFilter, setRoleFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
   const [showAddUserForm, setShowAddUserForm] = useState(false);
+  const [showEditUserForm, setShowEditUserForm] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   
@@ -26,12 +29,38 @@ const Administration = () => {
     phone: ''
   });
 
+  // Edit form state
+  const [editUser, setEditUser] = useState({
+    name: '',
+    email: '',
+    role: 'Resident',
+    unit: '',
+    phone: ''
+  });
+
   const systemStats = [
     { title: 'Total Users', value: '156', icon: Users },
     { title: 'Active Units', value: '120', icon: Building },
     { title: 'System Uptime', value: '99.9%', icon: Shield },
     { title: 'Reports Generated', value: '45', icon: FileText },
   ];
+
+  // Click outside to close modal
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showAddUserForm && adminModalRef.current && !adminModalRef.current.contains(event.target)) {
+        setShowAddUserForm(false);
+      }
+      if (showEditUserForm && adminModalRef.current && !adminModalRef.current.contains(event.target)) {
+        setShowEditUserForm(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showAddUserForm, showEditUserForm]);
 
   const filteredUsers = users.filter(user => {
     const matchesSearch = user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -102,6 +131,104 @@ const Administration = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewUser(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Clear error for this field when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ''
+      }));
+    }
+  };
+
+  const handleEditUser = (user) => {
+    setSelectedUser(user);
+    setEditUser({
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      unit: user.unit,
+      phone: user.phone || ''
+    });
+    setShowEditUserForm(true);
+  };
+
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setErrors({});
+
+    // Validate form fields
+    const newErrors = {};
+    if (!editUser.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+    if (!editUser.email.trim()) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(editUser.email)) {
+      newErrors.email = 'Please enter a valid email address';
+    }
+    if (!editUser.role) {
+      newErrors.role = 'Role is required';
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      // Simulate API call to database
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      // Update user in users array
+      setUsers(users.map(user => 
+        user.id === selectedUser.id 
+          ? { ...user, ...editUser, updatedAt: new Date().toISOString() }
+          : user
+      ));
+      
+      setEditUser({ name: '', email: '', role: 'Resident', unit: '', phone: '' });
+      setSelectedUser(null);
+      setShowEditUserForm(false);
+      alert('User updated successfully!');
+    } catch (error) {
+      console.error('Error updating user:', error);
+      alert('Failed to update user. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeactivateUser = async (user) => {
+    if (window.confirm(`Are you sure you want to ${user.status === 'Active' ? 'deactivate' : 'activate'} ${user.name}?`)) {
+      try {
+        // Simulate API call to database
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Update user status
+        const newStatus = user.status === 'Active' ? 'Inactive' : 'Active';
+        setUsers(users.map(u => 
+          u.id === user.id 
+            ? { ...u, status: newStatus, updatedAt: new Date().toISOString() }
+            : u
+        ));
+        
+        alert(`User ${newStatus === 'Active' ? 'activated' : 'deactivated'} successfully!`);
+      } catch (error) {
+        console.error('Error updating user status:', error);
+        alert('Failed to update user status. Please try again.');
+      }
+    }
+  };
+
+  const handleEditInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditUser(prev => ({
       ...prev,
       [name]: value
     }));
@@ -367,13 +494,35 @@ const Administration = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{user.unit}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                    <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      user.status === 'Active' 
+                        ? 'bg-green-100 text-green-800' 
+                        : 'bg-red-100 text-red-800'
+                    }`}>
                       {user.status}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button className="mr-3" style={{color: '#1B9AAA'}} onMouseEnter={(e) => e.target.style.color = '#147783'} onMouseLeave={(e) => e.target.style.color = '#1B9AAA'}>Edit</button>
-                    <button style={{color: '#EF4444'}} onMouseEnter={(e) => e.target.style.color = '#EB1414'} onMouseLeave={(e) => e.target.style.color = '#EF4444'}>Deactivate</button>
+                    <button 
+                      onClick={() => handleEditUser(user)}
+                      className="mr-3 flex items-center" 
+                      style={{color: '#1B9AAA'}} 
+                      onMouseEnter={(e) => e.target.style.color = '#147783'} 
+                      onMouseLeave={(e) => e.target.style.color = '#1B9AAA'}
+                    >
+                      <Settings className="h-4 w-4 mr-1" />
+                      Edit
+                    </button>
+                    <button 
+                      onClick={() => handleDeactivateUser(user)}
+                      className="flex items-center" 
+                      style={{color: user.status === 'Active' ? '#EF4444' : '#22C55E'}} 
+                      onMouseEnter={(e) => e.target.style.color = user.status === 'Active' ? '#EB1414' : '#16A34A'} 
+                      onMouseLeave={(e) => e.target.style.color = user.status === 'Active' ? '#EF4444' : '#22C55E'}
+                    >
+                      <Lock className="h-4 w-4 mr-1" />
+                      {user.status === 'Active' ? 'Deactivate' : 'Activate'}
+                    </button>
                   </td>
                 </tr>
               ))}
@@ -407,7 +556,7 @@ const Administration = () => {
       {/* Add User Modal */}
       {showAddUserForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{borderColor: '#1B9AAA'}}>
+          <div ref={adminModalRef} className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{borderColor: '#1B9AAA'}}>
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <div className="flex items-center">
                 <img src="/short_logo.png" alt="Society360 Logo" className="h-8 w-auto mr-3" />
@@ -557,7 +706,7 @@ const Administration = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#16808D] disabled:opacity-50 flex items-center"
+                  className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#147783] disabled:opacity-50 flex items-center"
                 >
                   {loading ? (
                     <>
@@ -568,6 +717,161 @@ const Administration = () => {
                     <>
                       <UserCheck className="h-4 w-4 mr-2" />
                       Create User
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit User Modal */}
+      {showEditUserForm && selectedUser && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div ref={adminModalRef} className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{borderColor: '#1B9AAA'}}>
+            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
+              <div className="flex items-center">
+                <img src="/short_logo.png" alt="Society360 Logo" className="h-8 w-auto mr-3" />
+                <h2 className="text-xl font-semibold text-gray-900">Edit User</h2>
+              </div>
+              <button 
+                onClick={() => setShowEditUserForm(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleUpdateUser} className="p-6 space-y-4">
+              {/* User Information */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <UserCheck className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
+                  User Information
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={editUser.name}
+                      onChange={handleEditInputChange}
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.name ? 'border-red-500' : 'border-[#16808D]'
+                      }`}
+                      style={{borderColor: errors.name ? '#EF4444' : '#1B9AAA', boxShadow: '0 1px 3px 0 rgba(27, 154, 170, 0.1), 0 1px 2px 0 rgba(27, 154, 170, 0.06)'}}
+                      placeholder="Enter full name"
+                    />
+                    {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={editUser.email}
+                      onChange={handleEditInputChange}
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.email ? 'border-red-500' : 'border-[#16808D]'
+                      }`}
+                      style={{borderColor: errors.email ? '#EF4444' : '#1B9AAA', boxShadow: '0 1px 3px 0 rgba(27, 154, 170, 0.1), 0 1px 2px 0 rgba(27, 154, 170, 0.06)'}}
+                      placeholder="user@example.com"
+                    />
+                    {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      name="phone"
+                      value={editUser.phone}
+                      onChange={handleEditInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all"
+                      style={{borderColor: '#1B9AAA', boxShadow: '0 1px 3px 0 rgba(27, 154, 170, 0.1), 0 1px 2px 0 rgba(27, 154, 170, 0.06)'}}
+                      placeholder="9876543210"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Access Details */}
+              <div>
+                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center">
+                  <Lock className="h-5 w-5 mr-2" style={{color: '#1B9AAA'}} />
+                  Access Details
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      User Role <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="role"
+                      value={editUser.role}
+                      onChange={handleEditInputChange}
+                      className={`w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all ${
+                        errors.role ? 'border-red-500' : 'border-[#16808D]'
+                      }`}
+                      style={{borderColor: errors.role ? '#EF4444' : '#1B9AAA', boxShadow: '0 1px 3px 0 rgba(27, 154, 170, 0.1), 0 1px 2px 0 rgba(27, 154, 170, 0.06)'}}
+                    >
+                      <option value="Resident">Resident</option>
+                      <option value="Management">Management</option>
+                      <option value="Staff">Staff</option>
+                      <option value="Security">Security</option>
+                    </select>
+                    {errors.role && <p className="text-red-500 text-sm mt-1">{errors.role}</p>}
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Unit/Apartment
+                    </label>
+                    <input
+                      type="text"
+                      name="unit"
+                      value={editUser.unit}
+                      onChange={handleEditInputChange}
+                      className="w-full px-3 py-2 border-2 rounded-lg focus:outline-none focus:ring-2 focus:border-[#1B9AAA] transition-all"
+                      style={{borderColor: '#1B9AAA', boxShadow: '0 1px 3px 0 rgba(27, 154, 170, 0.1), 0 1px 2px 0 rgba(27, 154, 170, 0.06)'}}
+                      placeholder="A-101"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Form Actions */}
+              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                <button
+                  type="button"
+                  onClick={() => setShowEditUserForm(false)}
+                  className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#147783] disabled:opacity-50 flex items-center"
+                >
+                  {loading ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                      Updating User...
+                    </>
+                  ) : (
+                    <>
+                      <UserCheck className="h-4 w-4 mr-2" />
+                      Update User
                     </>
                   )}
                 </button>

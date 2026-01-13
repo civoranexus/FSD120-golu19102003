@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Wrench, Clock, CheckCircle, AlertCircle, Plus, Search, Home, User, Calendar, MapPin, Save, X, Zap, Droplets, Wind, Thermometer, Lightbulb } from 'lucide-react';
 
 const Maintenance = () => {
+  const maintenanceModalRef = useRef(null);
   const [requests, setRequests] = useState([]);
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -41,6 +42,20 @@ const Maintenance = () => {
       localStorage.setItem('maintenanceRequests', JSON.stringify(initialRequests));
     }
   }, []);
+
+  // Click outside to close modal
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showAddForm && maintenanceModalRef.current && !maintenanceModalRef.current.contains(event.target)) {
+        setShowAddForm(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showAddForm]);
 
   const filteredRequests = requests.filter(request => {
     const matchesSearch = request.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -199,7 +214,7 @@ const Maintenance = () => {
       {/* Add Request Modal */}
       {showAddForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border-2" style={{boxShadow: '0 20px 25px -5px rgba(20, 119, 131, 0.1), 0 10px 10px -5px rgba(20, 119, 131, 0.04)', borderColor: '#1B9AAA'}}>
+          <div ref={maintenanceModalRef} className="bg-white rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto border-2" style={{boxShadow: '0 20px 25px -5px rgba(20, 119, 131, 0.1), 0 10px 10px -5px rgba(20, 119, 131, 0.04)', borderColor: '#1B9AAA'}}>
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <div className="flex items-center">
                 <img src="/short_logo.png" alt="Society360 Logo" className="h-8 w-auto mr-3" />
@@ -461,7 +476,7 @@ const Maintenance = () => {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#1B9AAA] disabled:opacity-50 flex items-center"
+                  className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#147783] disabled:opacity-50 flex items-center"
                 >
                   {loading ? (
                     <>

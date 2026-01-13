@@ -4,14 +4,16 @@ import {
   Activity, BarChart3, PieChart, Calendar, Filter, Download, 
   RefreshCw, Settings, Bell, Search, ChevronUp, ChevronDown,
   Home, Wrench, CreditCard, Shield, FileText, Zap, Target,
-  MessageSquare, Megaphone
+  MessageSquare, Megaphone, X
 } from 'lucide-react';
 
 const Dashboard = () => {
+  const securityModalRef = useRef(null);
   const [selectedTimeRange, setSelectedTimeRange] = useState('7d');
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
+  const [showSecurityDropdown, setShowSecurityDropdown] = useState(false);
   const [selectedMetric, setSelectedMetric] = useState('revenue');
   const [notifications, setNotifications] = useState([]);
   const [filters, setFilters] = useState({
@@ -161,27 +163,39 @@ const Dashboard = () => {
         window.location.href = '/finance';
         break;
       case 4: // Send Notification
-        window.location.href = '/announcements';
+        window.location.href = '/communication';
         break;
-      case 5: // +New Discussion
-        window.location.href = '/communication#new-discussion';
+      case 5: // Report Now
+        window.location.href = '/administration';
         break;
-      case 6: // +New Announcement
-        window.location.href = '/communication#new-announcement';
+      case 6: // Security Support
+        setShowSecurityDropdown(true);
         break;
       default:
         console.log('Unknown action:', actionId);
     }
   };
 
+  const handleSecurityOptionClick = (path) => {
+    setShowSecurityDropdown(false);
+    window.location.href = path;
+  };
+
   const [quickActions] = useState([
     { id: 1, title: 'Add Visitor', icon: Users, color: '#1B9AAA', bgColor: '#E0F7FA' },
     { id: 2, title: 'Schedule Maintenance', icon: Wrench, color: '#178740', bgColor: '#E0F7FA' },
-    { id: 3, title: 'Generate Report', icon: FileText, color: '#5B74A3', bgColor: '#E0F7FA' },
-    { id: 4, title: 'Send Notification', icon: Bell, color: '#142C52', bgColor: '#E0F7FA' },
-    { id: 5, title: '+New Discussion', icon: MessageSquare, color: '#02394A', bgColor: '#E0F7FA' },
-    { id: 6, title: '+New Announcement', icon: Megaphone, color: '#02394A', bgColor: '#E0F7FA' }
+    { id: 3, title: 'Finance & Billing', icon: FileText, color: '#5B74A3', bgColor: '#E0F7FA' },
+    { id: 4, title: 'Check Notifications', icon: Bell, color: '#142C52', bgColor: '#E0F7FA' },
+    { id: 5, title: 'Report Now', icon: Megaphone, color: '#02394A', bgColor: '#E0F7FA' },
+    { id: 6, title: 'Security Support', icon: Shield, color: '#02394A', bgColor: '#E0F7FA' }
   ]);
+
+  const securityOptions = [
+    { id: 1, title: 'Amenities', icon: Zap, path: '/amenities' },
+    { id: 2, title: 'Security', icon: Shield, path: '/security' },
+    { id: 3, title: 'Complaint', icon: FileText, path: '/complaints' },
+    { id: 4, title: 'Emergency', icon: AlertCircle, path: '/emergency' }
+  ];
 
   // Simulate real-time updates
   useEffect(() => {
@@ -196,6 +210,20 @@ const Dashboard = () => {
 
     return () => clearInterval(interval);
   }, []);
+
+  // Click outside to close security modal
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showSecurityDropdown && securityModalRef.current && !securityModalRef.current.contains(event.target)) {
+        setShowSecurityDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSecurityDropdown]);
 
   const handleRefresh = () => {
     setIsLoading(true);
@@ -770,10 +798,10 @@ const Dashboard = () => {
           <div className="text-center">
             <div className="relative inline-flex items-center justify-center">
               <div className="h-24 w-24 rounded-full border-8 border-[#E0F7FA]"></div>
-              <div className="absolute h-24 w-24 rounded-full border-8 border-[#178740] border-t-transparent border-r-transparent transform rotate-45"></div>
+              <div className="absolute h-24 w-24 rounded-full border-8 border-[#1B9AAA] border-t-transparent border-r-transparent transform rotate-45"></div>
               <div className="absolute text-lg font-bold text-[#02394A]">{realTimeData.occupancy}%</div>
             </div>
-            <p className="text-sm font-medium text-[#178740] mt-2">Occupancy Rate</p>
+            <p className="text-sm font-medium text-[#1B9AAA] mt-2">Occupancy Rate</p>
           </div>
           
           <div className="text-center">
@@ -791,7 +819,7 @@ const Dashboard = () => {
               <div className="absolute h-24 w-24 rounded-full border-8 border-[#5B74A3] border-t-transparent border-r-transparent transform rotate-45"></div>
               <div className="absolute text-lg font-bold text-[#02394A]">92%</div>
             </div>
-            <p className="text-sm font-medium text-[#178740] mt-2">Efficiency Rate</p>
+            <p className="text-sm font-medium text-[#5B74A3] mt-2">Efficiency Rate</p>
           </div>
         </div>
       </div>
@@ -1034,6 +1062,46 @@ const Dashboard = () => {
       </div>
         </div>
       </div>
+
+      {/* Security Support Full Page Overlay */}
+      {showSecurityDropdown && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div ref={securityModalRef} className="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl w-full mx-4">
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center space-x-3">
+                <img 
+                  src="/short_logo.png" 
+                  alt="Society360 Logo" 
+                  className="h-8 w-auto"
+                />
+                <h2 className="text-2xl font-bold" style={{color: '#02394A'}}>Security Support</h2>
+              </div>
+              <button
+                onClick={() => setShowSecurityDropdown(false)}
+                className="p-2 rounded-full hover:bg-[#E0F7FA] transition-colors"
+              >
+                <X className="h-6 w-6" style={{color: '#02394A'}} />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              {securityOptions.map((option) => (
+                <button
+                  key={option.id}
+                  onClick={() => handleSecurityOptionClick(option.path)}
+                  className="p-6 rounded-xl border-2 border-[#E0F7FA] hover:shadow-lg transition-all hover:scale-105 flex flex-col items-center space-y-4 min-h-[180px]"
+                  style={{ backgroundColor: '#E0F7FA' }}
+                >
+                  <div className="h-16 w-16 rounded-full flex items-center justify-center" style={{backgroundColor: '#CCE7EC'}}>
+                    <option.icon className="h-8 w-8" style={{color: '#02394A'}} />
+                  </div>
+                  <span className="text-lg font-semibold text-[#02394A] text-center">{option.title}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

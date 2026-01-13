@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { MessageSquare, Bell, Send, Search, Calendar, Users, Megaphone, X, Plus } from 'lucide-react';
 
 const Communication = () => {
+  const discussionModalRef = useRef(null);
+  const announcementModalRef = useRef(null);
   const [announcements, setAnnouncements] = useState([
     { id: 1, title: 'Water Supply Maintenance', type: 'Notice', date: 'Jan 7, 2024', priority: 'High' },
     { id: 2, title: 'Society Meeting Schedule', type: 'Meeting', date: 'Jan 6, 2024', priority: 'Medium' },
@@ -44,6 +46,25 @@ const Communication = () => {
       setShowNewDiscussionForm(false);
     }
   }, []);
+
+  // Click outside to close modals
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close discussion modal
+      if (showNewDiscussionForm && discussionModalRef.current && !discussionModalRef.current.contains(event.target)) {
+        setShowNewDiscussionForm(false);
+      }
+      // Close announcement modal
+      if (showNewAnnouncementForm && announcementModalRef.current && !announcementModalRef.current.contains(event.target)) {
+        setShowNewAnnouncementForm(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showNewDiscussionForm, showNewAnnouncementForm]);
 
   const handleSendNotification = async () => {
     if (!notificationMessage.trim()) return;
@@ -151,7 +172,7 @@ const Communication = () => {
       {/* New Discussion Modal */}
       {showNewDiscussionForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{borderColor: '#1B9AAA'}}>
+          <div ref={discussionModalRef} className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{borderColor: '#1B9AAA'}}>
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <div className="flex items-center">
                 <img src="/short_logo.png" alt="Society360 Logo" className="h-8 w-auto mr-3" />
@@ -221,8 +242,8 @@ const Communication = () => {
                 Cancel
               </button>
               <button
-                onClick={handleCreateDiscussion}
-                className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#16808D] transition-colors"
+                type="submit"
+                className="px-6 py-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#147783] disabled:opacity-50 flex items-center"
               >
                 Create Discussion
               </button>
@@ -234,7 +255,7 @@ const Communication = () => {
       {/* New Announcement Modal */}
       {showNewAnnouncementForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{borderColor: '#1B9AAA'}}>
+          <div ref={announcementModalRef} className="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border-2" style={{borderColor: '#1B9AAA'}}>
             <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
               <div className="flex items-center">
                 <img src="/short_logo.png" alt="Society360 Logo" className="h-8 w-auto mr-3" />

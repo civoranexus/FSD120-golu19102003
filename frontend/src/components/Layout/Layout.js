@@ -13,6 +13,9 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const dropdownRef = useRef(null);
 
+  // Check if current page is login or register
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -296,7 +299,7 @@ const Layout = ({ children }) => {
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8">
+      <main className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isAuthPage ? 'pt-8' : 'pt-24'} pb-8`}>
         {children}
       </main>
 
@@ -349,6 +352,7 @@ const Layout = ({ children }) => {
                 <li><Link to="/" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Home</Link></li>
                 <li><Link to="/about" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>About</Link></li>
                 <li><Link to="/contact" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Contact</Link></li>
+                <li><Link to="/login" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Login</Link></li>
                 <li><Link to="/dashboard" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Dashboard</Link></li>
               </ul>
             </div>
