@@ -23,14 +23,11 @@ const VisitorManagement = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Simulate database connection
   useEffect(() => {
-    // Load initial data from localStorage (simulating database)
     const savedVisitors = localStorage.getItem('visitors');
     if (savedVisitors) {
       setVisitors(JSON.parse(savedVisitors));
     } else {
-      // Initial sample data
       const initialVisitors = [
         { id: 1, name: 'Rahul Sharma', purpose: 'Delivery', unit: 'A-101', time: '10:30 AM', status: 'approved', email: 'rahul@email.com', phone: '9876543210', hostName: 'John Doe', hostUnit: 'A-101', expectedArrival: '2024-01-15 10:30', expectedDeparture: '2024-01-15 11:30' },
         { id: 2, name: 'Priya Patel', purpose: 'Guest', unit: 'B-205', time: '11:15 AM', status: 'pending', email: 'priya@email.com', phone: '9876543211', hostName: 'Jane Smith', hostUnit: 'B-205', expectedArrival: '2024-01-15 11:15', expectedDeparture: '2024-01-15 13:15' },
@@ -41,7 +38,6 @@ const VisitorManagement = () => {
     }
   }, []);
 
-  // Click outside to close modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showAddForm && visitorModalRef.current && !visitorModalRef.current.contains(event.target)) {
@@ -84,7 +80,6 @@ const VisitorManagement = () => {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -100,7 +95,6 @@ const VisitorManagement = () => {
     setLoading(true);
     
     try {
-      // Simulate API call to database
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const newVisitor = {
@@ -114,10 +108,8 @@ const VisitorManagement = () => {
       const updatedVisitors = [newVisitor, ...visitors];
       setVisitors(updatedVisitors);
       
-      // Save to localStorage (simulating database)
       localStorage.setItem('visitors', JSON.stringify(updatedVisitors));
       
-      // Reset form
       setFormData({
         name: '',
         email: '',
@@ -134,7 +126,6 @@ const VisitorManagement = () => {
       setErrors({});
       setShowAddForm(false);
       
-      // Show success message
       alert('Visitor added successfully!');
     } catch (error) {
       console.error('Error adding visitor:', error);

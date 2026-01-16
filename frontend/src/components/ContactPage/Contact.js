@@ -24,7 +24,6 @@ const Contact = () => {
     setSuccess('');
 
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       console.log('Contact form submission:', formData);
@@ -39,7 +38,6 @@ const Contact = () => {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
       <div className="text-center mb-8">
         <div className="flex justify-center mb-4">
           <img src="/short_logo.png" alt="Society360 Logo" className="h-16 w-auto mr-3" />
@@ -49,7 +47,6 @@ const Contact = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Contact Form */}
         <div className="bg-white rounded-lg shadow p-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h2>
           
@@ -143,7 +140,6 @@ const Contact = () => {
           </form>
         </div>
 
-        {/* Contact Information */}
         <div className="space-y-6">
           <div className="bg-white rounded-lg shadow p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">Get in Touch</h2>

@@ -16,7 +16,6 @@ const Security = () => {
   const [showSecurityControl, setShowSecurityControl] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form state for security control
   const [controlData, setControlData] = useState({
     action: '',
     camera: '',
@@ -56,7 +55,6 @@ const Security = () => {
     }
   };
 
-  // Click outside to close modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showSecurityControl && securityModalRef.current && !securityModalRef.current.contains(event.target)) {
@@ -83,10 +81,8 @@ const Security = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call to security system
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Add new security alert
       const newAlert = {
         id: securityAlerts.length + 1,
         type: controlData.action === 'lockdown' ? 'System' : 'Manual',
@@ -101,7 +97,6 @@ const Security = () => {
 
       setSecurityAlerts([newAlert, ...securityAlerts]);
 
-      // Reset form
       setControlData({
         action: '',
         camera: '',

@@ -1,53 +1,53 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout/Layout';
-import Home from './components/Home/Home';
-import About from './components/About/About';
-import Contact from './components/Contact/Contact';
-import Login from './components/Auth/Login';
-import Register from './components/Auth/Register';
-import Dashboard from './components/Dashboard/Dashboard';
-import VisitorManagement from './components/Modules/VisitorManagement';
-import Maintenance from './components/Modules/Maintenance';
-import Finance from './components/Modules/Finance';
-import Communication from './components/Modules/Communication';
-import Administration from './components/Modules/Administration';
-import Amenities from './components/Modules/Amenities';
-import Complaints from './components/Modules/Complaints';
-import Security from './components/Modules/Security';
-import Emergency from './components/Modules/Emergency';
-import Privacy from './components/Privacy/Privacy';
-import Terms from './components/Terms/Terms';
-import Support from './components/Support/Support';
+import MainLayout from './components/Layout/MainLayout';
+import HomePage from './components/HomePage/Home';
+import AboutPage from './components/AboutPage/About';
+import ContactPage from './components/ContactPage/Contact';
+import SignInPage from './components/AuthPages/Login';
+import SignUpPage from './components/AuthPages/Register';
+import UserDashboard from './components/UserDashboard/Dashboard';
+import GuestRegistration from './components/ServiceModules/VisitorManagement';
+import RepairServices from './components/ServiceModules/Maintenance';
+import AccountingModule from './components/ServiceModules/Finance';
+import MessagingHub from './components/ServiceModules/Communication';
+import ManagementPanel from './components/ServiceModules/Administration';
+import FacilityBooking from './components/ServiceModules/Amenities';
+import IssueReporting from './components/ServiceModules/Complaints';
+import SafetyMonitoring from './components/ServiceModules/Security';
+import CrisisManagement from './components/ServiceModules/Emergency';
+import ConfidentialityPolicy from './components/PrivacyPage/Privacy';
+import TermsOfService from './components/TermsPage/Terms';
+import HelpCenter from './components/HelpCenter/Support';
 import './App.css';
 
-function App() {
+function Application() {
   return (
     <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <Layout>
+      <MainLayout>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/visitor-management" element={<VisitorManagement />} />
-          <Route path="/maintenance" element={<Maintenance />} />
-          <Route path="/finance" element={<Finance />} />
-          <Route path="/communication" element={<Communication />} />
-          <Route path="/administration" element={<Administration />} />
-          <Route path="/amenities" element={<Amenities />} />
-          <Route path="/security" element={<Security />} />
-          <Route path="/complaints" element={<Complaints />} />
-          <Route path="/emergency" element={<Emergency />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/support" element={<Support />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/signin" element={<SignInPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/dashboard" element={<UserDashboard />} />
+          <Route path="/guest-registration" element={<GuestRegistration />} />
+          <Route path="/repair-services" element={<RepairServices />} />
+          <Route path="/accounting" element={<AccountingModule />} />
+          <Route path="/messaging" element={<MessagingHub />} />
+          <Route path="/management" element={<ManagementPanel />} />
+          <Route path="/facilities" element={<FacilityBooking />} />
+          <Route path="/safety" element={<SafetyMonitoring />} />
+          <Route path="/issues" element={<IssueReporting />} />
+          <Route path="/crisis" element={<CrisisManagement />} />
+          <Route path="/confidentiality" element={<ConfidentialityPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/help" element={<HelpCenter />} />
         </Routes>
-      </Layout>
+      </MainLayout>
     </Router>
   );
 }
 
-export default App;
+export default Application;

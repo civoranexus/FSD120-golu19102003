@@ -1,27 +1,24 @@
 const express = require('express');
-const router = express.Router();
+const authenticationRouter = express.Router();
 
-// Login route
-router.post('/login', (req, res) => {
-  res.json({
-    message: 'Login endpoint - to be implemented',
-    data: req.body
+authenticationRouter.post('/signin', (request, response) => {
+  response.json({
+    message: 'User authentication endpoint - pending implementation',
+    requestData: request.body
   });
 });
 
-// Register route
-router.post('/register', (req, res) => {
-  res.json({
-    message: 'Register endpoint - to be implemented',
-    data: req.body
+authenticationRouter.post('/signup', (request, response) => {
+  response.json({
+    message: 'User registration endpoint - pending implementation',
+    requestData: request.body
   });
 });
 
-// Logout route
-router.post('/logout', (req, res) => {
-  res.json({
-    message: 'Logout endpoint - to be implemented'
+authenticationRouter.post('/signout', (request, response) => {
+  response.json({
+    message: 'Session termination endpoint - pending implementation'
   });
 });
 
-module.exports = router;
+module.exports = authenticationRouter;

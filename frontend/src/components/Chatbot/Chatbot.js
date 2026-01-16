@@ -44,39 +44,33 @@ const Chatbot = () => {
     compactMode: false
   });
   
-  // Chatbot window size controls
   const [chatbotWidth, setChatbotWidth] = useState(400);
   const [chatbotHeight, setChatbotHeight] = useState(550);
   
-  // Service menu state
   const [showServiceMenu, setShowServiceMenu] = useState(false);
   
   const messagesEndRef = useRef(null);
   const recognitionRef = useRef(null);
 
-  // Navigation function
   const navigateToService = (serviceName, route) => {
     addMessage(`Navigating to ${serviceName}...`, "user");
     setShowServiceMenu(false);
     setTimeout(() => {
       navigate(route);
-      setChatExpanded(false); // Auto-close chatbot
+      setChatExpanded(false);
     }, 1000);
   };
 
-  // Handle click outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       const chatbotElement = document.getElementById('chatbot-container');
       const externalMenuElement = document.getElementById('external-service-menu');
       const threeDotButton = event.target.closest('.fixed.top-\\[78\\%\\].right-6');
       
-      // Close service menu if clicking outside and not on 3-dot button
       if (externalMenuElement && !externalMenuElement.contains(event.target) && !threeDotButton) {
         setShowServiceMenu(false);
       }
       
-      // Close chatbot if clicking outside when chat is open
       if (chatExpanded && chatbotElement && !chatbotElement.contains(event.target) && !threeDotButton) {
         setChatExpanded(false);
         setShowServiceMenu(false);
@@ -92,20 +86,16 @@ const Chatbot = () => {
     };
   }, [chatExpanded, showServiceMenu]);
 
-  // Auto-scroll to bottom when new messages are added
   useEffect(() => {
     const messagesContainer = document.getElementById('chatbot-messages');
     if (messagesContainer) {
-      // Scroll to show both user message and bot response completely
       setTimeout(() => {
         messagesContainer.scrollTop = messagesContainer.scrollHeight - 150;
       }, 100);
     }
   }, [messages]);
 
-  // 🔹 ALL RESPONSES
   const responses = {
-    // 👋 Greetings & Salutations
     hi: "Hello 👋 Welcome to **Society360**! How can I assist you today?",
     hello: "Hello! 😊 I'm your **Society360 Assistant**. How may I help you?",
     hey: "Hey there! 👋 How can Society360 help you today?",
@@ -124,14 +114,14 @@ const Chatbot = () => {
     see: "See you soon! 👋 Society360 wishes you a wonderful day ahead!",
     later: "Talk to you later! 😊 Society360 is always available for your society needs.",
 
-    // 🏘️ About Society360 - Detailed Information
+    
     what: "**Society360** is a comprehensive society management platform designed to streamline all aspects of residential community living. From maintenance requests to visitor management, we digitize and simplify your society operations.",
     about: "**About Society360** 🏘️\n\nWe are a cutting-edge society management solution that brings together:\n- Digital maintenance tracking\n- Smart visitor management\n- Automated billing systems\n- Real-time communication\n- Amenities booking\n- Security monitoring\n\nOur mission is to make society living seamless, transparent, and efficient for everyone.",
     features: "**Society360 Features** ✨\n\n🔧 **Maintenance Management**: Track, assign, and monitor all maintenance requests\n👥 **Visitor Management**: Digital entry passes and approval system\n💳 **Billing & Payments**: Automated maintenance bills and online payments\n🏊 **Amenities Booking**: Book gym, pool, clubhouse online\n🔐 **Security Integration**: 24/7 security monitoring and alerts\n📱 **Mobile App**: Access everything on your smartphone\n📊 **Analytics Dashboard**: Comprehensive society insights and reports",
     platform: "**Society360 Platform** 🌐\n\nOur platform integrates:\n- Web Dashboard for management committee\n- Mobile App for residents\n- Admin portal for society staff\n- API integrations for third-party services\n\nAll working together seamlessly to provide a complete society management ecosystem.",
     benefits: "**Benefits of Society360** 🎯\n\n✅ **For Residents**:\n- Easy maintenance requests\n- Quick visitor approvals\n- Online bill payments\n- Instant notifications\n\n✅ **For Management**:\n- Reduced paperwork\n- Better tracking\n- Improved efficiency\n- Data-driven decisions\n\n✅ **For Society**:\n- Enhanced security\n- Cost savings\n- Better resident satisfaction\n- Modern digital experience",
 
-    // 🛠️ Maintenance - Enhanced
+    
     maintenance: 
       "**Issue Type:** Maintenance Request\n**Status:** Registered\n\nThank you for informing us. Our maintenance team will inspect the issue within **24 hours**.\n\n**Reference ID:** SOCIETY-MNT-" + 
       Math.floor(10000 + Math.random() * 90000) + 
@@ -148,7 +138,7 @@ const Chatbot = () => {
     
     carpenter: "**Carpentry Services** 🪑\n\nOur carpentry team provides:\n- Door and window repairs\n- Furniture fixes\n- Custom woodwork\n- Cabinet installations",
 
-    // 🧹 Housekeeping - Enhanced
+    
     garbage: 
       "**Issue Type:** Housekeeping\n**Status:** Assigned\n\nYour garbage collection complaint has been forwarded to the housekeeping team.\n\n**Reference ID:** SOCIETY-GAR-" + 
       Math.floor(10000 + Math.random() * 90000) + 
@@ -161,7 +151,7 @@ const Chatbot = () => {
       
     sanitation: "**Sanitation Services** 🧹\n\nOur sanitation team ensures:\n- Daily floor cleaning\n- Regular disinfection\n- Waste management\n- Hygiene monitoring\n\nSpecial COVID-19 protocols still in place for high-touch areas.",
 
-    // 🔐 Security - Enhanced
+    
     security: 
       "**Issue Type:** Security Concern\n**Status:** Alerted\n\nSecurity personnel have been notified immediately.\n\n**Reference ID:** SOCIETY-SEC-" + 
       Math.floor(10000 + Math.random() * 90000) + 
@@ -176,7 +166,7 @@ const Chatbot = () => {
       
     fire: "**Fire Safety** 🔥\n\nFire safety measures:\n- Fire extinguishers on every floor\n- Smoke detectors in all common areas\n- Regular fire drills\n- 24/7 fire monitoring system\n- Emergency evacuation plans",
 
-    // 🚰 Utilities - Enhanced
+    
     water: 
       "**Issue Type:** Water Supply\n**Status:** Under Review\n\nOur facility team is checking the issue. Updates will be shared soon.\n\n**Reference ID:** SOCIETY-WAT-" + 
       Math.floor(10000 + Math.random() * 90000) + 
@@ -189,7 +179,7 @@ const Chatbot = () => {
       
     internet: "**Internet Services** 🌐\n\nHigh-speed internet available:\n- Fiber optic connection\n- 100+ Mbps speed\n- 24/7 technical support\n- Multiple ISP options\n\nContact IT helpdesk for connectivity issues.",
 
-    // 🚗 Parking - Enhanced
+    
     parking: 
       "**Issue Type:** Parking Violation\n**Status:** Forwarded to Security\n\nThe security team will monitor and take action.\n\n**Reference ID:** SOCIETY-PARK-" + 
       Math.floor(10000 + Math.random() * 90000) + 
@@ -199,7 +189,7 @@ const Chatbot = () => {
       
     tow: "**Vehicle Towing** 🚛\n\nTowing policy:\n- Unauthorized vehicles will be towed\n- ₹1000 towing fee + daily storage\n- 24-hour notice before towing\n- Release requires ID proof and fee payment",
 
-    // 🧍 Visitor Management - Enhanced
+    
     visitor: 
       "**Issue Type:** Visitor Management\n**Status:** Logged\n\nYour visitor-related concern has been registered.\n\n**Reference ID:** SOCIETY-VIS-" + 
       Math.floor(10000 + Math.random() * 90000) + 
@@ -212,7 +202,7 @@ const Chatbot = () => {
       
     domestic: "**Domestic Help** 👩‍🍳\n\nDomestic help management:\n- Biometric registration required\n- ID cards issued by society\n- Working hours: 8 AM - 8 PM\n- Background verification completed\n\nRegister your domestic help at the security office.",
 
-    // 🏊 Amenities - Enhanced
+    
     amenities: 
       "Amenities like gym, pool, and clubhouse can be booked via the **Society360 app**. Would you like booking help?",
       
@@ -227,7 +217,7 @@ const Chatbot = () => {
       
     sports: "**Sports Facilities** ⚽\n\nSports amenities:\n- Badminton courts (2)\n- Tennis court (1)\n- Basketball court (1)\n- Table tennis tables (4)\n- Chess room\n\nEquipment available on rent. Coaching available for kids.",
 
-    // 💳 Billing & Charges - Enhanced
+    
     bill: 
       "You can view and pay your maintenance bills from the **Society360 dashboard** under *Payments*. **Payment methods:**\n- UPI, Net Banking, Cards\n- Auto-debit facility available\n- EMI options for large amounts\n- Early payment discounts (5% before 5th)",
       
@@ -240,7 +230,7 @@ const Chatbot = () => {
       
     refund: "**Refund Policy** 💰\n\nRefund process:\n- Maintenance deposits: Refundable in 30 days\n- Amenities booking: 50% refund if cancelled 48h prior\n- Event cancellations: As per policy terms\n\nRefunds processed within 7 working days.",
 
-    // 📋 Rules & Office - Enhanced
+    
     rules: 
       "Society rules are available on the Society360 portal under *Documents*. **Key rules include:**\n- No loud music after 10 PM\n- Pets must be leashed in common areas\n- No commercial activities in residential flats\n- Proper waste segregation mandatory",
       
@@ -253,7 +243,7 @@ const Chatbot = () => {
       
     certificate: "**Certificates & Documents** 📄\n\nAvailable documents:\n- Residence certificate\n- NOC for loans/visas\n- Tax receipts\n- Society share certificates\n- Parking allotment letters\n\nApply via Society360 app, collect in 3 working days.",
 
-    // 🔍 Tracking - Enhanced
+    
     track: 
       "Please provide your **reference ID** to track the status of your complaint. **Tracking options:**\n- Society360 app (real-time updates)\n- SMS notifications\n- Email updates\n- Call society office\n\nExample: SOCIETY-MNT-12345",
       
@@ -261,61 +251,61 @@ const Chatbot = () => {
       
     feedback: "**Feedback System** ⭐\n\nAfter resolution, please rate:\n⭐⭐⭐⭐⭐ Excellent service\n⭐⭐⭐⭐ Good service\n⭐⭐⭐ Satisfactory\n⭐⭐ Needs improvement\n⭐ Poor service\n\nYour feedback helps us improve!",
 
-    // 🏥 Health & Wellness
+    
     medical: "**Medical Facilities** 🏥\n\nHealth services:\n- First aid room at society office\n- Doctor on call (9 AM - 6 PM)\n- Ambulance on standby\n- Medical emergency contacts\n- Health check-up camps quarterly\n\nEmergency: Dial 108 for ambulance",
     
     pharmacy: "**Pharmacy Services** 💊\n\nNearby pharmacies:\n- Apollo Pharmacy (500m)\n- MedPlus (300m)\n- 24/7 pharmacy available\n- Home delivery available\n\nSociety has tie-up for emergency medicines.",
     
     doctor: "**Doctor Consultation** 👨‍⚕️\n\nMedical services:\n- Resident doctor: Tue/Thu/Sat (4 PM - 6 PM)\n- Online consultation available\n- Specialist appointments arranged\n- Medical reports collection service\n\nBook via Society360 app.",
 
-    // 🎉 Events & Community
+    
     events: "**Society Events** 🎉\n\nUpcoming events:\n- Diwali celebration: Oct 25\n- Annual day: Dec 15\n- Summer camp: April-May\n- Sports tournament: February\n\nRegister via Society360 app. Early bird discounts available!",
     
     festival: "**Festival Celebrations** 🎊\n\nSociety celebrates:\n- Diwali: Fireworks & community dinner\n- Holi: Colors & rain dance\n- Christmas: Tree decoration & carols\n- Eid: Special feast & cultural program\n- Ganesh Chaturthi: 10-day celebration\n\nAll residents welcome to participate!",
     
     community: "**Community Activities** 🤝\n\nCommunity initiatives:\n- Senior citizen club\n- Women's welfare group\n- Youth sports club\n- Environmental awareness group\n- Book reading club\n\nJoin via Society360 app. New members welcome!",
 
-    // 🌿 Environment & Sustainability
+    
     environment: "**Green Initiatives** 🌿\n\nEco-friendly practices:\n- Solar panels for common areas\n- Rainwater harvesting system\n- Organic waste composting\n- LED lighting in all areas\n- Plastic-free society initiative\n\nJoin our green committee!",
     
     waste: "**Waste Management** ♻️\n\nWaste segregation:\n- Wet waste: Daily collection\n- Dry waste: Mon/Wed/Fri\n- E-waste: Monthly collection\n- Medical waste: Special collection\n\nSegregation bins available on each floor.",
     
     solar: "**Solar Energy** ☀️\n\nSolar installations:\n- Rooftop solar panels: 100 kW\n- Common area lighting: Solar powered\n- Water heating: Solar geysers\n- Battery backup: 4 hours\n\nSavings: ₹50,000/month on electricity bills!",
 
-    // 📱 Technology & Innovation
+    
     app: "**Society360 App** 📱\n\nApp features:\n- Maintenance requests\n- Visitor management\n- Bill payments\n- Amenities booking\n- Community notices\n- Emergency contacts\n\nDownload: Android | iOS | Web version available",
     
     smart: "**Smart Society Features** 🏠\n\nSmart technologies:\n- Automated lighting\n- Smart water meters\n- Digital access control\n- IoT sensors for maintenance\n- AI-powered security\n\nMaking your society future-ready!",
     
     digital: "**Digital Services** 💻\n\nOnline services:\n- Digital notice boards\n- Online complaint system\n- Virtual society meetings\n- E-document signing\n- Digital certificates\n\nPaperless society initiative in progress!",
 
-    // 🎓 Education & Kids
+    
     kids: "**Kids Facilities** 👶\n\nChild-friendly amenities:\n- Kids play area (age 2-12)\n- Indoor games room\n- Tuition center support\n- Summer camp programs\n- Safe zone monitoring\n\nKids safety is our priority!",
     
     tuition: "**Education Support** 📚\n\nEducational facilities:\n- Study room in clubhouse\n- WiFi in common areas\n- Printer/scanner service\n- Tutor directory available\n- Exam time special arrangements\n\nBook study slots via app!",
     
     play: "**Play Areas** 🎮\n\nRecreation zones:\n- Toddlers play zone (2-5 years)\n- Kids play area (6-12 years)\n- Teen gaming zone\n- Indoor sports area\n- Outdoor sports courts\n\nAll areas supervised during peak hours.",
 
-    // 🛍️ Shopping & Services
+    
     shopping: "**Shopping Services** 🛍️\n\nConvenience shopping:\n- Society convenience store\n- Milk & newspaper delivery\n- ATM on premises\n- Laundry pickup service\n- Car wash service\n\nDaily essentials available at your doorstep!",
     
     store: "**Convenience Store** 🏪\n\nStore offerings:\n- Groceries & essentials\n- Household items\n- Stationery supplies\n- Emergency medicines\n- Recharge services\n\nOpen: 7 AM - 10 PM daily",
     
     atm: "**Banking Services** 🏦\n\nFinancial facilities:\n- ATM machine (24/7)\n- Cash deposit machine\n- Bank representative (Tue/Thu)\n- Loan document assistance\n- Investment advisory\n\nAll major banks supported.",
 
-    // 🚗 Transportation
+    
     transport: "**Transportation** 🚗\n\nTravel facilities:\n- Society bus service\n- Auto-rickshaw stand\n- Taxi booking service\n- Car rental service\n- Bicycle parking area\n\nEasy commute options available!",
     
     metro: "**Public Transport** 🚇\n\nConnectivity:\n- Metro station: 500m walk\n- Bus stop: 200m\n- Auto stand: Society gate\n- Railway station: 3km\n\nSociety shuttle to metro available (6 AM - 10 PM).",
 
-    // 🏢 Property & Real Estate
+    
     property: "**Property Services** 🏢\n\nProperty assistance:\n- Sale/purchase documentation\n- NOC for property transactions\n- Rental agreement assistance\n- Property valuation service\n- Legal documentation help\n\nAll property services at reasonable rates!",
     
     rent: "**Rental Services** 🏠\n\nRental facilities:\n- Tenant verification service\n- Rental agreement drafting\n- Police verification assistance\n- Move-in/move-out support\n- Security deposit management\n\nProtect your property with our rental services!",
     
     noc: "**NOC Services** 📋\n\nNOC available for:\n- Bank loans\n- Property registration\n- Visa applications\n- Gas connections\n- Business registrations\n\nApply via app, collect in 5 working days.",
 
-    // 🎯 General Help & Support
+    
     help: "**How can I help you?** 🤝\n\nI can assist with:\n- Maintenance issues\n- Visitor management\n- Bill payments\n- Amenities booking\n- Security concerns\n- Society rules\n- Emergency contacts\n- And much more!\n\nWhat specific help do you need?",
     
     contact: "**Contact Information** 📞\n\nSociety contacts:\n- Office: +91-12345-67890\n- Security: +91-98765-43210\n- Emergency: +91-99999-88888\n- Email: info@society360.com\n- Website: www.society360.com\n\nWe're here to help 24/7!",
@@ -326,7 +316,7 @@ const Chatbot = () => {
     
     suggestion: "**Suggestions Welcome** 💭\n\nShare your ideas for:\n- New amenities\n- Process improvements\n- Event suggestions\n- Green initiatives\n- Community programs\n\nSubmit suggestions via Society360 app or email suggestions@society360.com",
 
-    // 🎊 Fun & Relaxed Conversations
+    
     joke: "**Society Joke** 😄\n\nWhy did the resident bring a ladder to the society meeting?\n\nBecause they wanted to reach new heights in community living! 🏠✨\n\nWant to hear another one?",
     
     weather: "**Weather Update** 🌤️\n\nToday's weather in your area:\n- Temperature: 28°C\n- Humidity: 65%\n- Forecast: Partly cloudy\n\nPerfect weather for a walk in the society garden! 🌳",
@@ -339,12 +329,12 @@ const Chatbot = () => {
     
     mood: "**Mood Booster** 🌈\n\nHaving a tough day? Remember:\n- Your neighbors care about you\n- Society staff is here to help\n- Every problem has a solution\n- Tomorrow is a new day\n\nWe're all in this together! 💪",
 
-    // ❓ Default - Enhanced
+    
     default: 
       "Hello! 😊 I'm your **Society360 Assistant** and I can help you with:\n\n🏘️ **About Society360**: Features, benefits, platform details\n🔧 **Maintenance**: Repairs, plumbing, electrical, carpentry\n🧹 **Housekeeping**: Cleaning, garbage, pest control, sanitation\n🔐 **Security**: Guards, CCTV, emergencies, fire safety\n🚰 **Utilities**: Water, electricity, gas, internet\n🚗 **Parking**: Rules, vehicle management, towing\n👥 **Visitors**: Passes, delivery, domestic help\n🏊 **Amenities**: Gym, pool, clubhouse, garden, sports\n💳 **Billing**: Payments, charges, receipts, refunds\n📋 **Rules**: Society regulations, office, meetings, certificates\n🔍 **Tracking**: Complaint status, feedback\n🏥 **Health**: Medical facilities, pharmacy, doctors\n🎉 **Events**: Festivals, community activities\n🌿 **Environment**: Green initiatives, waste management, solar\n📱 **Technology**: App features, smart society, digital services\n👶 **Kids**: Play areas, education, tuition\n🛍️ **Shopping**: Store, ATM, services\n🚗 **Transport**: Metro, bus, society shuttle\n🏢 **Property**: Rental, NOC, property services\n🎯 **Support**: Help, contact, feedback, complaints\n🎊 **Fun**: Jokes, weather, quotes, relaxation\n\n**How may I assist you today?** Just ask me anything!",
   };
 
-  // 🎨 Enhanced UI Functions
+  
   const toggleChat = () => {
     setChatExpanded((prev) => !prev);
     if (!chatExpanded && userPreferences.soundEnabled) {
@@ -371,7 +361,7 @@ const Chatbot = () => {
     }
   };
 
-  // 🎤 Voice Recognition
+  
   const startListening = () => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -448,7 +438,7 @@ const Chatbot = () => {
     
     if (!userMessage && !hasImage) return;
 
-    // Add user message with image if present
+    
     if (hasImage) {
       addMessage({ text: userMessage, sender: "user", image: imagePreview });
     } else {
@@ -461,7 +451,7 @@ const Chatbot = () => {
     setTimeout(() => {
       setIsTyping(false);
       
-      // Handle image response
+      
       if (hasImage) {
         const imageResponses = [
           "I can see the image you've shared! 📸 This appears to be related to society management. Could you please describe what you'd like me to help you with regarding this image?",
@@ -476,7 +466,7 @@ const Chatbot = () => {
         addMessage(getBotResponse(userMessage), "bot");
       }
       
-      // Automatically show a random question after user sends a message
+      
       const questions = [
         "How can I help you with maintenance today?",
         "Do you need assistance with visitor management?",
@@ -497,13 +487,13 @@ const Chatbot = () => {
 
   return (
     <div className="z-50" onClick={() => {
-      // Close chatbot when clicking outside
+      
       if (chatExpanded) {
         setChatExpanded(false);
         setShowServiceMenu(false);
       }
     }}>
-      {/* Floating Button with Advanced Features */}
+      {}
       {!chatExpanded && (
         <motion.div
           className="fixed top-[75%] right-[14px] cursor-pointer z-[998]"
@@ -521,7 +511,7 @@ const Chatbot = () => {
         >
           <div className={`relative ${darkMode ? 'bg-gray-800' : 'bg-white'} text-[#147783] hover:bg-[#1B9AAA] hover:text-white p-4 rounded-full shadow-2xl transition-all duration-300 font-semibold border-2 border-[#1B9AAA]`}>
             <img src="/logo.svg" alt="Society360" className="h-8 w-8" />
-            {/* Notification Badge */}
+            {}
             {messages.length > 1 && (
               <motion.div
                 className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"
@@ -532,13 +522,13 @@ const Chatbot = () => {
                 {messages.length - 1}
               </motion.div>
             )}
-            {/* Online Indicator */}
+            {}
             <div className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white animate-pulse" style={{backgroundColor: '#147783'}}></div>
           </div>
         </motion.div>
       )}
 
-      {/* Chat Window */}
+      {}
       <AnimatePresence>
         {chatExpanded && (
           <motion.div
@@ -551,7 +541,7 @@ const Chatbot = () => {
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Enhanced Header */}
+            {}
             <div className={`${darkMode ? 'bg-gradient-to-r from-blue-600 to-purple-600' : 'bg-gradient-to-r from-[#16808D] to-[#1B9AAA]'} text-white p-4 flex justify-between items-center transition-all`}>
               <div className="flex items-center space-x-3">
                 <motion.div
@@ -597,7 +587,7 @@ const Chatbot = () => {
                   style={{borderColor: '#0C4A50'}}
                 >
                   <MoreHorizontal className="h-4 w-4" />
-                  {/* Notification Badge */}
+                  {}
                   <div className="absolute -top-1 -right-1 h-3 w-3 rounded-full border-2 border-white animate-pulse text-[#0C4A50]" style={{backgroundColor: 'currentColor'}}></div>
                 </button>
                 <button 
@@ -610,7 +600,7 @@ const Chatbot = () => {
               </div>
             </div>
 
-            {/* Advanced Options Panel */}
+            {}
             <AnimatePresence>
               {showAdvancedOptions && (
                 <motion.div
@@ -649,7 +639,7 @@ const Chatbot = () => {
                       </button>
                     </div>
                   </div>
-                  {/* Size Controls */}
+                  {}
                   <div className="flex items-center justify-between mt-3 space-x-3">
                     <div className="flex items-center space-x-2">
                       <label className="text-xs font-medium">Width:</label>
@@ -680,7 +670,7 @@ const Chatbot = () => {
               )}
             </AnimatePresence>
 
-            {/* Service Menu */}
+            {}
             <AnimatePresence>
               {showServiceMenu && (
                 <motion.div
@@ -796,7 +786,7 @@ const Chatbot = () => {
               )}
             </AnimatePresence>
 
-            {/* Messages Area */}
+            {}
             {!isMinimized && (
               <div id="chatbot-messages" className={`flex-1 p-4 overflow-y-auto ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} space-y-3 max-h-[400px]`}>
                 {messages.map((msg, i) => (
@@ -825,7 +815,7 @@ const Chatbot = () => {
                       )}
                     </div>
                     <div className="flex flex-col max-w-[75%]">
-                      {/* Show image if present */}
+                      {}
                       {msg.image && (
                         <div className="mb-2">
                           <img 
@@ -859,7 +849,7 @@ const Chatbot = () => {
                   </motion.div>
                 ))}
                 
-                {/* Typing Indicator */}
+                {}
                 {isTyping && (
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
@@ -894,7 +884,7 @@ const Chatbot = () => {
               </div>
             )}
 
-            {/* Enhanced Suggestions */}
+            {}
             {!isMinimized && (
               <div className={`p-3 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'} border-t`}>
                 <div className="flex flex-wrap gap-2">
@@ -917,10 +907,10 @@ const Chatbot = () => {
               </div>
             )}
 
-            {/* Enhanced Input Area */}
+            {}
             {!isMinimized && (
               <div className={`p-3 ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'} border-t`}>
-                {/* Image Preview */}
+                {}
                 {imagePreview && (
                   <div className="mb-3 p-2 bg-gray-100 dark:bg-gray-700 rounded-lg">
                     <div className="flex items-center justify-between mb-2">

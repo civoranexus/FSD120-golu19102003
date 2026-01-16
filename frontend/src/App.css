@@ -54,7 +54,6 @@ body {
   font-weight: 600;
 }
 
-/* Custom animations */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
@@ -64,7 +63,6 @@ body {
   animation: spin 1s linear infinite;
 }
 
-/* Gradient backgrounds */
 .bg-gradient-to-r {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
 }

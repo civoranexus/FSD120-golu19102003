@@ -1,1 +1,10 @@
-const express = require('express'); const router = express.Router(); router.get('/', (req, res) => { res.json({ message: 'Communication endpoint - to be implemented' }); }); module.exports = router;
+const express = require('express');
+const communicationHubRouter = express.Router();
+
+communicationHubRouter.get('/', (request, response) => {
+  response.json({
+    message: 'Communication hub endpoint - pending implementation'
+  });
+});
+
+module.exports = communicationHubRouter;

@@ -1,1 +1,10 @@
-const express = require('express'); const router = express.Router(); router.get('/', (req, res) => { res.json({ message: 'Administration endpoint - to be implemented' }); }); module.exports = router;
+const express = require('express');
+const administrativeControlRouter = express.Router();
+
+administrativeControlRouter.get('/', (request, response) => {
+  response.json({
+    message: 'Administrative control endpoint - pending implementation'
+  });
+});
+
+module.exports = administrativeControlRouter;

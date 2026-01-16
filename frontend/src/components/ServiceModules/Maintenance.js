@@ -25,14 +25,11 @@ const Maintenance = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
-  // Simulate database connection
   useEffect(() => {
-    // Load initial data from localStorage (simulating database)
     const savedRequests = localStorage.getItem('maintenanceRequests');
     if (savedRequests) {
       setRequests(JSON.parse(savedRequests));
     } else {
-      // Initial sample data
       const initialRequests = [
         { id: 1, title: 'AC Repair - Block A', description: 'Air conditioning not working in living room', unit: 'A-101', priority: 'High', status: 'pending', date: 'Jan 7, 2024', category: 'HVAC', contactName: 'John Doe', contactPhone: '9876543210', contactEmail: 'john@email.com', preferredDate: '2024-01-15', preferredTime: '10:00' },
         { id: 2, title: 'Water Leakage - Block D', description: 'Water leaking from ceiling in bedroom', unit: 'D-205', priority: 'Medium', status: 'in-progress', date: 'Jan 6, 2024', category: 'Plumbing', contactName: 'Jane Smith', contactPhone: '9876543211', contactEmail: 'jane@email.com', preferredDate: '2024-01-14', preferredTime: '14:00' },
@@ -43,7 +40,6 @@ const Maintenance = () => {
     }
   }, []);
 
-  // Click outside to close modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showAddForm && maintenanceModalRef.current && !maintenanceModalRef.current.contains(event.target)) {
@@ -87,7 +83,6 @@ const Maintenance = () => {
       ...prev,
       [name]: value
     }));
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -103,7 +98,6 @@ const Maintenance = () => {
     setLoading(true);
     
     try {
-      // Simulate API call to database
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const newRequest = {
@@ -117,10 +111,8 @@ const Maintenance = () => {
       const updatedRequests = [newRequest, ...requests];
       setRequests(updatedRequests);
       
-      // Save to localStorage (simulating database)
       localStorage.setItem('maintenanceRequests', JSON.stringify(updatedRequests));
       
-      // Reset form
       setFormData({
         title: '',
         description: '',
@@ -138,7 +130,6 @@ const Maintenance = () => {
       setErrors({});
       setShowAddForm(false);
       
-      // Show success message
       alert('Maintenance request submitted successfully!');
     } catch (error) {
       console.error('Error submitting request:', error);

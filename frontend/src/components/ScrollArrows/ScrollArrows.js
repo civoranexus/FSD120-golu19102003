@@ -11,10 +11,8 @@ const ScrollArrows = () => {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       const clientHeight = document.documentElement.clientHeight;
       
-      // Show scroll-to-top when not at top
       setShowScrollTop(scrollTop > 100);
       
-      // Show scroll-to-bottom when not at bottom
       setShowScrollDown(scrollTop < scrollHeight - clientHeight - 100);
     };
 

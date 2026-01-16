@@ -18,7 +18,6 @@ const Complaints = () => {
   const [showComplaintForm, setShowComplaintForm] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form state for new complaint
   const [complaintData, setComplaintData] = useState({
     title: '',
     description: '',
@@ -87,7 +86,6 @@ const Complaints = () => {
     setComplaints([newComplaint, ...complaints]);
   };
 
-  // Click outside to close modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showComplaintForm && complaintModalRef.current && !complaintModalRef.current.contains(event.target)) {
@@ -114,10 +112,8 @@ const Complaints = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call to database
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Create new complaint object
       const newComplaint = {
         id: complaints.length + 1,
         title: complaintData.title,
@@ -138,10 +134,8 @@ const Complaints = () => {
         updatedAt: new Date().toISOString()
       };
 
-      // Add to complaints array (simulating database insert)
       setComplaints([newComplaint, ...complaints]);
 
-      // Reset form
       setComplaintData({
         title: '',
         description: '',

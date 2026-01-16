@@ -7,13 +7,13 @@ import Chatbot from '../Chatbot/Chatbot.js';
 import Notifications from '../Notifications/Notifications';
 import { NotificationsProvider } from '../../contexts/NotificationsContext';
 
-const Layout = ({ children }) => {
+const MainLayout = ({ children }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
   const location = useLocation();
   const dropdownRef = useRef(null);
 
-  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
+  const isAuthPage = location.pathname === '/signin' || location.pathname === '/signup';
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -33,19 +33,19 @@ const Layout = ({ children }) => {
     { path: '/about', label: 'About', icon: Info },
     { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
     { path: '/contact', label: 'Contact', icon: MessageSquare },
-    { path: '/login', label: 'Login', icon: LogIn },
+    { path: '/signin', label: 'Sign In', icon: LogIn },
   ];
 
   const servicesItems = [
-    { path: '/visitor-management', label: 'Visitors', icon: Users },
-    { path: '/maintenance', label: 'Maintenance', icon: Wrench },
-    { path: '/finance', label: 'Finance', icon: DollarSign },
-    { path: '/communication', label: 'Communication', icon: MessageSquare },
-    { path: '/administration', label: 'Administration', icon: Settings },
-    { path: '/amenities', label: 'Amenities', icon: Building },
-    { path: '/security', label: 'Security', icon: Shield },
-    { path: '/complaints', label: 'Complaints', icon: FileText },
-    { path: '/emergency', label: 'Emergency', icon: AlertTriangle },
+    { path: '/guest-registration', label: 'Guest Registration', icon: Users },
+    { path: '/repair-services', label: 'Repair Services', icon: Wrench },
+    { path: '/accounting', label: 'Accounting', icon: DollarSign },
+    { path: '/messaging', label: 'Messaging', icon: MessageSquare },
+    { path: '/management', label: 'Management', icon: Settings },
+    { path: '/facilities', label: 'Facilities', icon: Building },
+    { path: '/safety', label: 'Safety', icon: Shield },
+    { path: '/issues', label: 'Issue Reporting', icon: FileText },
+    { path: '/crisis', label: 'Crisis Management', icon: AlertTriangle },
   ];
 
   const isActiveLink = (path) => location.pathname === path;
@@ -53,24 +53,21 @@ const Layout = ({ children }) => {
   return (
     <NotificationsProvider>
       <div className="min-h-screen bg-gray-50">
-      {}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
-            {}
             <div className="flex items-center">
                 <img 
                   src="/Long_logo.png" 
-                  alt="Society360 Logo" 
+                  alt="ResidentialHub Logo" 
                   className="h-8 w-auto mr-2"
                 />
                 <div className="flex flex-col">
-                  <span className="text-xl font-bold" style={{color: '#16808D'}}>Society360</span>
+                  <span className="text-xl font-bold" style={{color: '#16808D'}}>ResidentialHub</span>
                   <span className="text-xs" style={{color: '#020509'}}>by Civora Nexus</span>
                 </div>
               </div>
 
-            {}
             <div className="hidden md:flex items-center space-x-4 ml-auto">
               {navigationItems.slice(0, 3).map((item) => {
                 const Icon = item.icon;
@@ -112,7 +109,6 @@ const Layout = ({ children }) => {
                 );
               })}
               
-              {}
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setIsServicesDropdownOpen(!isServicesDropdownOpen)}
@@ -182,7 +178,6 @@ const Layout = ({ children }) => {
                 )}
               </div>
 
-              {}
               {navigationItems.slice(3).map((item) => {
                 const Icon = item.icon;
                 return (
@@ -223,11 +218,9 @@ const Layout = ({ children }) => {
                 );
               })}
               
-              {}
               <Notifications />
             </div>
 
-            {}
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -243,7 +236,6 @@ const Layout = ({ children }) => {
           </div>
         </div>
 
-        {}
         {isMobileMenuOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 bg-transparent border-t border-gray-200">
@@ -291,25 +283,22 @@ const Layout = ({ children }) => {
         )}
       </nav>
 
-      {}
       <main className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${isAuthPage ? 'pt-8' : 'pt-24'} pb-8`}>
         {children}
       </main>
 
-      {}
       <footer className="bg-white text-gray-800 mt-auto">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-12">
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6 lg:gap-8 items-start">
-            {}
             <div className="flex flex-col h-full">
               <div className="flex items-center mb-4">
                 <img 
                   src="/Short_logo.png" 
-                  alt="Society360 Logo" 
+                  alt="ResidentialHub Logo" 
                   className="h-6 w-auto mr-3"
                 />
                 <div>
-                  <h3 className="text-lg font-bold leading-tight mb-1" style={{color: '#16808D'}}>Society360</h3>
+                  <h3 className="text-lg font-bold leading-tight mb-1" style={{color: '#16808D'}}>ResidentialHub</h3>
                   <h4 className="text-xs font-medium leading-tight" style={{color: '#020509'}}>by Civora Nexus</h4>
                 </div>
               </div>
@@ -317,52 +306,49 @@ const Layout = ({ children }) => {
                 Smart Residential Management System powered by Civora Nexus Pvt. Ltd.
               </p>
               <div className="flex space-x-4">
-                <a href="https:
+                <a href="https://facebook.com/residentialhub" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
                   <img src="/facebook.png" alt="Facebook" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://instagram.com/residentialhub" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
                   <img src="/instagram.png" alt="Instagram" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://twitter.com/residentialhub" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
                   <img src="/twitter.png" alt="Twitter" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://linkedin.com/company/residentialhub" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
                   <img src="/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://youtube.com/residentialhub" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
                   <img src="/youtube.png" alt="YouTube" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://github.com/residentialhub" target="_blank" rel="noopener noreferrer" className="text-[#147783] hover:text-[#147783] transition-colors">
                   <img src="/github.png" alt="GitHub" className="w-5 h-5" />
                 </a>
               </div>
             </div>
 
-            {}
             <div className="flex flex-col h-full">
               <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Quick Links</h3>
               <ul className="space-y-2 text-sm">
                 <li><Link to="/" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Home</Link></li>
                 <li><Link to="/about" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>About</Link></li>
                 <li><Link to="/contact" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Contact</Link></li>
-                <li><Link to="/login" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Login</Link></li>
+                <li><Link to="/signin" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Sign In</Link></li>
                 <li><Link to="/dashboard" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Dashboard</Link></li>
               </ul>
             </div>
 
-            {}
             <div className="flex flex-col h-full">
               <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Services</h3>
               <ul className="space-y-2 text-sm">
-                <li><Link to="/visitor-management" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Visitor Management</Link></li>
-                <li><Link to="/maintenance" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Maintenance</Link></li>
-                <li><Link to="/finance" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Finance</Link></li>
-                <li><Link to="/communication" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Communication</Link></li>
-                <li><Link to="/administration" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Administration</Link></li>
+                <li><Link to="/guest-registration" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Guest Registration</Link></li>
+                <li><Link to="/repair-services" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Repair Services</Link></li>
+                <li><Link to="/accounting" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Accounting</Link></li>
+                <li><Link to="/messaging" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Messaging</Link></li>
+                <li><Link to="/management" className="text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Management</Link></li>
               </ul>
             </div>
 
-            {}
             <div className="flex flex-col h-full">
               <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Contact Info</h3>
               <div className="space-y-2 text-sm text-gray-600">
@@ -376,16 +362,15 @@ const Layout = ({ children }) => {
                 </div>
                 <div className="flex items-center space-x-2">
                   <Mail className="h-4 w-4 text-[#147783]" />
-                  <span>info@society360.com</span>
+                  <span>info@residentialhub.com</span>
                 </div>
                 <div className="flex items-center space-x-2">
                   <Globe className="h-4 w-4 text-[#147783]" />
-                  <span>www.society360.com</span>
+                  <span>www.residentialhub.com</span>
                 </div>
               </div>
             </div>
 
-            {}
             <div className="flex flex-col h-full">
               <h3 className="text-lg font-bold mb-4" style={{color: '#01181F'}}>Our Partners</h3>
               <p className="text-gray-600 text-sm">
@@ -394,33 +379,29 @@ const Layout = ({ children }) => {
             </div>
           </div>
 
-          {}
           <div className="border-t border-gray-200 mt-8 pt-8">
             <div className="flex flex-col md:flex-row justify-between items-center">
               <div className="text-sm text-gray-600">
-                <p>&copy; 2026 Society360. All rights reserved.</p>
+                <p>&copy; 2026 ResidentialHub. All rights reserved.</p>
               </div>
               <div className="flex space-x-6 mt-4 md:mt-0">
-                <Link to="/privacy" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Privacy & Policy</Link>
+                <Link to="/confidentiality" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Privacy & Policy</Link>
                 <Link to="/terms" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Terms of Service</Link>
-                <Link to="/support" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Support</Link>
+                <Link to="/help" className="text-sm text-gray-600 hover:text-[#4C97A8] transition-colors" onClick={() => window.scrollTo(0, 0)}>Support</Link>
               </div>
             </div>
           </div>
         </div>
       </footer>
       
-      {}
       <Translate />
       
-      {}
       <Chatbot />
       
-      {}
       <ScrollArrows />
     </div>
     </NotificationsProvider>
   );
 };
 
-export default Layout;
+export default MainLayout;

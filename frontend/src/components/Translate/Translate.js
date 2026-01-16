@@ -8,7 +8,6 @@ const Translate = () => {
   const [hoverLanguage, setHoverLanguage] = useState("");
   const languageMenuRef = useRef(null);
 
-  // Languages with native names in their scripts
   const languages = [
     { code: 'en', name: 'English', nativeName: 'English', flag: '🇺🇸' },
     { code: 'hi', name: 'हिंदी', nativeName: 'हिंदी', flag: '🇮🇳' },
@@ -25,30 +24,24 @@ const Translate = () => {
     { code: 'sa', name: 'Sanskrit', nativeName: 'संस्कृत', flag: '🇮🇳' },
   ];
 
-  // Initialize Google Translate
   useEffect(() => {
-    // Remove any existing Google Translate elements
     const existingElement = document.getElementById('google_translate_element');
     if (existingElement) {
       existingElement.remove();
     }
 
-    // Create new container for Google Translate
     const googleTranslateElement = document.createElement('div');
     googleTranslateElement.id = 'google_translate_element';
     googleTranslateElement.style.display = 'none';
     document.body.appendChild(googleTranslateElement);
 
-    // Function to initialize Google Translate
     window.googleTranslateElementInit = function() {
       try {
         if (window.google?.translate) {
-          // Get saved language or default to English
           const savedLang = localStorage.getItem('googtrans') || '/en/en';
           
           console.log('Initializing Google Translate with saved language:', savedLang);
           
-          // Initialize Google Translate with explicit Chinese support
           new window.google.translate.TranslateElement(
             {
               pageLanguage: 'en',
@@ -60,7 +53,6 @@ const Translate = () => {
             'google_translate_element'
           );
 
-          // Wait for Google Translate to load, then set language
           setTimeout(() => {
             const googleTranslateCombo = document.querySelector('.goog-te-combo');
             if (googleTranslateCombo) {
@@ -70,18 +62,15 @@ const Translate = () => {
               }
             }
             
-            // Set language to saved one or default to English
             if (savedLang) {
               const langCode = savedLang.split('/').pop() || 'en';
               console.log('Setting current language to:', langCode);
               
-              // Normalize language codes
               const normalizedLangCode = langCode === 'zh-CN' ? 'zh-cn' : langCode;
               setCurrentLanguage(normalizedLangCode);
               document.cookie = `googtrans=${savedLang};path=/;domain=${window.location.hostname}`;
               document.documentElement.lang = normalizedLangCode;
               
-              // Try to set the Google Translate combo
               if (googleTranslateCombo) {
                 for (let i = 0; i < googleTranslateCombo.options.length; i++) {
                   const option = googleTranslateCombo.options[i];
@@ -104,7 +93,6 @@ const Translate = () => {
       }
     };
 
-    // Add Google Translate script if not already added
     if (!document.querySelector('script[src*="translate.google.com"]')) {
       const script = document.createElement('script');
       script.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
@@ -134,7 +122,6 @@ const Translate = () => {
   };
 
   const changeLanguage = (langCode) => {
-    // Don't do anything if already on this language
     if (currentLanguage === langCode) {
       setIsOpen(false);
       return;
@@ -142,22 +129,17 @@ const Translate = () => {
     
     console.log('Changing language to:', langCode); // Debug log
     
-    // Handle other languages normally
     const newLang = langCode === 'en' ? '' : `/${langCode}`;
     const googtransValue = `/en${newLang}`;
     
-    // Save language preference
     localStorage.setItem('googtrans', googtransValue);
     document.cookie = `googtrans=${googtransValue};path=/;domain=${window.location.hostname}`;
     
-    // Update HTML lang attribute
     document.documentElement.lang = langCode;
     
-    // Update UI
     setCurrentLanguage(langCode);
     setIsOpen(false);
     
-    // Try to trigger Google Translate immediately
     setTimeout(() => {
       const googleTranslateCombo = document.querySelector('.goog-te-combo');
       if (googleTranslateCombo) {
@@ -176,7 +158,6 @@ const Translate = () => {
       }
     }, 500);
     
-    // Force a page reload to apply translation
     console.log('Reloading page for translation:', googtransValue); // Debug log
     setTimeout(() => {
       window.location.reload();

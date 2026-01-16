@@ -1,1 +1,10 @@
-const express = require('express'); const router = express.Router(); router.get('/', (req, res) => { res.json({ message: 'Users endpoint - to be implemented' }); }); module.exports = router;
+const express = require('express');
+const userManagementRouter = express.Router();
+
+userManagementRouter.get('/', (request, response) => {
+  response.json({
+    message: 'User management endpoint - pending implementation'
+  });
+});
+
+module.exports = userManagementRouter;

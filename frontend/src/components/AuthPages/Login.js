@@ -14,7 +14,6 @@ const Login = () => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  // Scroll to top when component mounts
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -32,10 +31,8 @@ const Login = () => {
     setError('');
 
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // For demo purposes, just navigate to dashboard
       console.log('Login attempt:', formData);
       navigate('/dashboard');
     } catch (err) {
@@ -44,8 +41,7 @@ const Login = () => {
       setIsLoading(false);
     }
   };
-
-  // Social authentication handlers
+  
   const handleGoogleSignIn = async () => {
     try {
       const provider = new GoogleAuthProvider();
@@ -212,7 +208,6 @@ const Login = () => {
             </div>
           </form>
 
-          {/* Social Login Section */}
           <div className="mt-6">
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -271,7 +266,7 @@ const Login = () => {
             <div className="mt-6">
               <button
                 type="button"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/signup')}
                 className="w-full flex justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-[#1B9AAA] bg-white hover:bg-[#1B9AAA] hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Create a new account

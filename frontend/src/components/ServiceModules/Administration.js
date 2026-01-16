@@ -19,7 +19,6 @@ const Administration = () => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   
-  // Form state
   const [newUser, setNewUser] = useState({
     name: '',
     email: '',
@@ -29,7 +28,6 @@ const Administration = () => {
     phone: ''
   });
 
-  // Edit form state
   const [editUser, setEditUser] = useState({
     name: '',
     email: '',
@@ -45,7 +43,6 @@ const Administration = () => {
     { title: 'Reports Generated', value: '45', icon: FileText },
   ];
 
-  // Click outside to close modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showAddUserForm && adminModalRef.current && !adminModalRef.current.contains(event.target)) {
@@ -75,7 +72,6 @@ const Administration = () => {
     setLoading(true);
     setErrors({});
 
-    // Validate form fields
     const newErrors = {};
     if (!newUser.name.trim()) {
       newErrors.name = 'Name is required';
@@ -101,7 +97,6 @@ const Administration = () => {
     }
 
     try {
-      // Simulate API call to database
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       const user = {
@@ -135,7 +130,6 @@ const Administration = () => {
       [name]: value
     }));
     
-    // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -161,7 +155,6 @@ const Administration = () => {
     setLoading(true);
     setErrors({});
 
-    // Validate form fields
     const newErrors = {};
     if (!editUser.name.trim()) {
       newErrors.name = 'Name is required';
@@ -182,10 +175,8 @@ const Administration = () => {
     }
 
     try {
-      // Simulate API call to database
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Update user in users array
       setUsers(users.map(user => 
         user.id === selectedUser.id 
           ? { ...user, ...editUser, updatedAt: new Date().toISOString() }
@@ -207,10 +198,8 @@ const Administration = () => {
   const handleDeactivateUser = async (user) => {
     if (window.confirm(`Are you sure you want to ${user.status === 'Active' ? 'deactivate' : 'activate'} ${user.name}?`)) {
       try {
-        // Simulate API call to database
         await new Promise(resolve => setTimeout(resolve, 1000));
         
-        // Update user status
         const newStatus = user.status === 'Active' ? 'Inactive' : 'Active';
         setUsers(users.map(u => 
           u.id === user.id 
@@ -233,7 +222,6 @@ const Administration = () => {
       [name]: value
     }));
     
-    // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors(prev => ({
         ...prev,
@@ -243,7 +231,6 @@ const Administration = () => {
   };
 
   const exportReport = () => {
-    // Calculate report data
     const reportData = {
       generatedAt: new Date().toLocaleString(),
       totalUsers: users.length,
@@ -260,35 +247,28 @@ const Administration = () => {
       }
     };
 
-    // Create PDF document
     const doc = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
       format: 'a4'
     });
     
-    // Add company logo to top left corner
     const logoImg = new Image();
     logoImg.src = '/short_logo.png';
     
-    // Add short logo to top left
     doc.addImage(logoImg, 15, 10, 30, 30);
     
-    // Add title
     doc.setFontSize(20);
     doc.setFont('helvetica', 'bold');
     doc.text('Administrative Report', 60, 25);
     
-    // Add generation date
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.text(`Generated: ${reportData.generatedAt}`, 60, 35);
     
-    // Add line
     doc.setLineWidth(0.5);
     doc.line(15, 45, 195, 45);
     
-    // System Statistics
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text('System Statistics', 15, 55);
@@ -300,7 +280,6 @@ const Administration = () => {
     doc.text(`System Uptime: ${reportData.systemStats.systemUptime}`, 15, 79);
     doc.text(`Reports Generated: ${reportData.systemStats.reportsGenerated}`, 15, 86);
     
-    // User Statistics
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text('User Statistics', 15, 100);
@@ -313,10 +292,8 @@ const Administration = () => {
     doc.text(`Staff Users: ${reportData.staffUsers}`, 15, 131);
     doc.text(`Resident Users: ${reportData.residentUsers}`, 15, 138);
     
-    // Add line
     doc.line(15, 150, 195, 150);
     
-    // Detailed Users
     doc.setFontSize(14);
     doc.setFont('helvetica', 'bold');
     doc.text('User Details', 15, 160);
@@ -328,7 +305,6 @@ const Administration = () => {
     reportData.users.forEach((user, index) => {
       if (yPosition > 270) {
         doc.addPage();
-        // Add logo to new page
         doc.addImage(logoImg, 15, 10, 30, 30);
         doc.setFontSize(12);
         doc.setFont('helvetica', 'bold');
@@ -336,34 +312,29 @@ const Administration = () => {
         yPosition = 55;
       }
       
-      // Add user details
       doc.text(`Name: ${user.name}`, 15, yPosition);
       doc.text(`Email: ${user.email}`, 15, yPosition + 7);
       doc.text(`Role: ${user.role}`, 15, yPosition + 14);
       doc.text(`Unit: ${user.unit}`, 15, yPosition + 21);
       doc.text(`Status: ${user.status.toUpperCase()}`, 15, yPosition + 28);
       
-      // Add status indicator
       if (user.status === 'Active') {
         doc.text('✓', 180, yPosition + 28);
       } else {
         doc.text('○', 180, yPosition + 28);
       }
       
-      // Add separator line
       doc.setLineWidth(0.2);
       doc.line(15, yPosition + 35, 195, yPosition + 35);
       
       yPosition += 42;
     });
     
-    // Add footer to last page
     doc.setFontSize(8);
     doc.setFont('helvetica', 'italic');
     doc.text('This is an automatically generated administrative report from Society360 Management System', 15, 280);
     doc.text('For any queries, please contact administration.', 15, 287);
     
-    // Save the PDF
     doc.save(`Society360_Administrative_Report_${new Date().toISOString().split('T')[0]}.pdf`);
   };
 

@@ -20,7 +20,6 @@ const Amenities = () => {
   const [bookings, setBookings] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Form state
   const [formData, setFormData] = useState({
     amenityId: '',
     amenityName: '',
@@ -35,9 +34,7 @@ const Amenities = () => {
     specialRequests: ''
   });
 
-  // Simulate database fetch
   useEffect(() => {
-    // Simulate fetching existing bookings from database
     const mockBookings = [
       {
         id: 1,
@@ -71,7 +68,6 @@ const Amenities = () => {
     setBookings(mockBookings);
   }, []);
 
-  // Click outside to close modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showBookingForm && bookingModalRef.current && !bookingModalRef.current.contains(event.target)) {
@@ -121,7 +117,6 @@ const Amenities = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call to database
       const newBooking = {
         id: bookings.length + 1,
         ...formData,
@@ -129,10 +124,8 @@ const Amenities = () => {
         createdAt: new Date().toISOString()
       };
 
-      // Add to bookings state (simulating database update)
       setBookings(prev => [newBooking, ...prev]);
 
-      // Reset form
       setFormData({
         amenityId: '',
         amenityName: '',
@@ -150,7 +143,6 @@ const Amenities = () => {
       setShowBookingForm(false);
       setIsSubmitting(false);
       
-      // Show success message (you could add a toast notification here)
       alert('Facility booked successfully!');
     } catch (error) {
       console.error('Error booking facility:', error);

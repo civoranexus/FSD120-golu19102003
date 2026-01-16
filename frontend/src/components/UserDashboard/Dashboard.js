@@ -25,7 +25,6 @@ const Dashboard = () => {
   const [filteredData, setFilteredData] = useState(null);
   const [chartTimePeriod, setChartTimePeriod] = useState('monthly');
 
-  // Color palettes
   const colorPalettes = {
     primary: {
       light: '#02394A',
@@ -73,34 +72,34 @@ const Dashboard = () => {
   });
   const [chartData, setChartData] = useState({
     revenue: [
-      { label: 'Mon', revenue: 6500, target: 7000 },        // Start of week
-      { label: 'Tue', revenue: 5800, target: 6500 },        // Decrease
-      { label: 'Wed', revenue: 7200, target: 6800 },        // Increase
-      { label: 'Thu', revenue: 6100, target: 7200 },        // Decrease
-      { label: 'Fri', revenue: 8200, target: 7500 },        // Increase (weekend)
-      { label: 'Sat', revenue: 7500, target: 8000 },        // Decrease
-      { label: 'Sun', revenue: 6800, target: 7500 }         // Decrease
+      { label: 'Mon', revenue: 6500, target: 7000 },
+      { label: 'Tue', revenue: 5800, target: 6500 },
+      { label: 'Wed', revenue: 7200, target: 6800 },
+      { label: 'Thu', revenue: 6100, target: 7200 },
+      { label: 'Fri', revenue: 8200, target: 7500 },
+      { label: 'Sat', revenue: 7500, target: 8000 },
+      { label: 'Sun', revenue: 6800, target: 7500 }
     ],
     weekly: [
-      { label: 'Week 1', revenue: 45000, target: 50000 },     // Start point
-      { label: 'Week 2', revenue: 38000, target: 45000 },     // Decrease
-      { label: 'Week 3', revenue: 52000, target: 48000 },     // Increase
-      { label: 'Week 4', revenue: 41000, target: 52000 }     // Decrease
+      { label: 'Week 1', revenue: 45000, target: 50000 },
+      { label: 'Week 2', revenue: 38000, target: 45000 },
+      { label: 'Week 3', revenue: 52000, target: 48000 },
+      { label: 'Week 4', revenue: 41000, target: 52000 }
     ],
     monthly: [
-      { month: 'Jan', revenue: 120000, target: 90000 },      // Start point
-      { month: 'Feb', revenue: 95000, target: 100000 },     // Decrease
-      { month: 'Mar', revenue: 135000, target: 110000 },     // Increase
-      { month: 'Apr', revenue: 115000, target: 120000 },     // Decrease
-      { month: 'May', revenue: 165000, target: 130000 },     // Increase
-      { month: 'Jun', revenue: 145000, target: 140000 }      // Decrease
+      { month: 'Jan', revenue: 120000, target: 90000 },
+      { month: 'Feb', revenue: 95000, target: 100000 },
+      { month: 'Mar', revenue: 135000, target: 110000 },
+      { month: 'Apr', revenue: 115000, target: 120000 },
+      { month: 'May', revenue: 165000, target: 130000 },
+      { month: 'Jun', revenue: 145000, target: 140000 }
     ],
     yearly: [
-      { year: '2020', revenue: 450000, target: 500000 },      // Base year
-      { year: '2021', revenue: 520000, target: 600000 },      // Increase
-      { year: '2022', revenue: 480000, target: 700000 },      // Decrease
-      { year: '2023', revenue: 580000, target: 800000 },      // Increase
-      { year: '2024', revenue: 550000, target: 900000 }      // Decrease
+      { year: '2020', revenue: 450000, target: 500000 },
+      { year: '2021', revenue: 520000, target: 600000 },
+      { year: '2022', revenue: 480000, target: 700000 },
+      { year: '2023', revenue: 580000, target: 800000 },
+      { year: '2024', revenue: 550000, target: 900000 }
     ],
     occupancy: [
       { block: 'A', occupied: 42, total: 48, color: '#1B9AAA' },
@@ -117,7 +116,6 @@ const Dashboard = () => {
     ]
   });
 
-  // Initialize chart datasets after chartData is set
   const chartDatasets = {
     daily: [
       { label: 'Mon', revenue: 6500, target: 7000 },
@@ -153,22 +151,22 @@ const Dashboard = () => {
 
   const handleQuickAction = (actionId) => {
     switch(actionId) {
-      case 1: // Add Visitor
+      case 1:
         window.location.href = '/visitor-management';
         break;
-      case 2: // Schedule Maintenance
+      case 2:
         window.location.href = '/maintenance';
         break;
-      case 3: // Generate Report
+      case 3:
         window.location.href = '/finance';
         break;
-      case 4: // Send Notification
+      case 4:
         window.location.href = '/communication';
         break;
-      case 5: // Report Now
+      case 5:
         window.location.href = '/administration';
         break;
-      case 6: // Security Support
+      case 6:
         setShowSecurityDropdown(true);
         break;
       default:
@@ -197,7 +195,6 @@ const Dashboard = () => {
     { id: 4, title: 'Emergency', icon: AlertCircle, path: '/emergency' }
   ];
 
-  // Simulate real-time updates
   useEffect(() => {
     const interval = setInterval(() => {
       setRealTimeData(prev => ({
@@ -211,7 +208,6 @@ const Dashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Click outside to close security modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showSecurityDropdown && securityModalRef.current && !securityModalRef.current.contains(event.target)) {
@@ -229,7 +225,6 @@ const Dashboard = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      // Simulate data refresh
       setRealTimeData(prev => ({
         ...prev,
         totalUsers: prev.totalUsers + Math.floor(Math.random() * 10),
@@ -240,12 +235,8 @@ const Dashboard = () => {
 
   const applyFilters = () => {
     setIsLoading(true);
-    
-    // Simulate filtering data based on selected filters
     setTimeout(() => {
       let filteredStats = { ...realTimeData };
-      
-      // Apply block filter
       if (filters.block !== 'all') {
         const blockMultiplier = {
           'A': 1.2,
@@ -260,7 +251,6 @@ const Dashboard = () => {
         filteredStats.totalRevenue = Math.floor(realTimeData.totalRevenue * multiplier);
       }
       
-      // Apply status filter
       if (filters.status !== 'all') {
         const statusMultiplier = {
           'active': 1.3,
@@ -274,7 +264,6 @@ const Dashboard = () => {
           Math.floor(realTimeData.pendingTasks * 0.5);
       }
       
-      // Apply priority filter
       if (filters.priority !== 'all') {
         const priorityMultiplier = {
           'high': 1.4,
@@ -288,7 +277,6 @@ const Dashboard = () => {
           Math.floor(realTimeData.pendingTasks * 0.7);
       }
       
-      // Apply date range filter
       if (filters.dateRange !== 'all') {
         const dateMultiplier = {
           '7d': 0.8,
@@ -388,7 +376,6 @@ const Dashboard = () => {
       marginRight: '-3rem',
       paddingRight: '2rem'
     }}>
-      {/* Main Dashboard Container */}
       <div className="max-w-full mx-auto">
         <div className="bg-white rounded-3xl shadow-2xl p-8" style={{
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
@@ -396,7 +383,6 @@ const Dashboard = () => {
           backdropFilter: 'blur(10px)',
           width: '100%'
         }}>
-      {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center">
@@ -411,8 +397,7 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            {/* Search */}
-            <div className="relative">
+          <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4" style={{color: colorPalettes.darkBlack.medium}} />
               <input
                 type="text"
@@ -424,7 +409,6 @@ const Dashboard = () => {
               />
             </div>
             
-            {/* Time Range Selector */}
             <select
               value={selectedTimeRange}
               onChange={(e) => setSelectedTimeRange(e.target.value)}
@@ -437,7 +421,6 @@ const Dashboard = () => {
               <option value="90d">Last 90 days</option>
             </select>
 
-            {/* Actions */}
             <button
               onClick={() => setShowFilters(!showFilters)}
               className="px-4 py-2 rounded-lg transition-colors flex items-center space-x-2 text-white border-2 hover:bg-[#1B9AAA] hover:text-white"
@@ -464,7 +447,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Filters Panel */}
         {showFilters && (
           <div className="rounded-lg shadow-md p-4 mb-6 border" style={{backgroundColor: 'white', borderColor: colorPalettes.skyBlue.medium}}>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
@@ -548,7 +530,6 @@ const Dashboard = () => {
         )}
       </div>
 
-      {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <div className="rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow" style={{backgroundColor: 'white', borderLeft: `4px solid ${colorPalettes.skyBlue.medium}`}}>
           <div className="flex items-center justify-between">
@@ -615,9 +596,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Charts Section */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        {/* Revenue Overview - Fresh Implementation */}
         <div className="rounded-lg shadow-md p-6 bg-white">
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold" style={{color: '#02394A'}}>Revenue Overview</h3>
@@ -636,28 +615,24 @@ const Dashboard = () => {
             </div>
           </div>
           
-          {/* Chart Container */}
           <div className="h-64 flex items-end justify-between space-x-3 px-4">
             {chartData.revenue.map((data, index) => {
-              // Mix colors from different palettes
               const mixedColors = [
-                { from: '#1B9AAA', to: '#147783', hover: '#0C4A50' },  // Sky Blue palette
-                { from: '#178740', to: '#0F4C2A', hover: '#0A3420' },  // Green (from existing)
-                { from: '#5B74A3', to: '#415A8A', hover: '#364A75' },  // Dark Blue palette
-                { from: '#142C52', to: '#0E2140', hover: '#071426' },  // Dark Blue palette
-                { from: '#4C97A8', to: '#02394A', hover: '#01181F' },  // Teal Navy palette
-                { from: '#76D6E1', to: '#4C97A8', hover: '#1B9AAA' }   // Sky Blue palette
+                { from: '#1B9AAA', to: '#147783', hover: '#0C4A50' },
+                { from: '#178740', to: '#0F4C2A', hover: '#0A3420' },
+                { from: '#5B74A3', to: '#415A8A', hover: '#364A75' },
+                { from: '#142C52', to: '#0E2140', hover: '#071426' },
+                { from: '#4C97A8', to: '#02394A', hover: '#01181F' },
+                { from: '#76D6E1', to: '#4C97A8', hover: '#1B9AAA' }
               ];
               const colorScheme = mixedColors[index % mixedColors.length];
               
-              // Calculate height based on revenue value - ensure continuous scaling
               const maxRevenue = Math.max(...chartData.revenue.map(d => d.revenue));
               const minRevenue = Math.min(...chartData.revenue.map(d => d.revenue));
               const revenueRange = maxRevenue - minRevenue;
               
-              // Normalize to 0-1 range, then scale to 15-180px
               const normalizedValue = revenueRange > 0 ? (data.revenue - minRevenue) / revenueRange : 0;
-              const barHeight = normalizedValue * 165 + 15; // 15-180px range for continuous scaling
+              const barHeight = normalizedValue * 165 + 15;
               
               return (
                 <div key={index} className="flex-1 flex flex-col items-center">
@@ -685,7 +660,6 @@ const Dashboard = () => {
             })}
           </div>
           
-          {/* Summary Stats */}
           <div className="mt-6 pt-4 border-t border-[#E0F7FA]">
             <div className="grid grid-cols-3 gap-4">
               <div className="text-center">
@@ -708,7 +682,6 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Occupancy Chart */}
         <div className="rounded-lg shadow-md p-6" style={{backgroundColor: 'white'}}>
           <div className="flex items-center justify-between mb-6">
             <h3 className="text-lg font-semibold" style={{color: colorPalettes.primary.light}}>Unit Occupancy</h3>
@@ -744,9 +717,9 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Quick Actions & Recent Activities */}
+      {}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Quick Actions */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-6">
           <h3 className="text-lg font-semibold text-[#02394A] mb-4">Quick Actions</h3>
           <div className="grid grid-cols-2 gap-3">
@@ -766,7 +739,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Recent Activities */}
+        {}
         <div className="lg:col-span-2 bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[#02394A]">Recent Activities</h3>
@@ -791,7 +764,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Performance Metrics */}
+      {}
       <div className="mt-8 bg-white rounded-lg shadow-md p-6">
         <h3 className="text-lg font-semibold text-[#02394A] mb-4">Performance Metrics</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -824,9 +797,9 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Additional Features Section */}
+      {}
       <div className="mt-8 grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Monthly Statistics */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[#02394A]">Monthly Statistics</h3>
@@ -883,7 +856,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Activity Timeline */}
+        {}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-[#02394A]">Activity Timeline</h3>
@@ -949,7 +922,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Top Performers Section */}
+      {}
       <div className="mt-8 bg-white rounded-lg shadow-md p-6">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-lg font-semibold text-[#02394A]">Top Performers</h3>
@@ -1010,7 +983,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Quick Stats Grid */}
+      {}
       <div className="mt-8 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
         <div className="bg-white rounded-lg shadow-md p-4 text-center">
           <div className="h-8 w-8 rounded-full bg-[#1B9AAA] flex items-center justify-center mx-auto mb-2">
@@ -1063,7 +1036,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Security Support Full Page Overlay */}
+      {}
       {showSecurityDropdown && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div ref={securityModalRef} className="bg-white rounded-2xl shadow-2xl p-8 max-w-4xl w-full mx-4">

@@ -19,7 +19,6 @@ const Emergency = () => {
   const [emergencyLogs, setEmergencyLogs] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Emergency form state
   const [emergencyData, setEmergencyData] = useState({
     type: '',
     description: '',
@@ -33,7 +32,6 @@ const Emergency = () => {
     additionalInfo: ''
   });
 
-  // Emergency call state
   const [callStatus, setCallStatus] = useState('idle'); // idle, calling, connected, ended
   const [callDuration, setCallDuration] = useState(0);
   const [callTimer, setCallTimer] = useState(null);
@@ -69,7 +67,6 @@ const Emergency = () => {
     window.open(`tel:${contact}`);
   };
 
-  // Click outside to close modal
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showEmergencyForm && emergencyModalRef.current && !emergencyModalRef.current.contains(event.target)) {
@@ -83,7 +80,6 @@ const Emergency = () => {
     };
   }, [showEmergencyForm]);
 
-  // Call timer effect
   useEffect(() => {
     if (callStatus === 'connected') {
       const timer = setInterval(() => {
@@ -120,10 +116,8 @@ const Emergency = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call to emergency system
       await new Promise(resolve => setTimeout(resolve, 1500));
       
-      // Create emergency log
       const emergencyLog = {
         id: emergencyLogs.length + 1,
         type: emergencyData.type,
@@ -141,13 +135,10 @@ const Emergency = () => {
         resolvedAt: null
       };
 
-      // Add to emergency logs
       setEmergencyLogs([emergencyLog, ...emergencyLogs]);
 
-      // Set as active emergency
       setActiveEmergency(emergencyLog);
 
-      // Reset form
       setEmergencyData({
         type: '',
         description: '',
@@ -164,10 +155,8 @@ const Emergency = () => {
       setShowEmergencyForm(false);
       setIsSubmitting(false);
       
-      // Show success and trigger emergency call
       alert(`Emergency reported successfully! Reference ID: #${emergencyLog.id}\n\nEmergency services have been notified.`);
       
-      // Auto-call emergency services if critical
       if (emergencyData.severity === 'critical') {
         handleEmergencyCall('911');
       }
@@ -183,11 +172,9 @@ const Emergency = () => {
     setCallStatus('calling');
     
     try {
-      // Simulate call connection
       await new Promise(resolve => setTimeout(resolve, 2000));
       setCallStatus('connected');
       
-      // Log the call
       const callLog = {
         id: emergencyLogs.length + 1,
         type: 'call',
@@ -200,7 +187,6 @@ const Emergency = () => {
       
       setEmergencyLogs([callLog, ...emergencyLogs]);
       
-      // Auto-end call after 10 seconds for demo
       setTimeout(() => {
         setCallStatus('ended');
         setIsCalling(false);

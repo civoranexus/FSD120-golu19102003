@@ -21,7 +21,6 @@ const Communication = () => {
   const [showNewDiscussionForm, setShowNewDiscussionForm] = useState(false);
   const [showNewAnnouncementForm, setShowNewAnnouncementForm] = useState(false);
   
-  // Form states
   const [newDiscussion, setNewDiscussion] = useState({
     title: '',
     content: '',
@@ -35,7 +34,6 @@ const Communication = () => {
     priority: 'Medium'
   });
 
-  // Handle hash fragments for direct navigation
   useEffect(() => {
     const hash = window.location.hash;
     if (hash === '#new-discussion') {
@@ -47,14 +45,11 @@ const Communication = () => {
     }
   }, []);
 
-  // Click outside to close modals
   useEffect(() => {
     const handleClickOutside = (event) => {
-      // Close discussion modal
       if (showNewDiscussionForm && discussionModalRef.current && !discussionModalRef.current.contains(event.target)) {
         setShowNewDiscussionForm(false);
       }
-      // Close announcement modal
       if (showNewAnnouncementForm && announcementModalRef.current && !announcementModalRef.current.contains(event.target)) {
         setShowNewAnnouncementForm(false);
       }
@@ -70,7 +65,6 @@ const Communication = () => {
     if (!notificationMessage.trim()) return;
     
     try {
-      // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       console.log('Sending notification:', { message: notificationMessage, recipients: selectedRecipients });
       setNotificationMessage('');
@@ -88,7 +82,6 @@ const Communication = () => {
     }
 
     try {
-      // Simulate API call to database
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const discussion = {
@@ -116,7 +109,6 @@ const Communication = () => {
     }
 
     try {
-      // Simulate API call to database
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       const announcement = {
