@@ -9,7 +9,7 @@ const SERVER_PORT = process.env.PORT || 5000;
 
 application.use(helmet());
 application.use(cors({
-  origin: process.env.FRONTEND_URL || 'http:
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
 }));
 
@@ -47,6 +47,7 @@ application.use('/api/maintenance', require('./routes/maintenance'));
 application.use('/api/finance', require('./routes/finance'));
 application.use('/api/communication', require('./routes/communication'));
 application.use('/api/administration', require('./routes/administration'));
+application.use('/api/amenities', require('./routes/amenities'));
 
 application.use((error, request, response, next) => {
   console.error(error.stack);

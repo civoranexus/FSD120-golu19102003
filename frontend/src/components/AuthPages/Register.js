@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Building, UserPlus, Eye, EyeOff, Mail, Lock, User, Home, Phone } from 'lucide-react';
 
 const Register = () => {
-  const [formData, setFormData] = useState({
+  const [registrationData, setRegistrationData] = useState({
     firstName: '',
     lastName: '',
     email: '',
@@ -11,45 +11,116 @@ const Register = () => {
     unitNumber: '',
     password: '',
     confirmPassword: '',
-    userRole: 'resident'
+    accountType: 'resident'
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
-  const navigate = useNavigate();
-useEffect(() => {
+  const [registrationError, setRegistrationError] = useState('');
+  const navigateToSignIn = useNavigate();
+
+  useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+  const handleInputChange = (event) => {
+    const fieldName = event.target.name;
+    const fieldValue = event.target.value;
+    
+    setRegistrationData(previousData => ({
+      ...previousData,
+      [fieldName]: fieldValue
+    }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+  const validateRegistrationData = () => {
+    const errors = {};
+    
+    if (!registrationData.firstName.trim()) {
+      errors.firstName = 'First name is required';
+    }
+    
+    if (!registrationData.lastName.trim()) {
+      errors.lastName = 'Last name is required';
+    }
+    
+    if (!registrationData.email.trim()) {
+      errors.email = 'Email address is required';
+    }
+    
+    if (!registrationData.password) {
+      errors.password = 'Password is required';
+    }
+    
+    if (registrationData.password !== registrationData.confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+    
+    if (Object.keys(errors).length > 0) {
+      setRegistrationError(Object.values(errors).join(', '));
+      return false;
+    }
+    
+    return true;
+  };
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+  const attemptRegistration = async (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    setRegistrationError('');
+
+    if (!validateRegistrationData()) {
       setIsLoading(false);
       return;
     }
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const registrationResult = await registerNewUser(registrationData);
       
-      console.log('Registration attempt:', formData);
-      navigate('/signin');
-    } catch (err) {
-      setError('Registration failed. Please try again.');
+      if (registrationResult.success) {
+        console.log('User registered successfully:', registrationResult.user);
+        localStorage.setItem('currentUser', JSON.stringify(registrationResult.user));
+        navigateToSignIn('/signin');
+      } else {
+        setRegistrationError(registrationResult.message || 'Registration failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Registration process failed:', error);
+      setRegistrationError('Registration service temporarily unavailable.');
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const registerNewUser = async (userData) => {
+    const existingUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+    
+    if (existingUsers.some(user => user.email === userData.email)) {
+      return {
+        success: false,
+        message: 'Email address already registered'
+      };
+    }
+
+    const newUser = {
+      id: Date.now(),
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      phone: userData.phone,
+      unit: userData.unitNumber,
+      role: userData.accountType,
+      registrationDate: new Date().toISOString()
+    };
+
+    existingUsers.push(newUser);
+    localStorage.setItem('registeredUsers', JSON.stringify(existingUsers));
+
+    return {
+      success: true,
+      message: 'Registration completed successfully',
+      user: newUser
+    };
   };
 
   return (
@@ -68,10 +139,10 @@ useEffect(() => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
+          <form className="space-y-6" onSubmit={attemptRegistration}>
+            {registrationError && (
               <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
-                {error}
+                {registrationError}
               </div>
             )}
 
@@ -89,8 +160,8 @@ useEffect(() => {
                     name="firstName"
                     type="text"
                     required
-                    value={formData.firstName}
-                    onChange={handleChange}
+                    value={registrationData.firstName}
+                    onChange={handleInputChange}
                     className="pl-10 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                     placeholder="First name"
                   />
@@ -106,8 +177,8 @@ useEffect(() => {
                   name="lastName"
                   type="text"
                   required
-                  value={formData.lastName}
-                  onChange={handleChange}
+                  value={registrationData.lastName}
+                  onChange={handleInputChange}
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                   placeholder="Last name"
                 />
@@ -121,8 +192,8 @@ useEffect(() => {
               <select
                 id="userRole"
                 name="userRole"
-                value={formData.userRole}
-                onChange={handleChange}
+                value={registrationData.userRole}
+                onChange={handleInputChange}
                 className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
               >
                 <option value="resident">Resident</option>
@@ -145,8 +216,8 @@ useEffect(() => {
                   type="email"
                   autoComplete="email"
                   required
-                  value={formData.email}
-                  onChange={handleChange}
+                  value={registrationData.email}
+                  onChange={handleInputChange}
                   className="pl-10 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                   placeholder="Enter your email"
                 />
@@ -166,15 +237,15 @@ useEffect(() => {
                   name="phone"
                   type="tel"
                   required
-                  value={formData.phone}
-                  onChange={handleChange}
+                  value={registrationData.phone}
+                  onChange={handleInputChange}
                   className="pl-10 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                   placeholder="Enter your phone number"
                 />
               </div>
             </div>
 
-            {formData.userRole === 'resident' && (
+            {registrationData.userRole === 'resident' && (
               <div>
                 <label htmlFor="unitNumber" className="block text-sm font-medium text-gray-700">
                   Unit Number
@@ -188,8 +259,8 @@ useEffect(() => {
                     name="unitNumber"
                     type="text"
                     required
-                    value={formData.unitNumber}
-                    onChange={handleChange}
+                    value={registrationData.unitNumber}
+                    onChange={handleInputChange}
                     className="pl-10 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                     placeholder="e.g., A-101"
                   />
@@ -210,8 +281,8 @@ useEffect(() => {
                   name="password"
                   type={showPassword ? 'text' : 'password'}
                   required
-                  value={formData.password}
-                  onChange={handleChange}
+                  value={registrationData.password}
+                  onChange={handleInputChange}
                   className="pl-10 pr-10 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                   placeholder="Create a password"
                 />
@@ -242,8 +313,8 @@ useEffect(() => {
                   name="confirmPassword"
                   type={showConfirmPassword ? 'text' : 'password'}
                   required
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
+                  value={registrationData.confirmPassword}
+                  onChange={handleInputChange}
                   className="pl-10 pr-10 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#1B9AAA] focus:border-[#1B9AAA]"
                   placeholder="Confirm your password"
                 />

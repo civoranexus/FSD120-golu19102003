@@ -25,53 +25,134 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError('');
+  const attemptLogin = async (event) => {
+    event.preventDefault();
+    setIsAuthenticating(true);
+    setLoginError('');
 
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const authenticationResult = await authenticateUser(userCredentials);
       
-      console.log('Login attempt:', formData);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Login failed. Please check your credentials.');
+      if (authenticationResult.success) {
+        console.log('User authenticated successfully:', authenticationResult.user);
+        localStorage.setItem('currentUser', JSON.stringify(authenticationResult.user));
+        navigateToDashboard('/dashboard');
+      } else {
+        setLoginError(authenticationResult.message);
+      }
+    } catch (authenticationError) {
+      console.error('Login process failed:', authenticationError);
+      setLoginError('Login service unavailable. Please try again later.');
     } finally {
-      setIsLoading(false);
+      setIsAuthenticating(false);
     }
   };
   
-  const handleGoogleSignIn = async () => {
+  const authenticateUser = async (credentials) => {
+    const validUsers = [
+      { email: 'admin@residentialhub.com', password: 'admin123', role: 'admin', name: 'System Administrator' },
+      { email: 'john@residentialhub.com', password: 'resident123', role: 'resident', name: 'John Resident' },
+      { email: 'jane@residentialhub.com', password: 'resident456', role: 'resident', name: 'Jane Smith' }
+    ];
+
+    const foundUser = validUsers.find(user => 
+      user.email === credentials.email && user.password === credentials.password
+    );
+
+    if (foundUser) {
+      return {
+        success: true,
+        user: {
+          id: Math.random().toString(36).substr(2, 9),
+          name: foundUser.name,
+          email: foundUser.email,
+          role: foundUser.role,
+          loginTime: new Date().toISOString()
+        }
+      };
+    } else {
+      return {
+        success: false,
+        message: 'Invalid email or password combination'
+      };
+    }
+  };
+
+  const initiateGoogleAuth = async () => {
     try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate('/dashboard');
-    } catch (error) {
-      setError('Google sign-in failed. Please try again.');
-      console.error('Google sign-in error:', error);
+      const googleProvider = new GoogleAuthProvider();
+      const authResult = await signInWithPopup(auth, googleProvider);
+      
+      if (authResult.user) {
+        const userData = {
+          id: Math.random().toString(36).substr(2, 9),
+          name: authResult.user.displayName || 'Google User',
+          email: authResult.user.email,
+          role: 'resident',
+          loginTime: new Date().toISOString()
+        };
+        
+        console.log('Google authentication successful');
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        navigateToDashboard('/dashboard');
+      } else {
+        setLoginError('Google sign-in failed. Please try again.');
+      }
+    } catch (googleError) {
+      console.error('Google sign-in error:', googleError);
+      setLoginError('Google sign-in temporarily unavailable.');
     }
   };
 
   const handleTwitterSignIn = async () => {
     try {
-      const provider = new TwitterAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate('/dashboard');
-    } catch (error) {
-      setError('Twitter sign-in failed. Please try again.');
-      console.error('Twitter sign-in error:', error);
+      const twitterProvider = new TwitterAuthProvider();
+      const authResult = await signInWithPopup(auth, twitterProvider);
+      
+      if (authResult.user) {
+        const userData = {
+          id: Math.random().toString(36).substr(2, 9),
+          name: authResult.user.displayName || 'Twitter User',
+          email: authResult.user.email,
+          role: 'resident',
+          loginTime: new Date().toISOString()
+        };
+        
+        console.log('Twitter authentication successful');
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        navigateToDashboard('/dashboard');
+      } else {
+        setLoginError('Twitter sign-in failed. Please try again.');
+      }
+    } catch (twitterError) {
+      console.error('Twitter sign-in error:', twitterError);
+      setLoginError('Twitter sign-in temporarily unavailable.');
     }
   };
 
   const handleGithubSignIn = async () => {
     try {
-      const provider = new GithubAuthProvider();
-      await signInWithPopup(auth, provider);
-      navigate('/dashboard');
-    } catch (error) {
-      setError('GitHub sign-in failed. Please try again.');
-      console.error('GitHub sign-in error:', error);
+      const githubProvider = new GithubAuthProvider();
+      const authResult = await signInWithPopup(auth, githubProvider);
+      
+      if (authResult.user) {
+        const userData = {
+          id: Math.random().toString(36).substr(2, 9),
+          name: authResult.user.displayName || 'GitHub User',
+          email: authResult.user.email,
+          role: 'resident',
+          loginTime: new Date().toISOString()
+        };
+        
+        console.log('GitHub authentication successful');
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+        navigateToDashboard('/dashboard');
+      } else {
+        setLoginError('GitHub sign-in failed. Please try again.');
+      }
+    } catch (githubError) {
+      console.error('GitHub sign-in error:', githubError);
+      setLoginError('GitHub sign-in temporarily unavailable.');
     }
   };
 
