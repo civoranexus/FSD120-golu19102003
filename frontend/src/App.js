@@ -19,6 +19,7 @@ import CrisisManagement from './components/ServiceModules/Emergency';
 import ConfidentialityPolicy from './components/PrivacyPage/Privacy';
 import TermsOfService from './components/TermsPage/Terms';
 import HelpCenter from './components/HelpCenter/Support';
+import FeaturesPage from './components/FeaturesPage/Features';
 import './App.css';
 
 function Application() {
@@ -44,6 +45,7 @@ function Application() {
           <Route path="/confidentiality" element={<ConfidentialityPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/help" element={<HelpCenter />} />
+          <Route path="/features" element={<FeaturesPage />} />
         </Routes>
       </MainLayout>
     </Router>

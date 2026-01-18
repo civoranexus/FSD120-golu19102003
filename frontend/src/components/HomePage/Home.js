@@ -1,8 +1,107 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Users, Target, Award, Building, Shield, Clock, TrendingUp, CheckCircle, Star, Activity, DollarSign, MessageSquare, Calendar, Bell, Mail, Phone, Wrench, Zap, ChevronRight } from 'lucide-react';
+import { ArrowRight, Users, Target, Award, Building, Shield, Clock, TrendingUp, CheckCircle, Star, Activity, DollarSign, MessageSquare, Calendar, Bell, Mail, Phone, Wrench, Zap, ChevronRight, ChevronLeft } from 'lucide-react';
 
 const Home = () => {
+  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+
+  const allFeatures = [
+    {
+      featureIcon: Users,
+      featureTitle: "Smart Visitor Management",
+      featureDescription: "Digital visitor registration with QR codes and real-time tracking for enhanced security",
+      featureColor: "#0C4A50",
+      featureLink: "/features/visitor-management"
+    },
+    {
+      featureIcon: Building,
+      featureTitle: "Automated Maintenance",
+      featureDescription: "AI-powered maintenance scheduling and tracking system for efficient operations",
+      featureColor: "#22C55E",
+      featureLink: "/features/maintenance"
+    },
+    {
+      featureIcon: DollarSign,
+      featureTitle: "Financial Dashboard",
+      featureDescription: "Comprehensive billing, payments, and expense management with real-time insights",
+      featureColor: "#1B9AAA",
+      featureLink: "/features/financial"
+    },
+    {
+      featureIcon: MessageSquare,
+      featureTitle: "Community Communication",
+      featureDescription: "Built-in messaging, announcements, and discussion forums for better engagement",
+      featureColor: "#142C52",
+      featureLink: "/features/communication"
+    },
+    {
+      featureIcon: Shield,
+      featureTitle: "Advanced Security Systems",
+      featureDescription: "24/7 monitoring with smart access control and surveillance capabilities",
+      featureColor: "#02394A",
+      featureLink: "/features/security"
+    },
+    {
+      featureIcon: Calendar,
+      featureTitle: "Amenity Booking Platform",
+      featureDescription: "Online booking system for community facilities and resource management",
+      featureColor: "#4C97A8",
+      featureLink: "/features/amenities"
+    },
+    {
+      featureIcon: Bell,
+      featureTitle: "Smart Notifications",
+      featureDescription: "Real-time alerts and notifications for important community updates and events",
+      featureColor: "#16808D",
+      featureLink: "/features/notifications"
+    },
+    {
+      featureIcon: Wrench,
+      featureTitle: "Service Request Portal",
+      featureDescription: "Streamlined service request management with tracking and resolution monitoring",
+      featureColor: "#178740",
+      featureLink: "/features/service-requests"
+    }
+  ];
+
+  // Auto-play functionality
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      setCurrentFeatureIndex((prevIndex) => {
+        const maxIndex = Math.max(0, allFeatures.length - 3);
+        return prevIndex >= maxIndex ? 0 : prevIndex + 1;
+      });
+    }, 4000); // Change slide every 4 seconds
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, allFeatures.length]);
+
+  const handlePrevSlide = () => {
+    setIsAutoPlaying(false);
+    setCurrentFeatureIndex((prevIndex) => {
+      const maxIndex = Math.max(0, allFeatures.length - 3);
+      return prevIndex <= 0 ? maxIndex : prevIndex - 1;
+    });
+  };
+
+  const handleNextSlide = () => {
+    setIsAutoPlaying(false);
+    const maxIndex = Math.max(0, allFeatures.length - 3);
+    setCurrentFeatureIndex((prevIndex) => 
+      prevIndex >= maxIndex ? 0 : prevIndex + 1
+    );
+  };
+
+  const handleDotClick = (index) => {
+    setIsAutoPlaying(false);
+    setCurrentFeatureIndex(index);
+  };
+
+  const maxIndex = Math.max(0, allFeatures.length - 3);
+  const visibleFeatures = allFeatures.slice(currentFeatureIndex, currentFeatureIndex + 3);
   const communityOverviewData = [
     {
       metricLabel: "Happy Residents",
@@ -27,14 +126,6 @@ const Home = () => {
       metricColor: "#1B9AAA",
       metricTrend: "All verified",
       trendDirection: "safe"
-    },
-    {
-      metricLabel: "System Performance",
-      metricValue: "99.9%",
-      metricIcon: Activity,
-      metricColor: "#EF4444", 
-      metricTrend: "Excellent uptime",
-      trendDirection: "excellent"
     },
     {
       metricLabel: "Total Units",
@@ -88,10 +179,13 @@ const Home = () => {
 
   const getTrendIndicator = (direction) => {
     const trendConfig = {
-      up: { icon: TrendingUp, color: "text-green-600", label: "Growing" },
-      stable: { icon: Clock, color: "text-orange-600", label: "Stable" },
-      safe: { icon: CheckCircle, color: "text-blue-600", label: "Secure" },
-      excellent: { icon: Star, color: "text-green-600", label: "Excellent" }
+      up: { icon: TrendingUp, color: "text-[#22C55E]", label: "Growing" },
+      stable: { icon: Clock, color: "text-[#16808D]", label: "Stable" },
+      safe: { icon: CheckCircle, color: "text-[#1B9AAA]", label: "Secure" },
+      excellent: { icon: Star, color: "text-[#178740]", label: "Excellent" },
+      properties: { icon: Building, color: "text-[#142C52]", label: "Properties" },
+      revenue: { icon: DollarSign, color: "text-[#178740]", label: "Revenue" },
+      satisfaction: { icon: Star, color: "text-[#1B9AAA]", label: "Satisfaction" }
     };
     return trendConfig[direction] || trendConfig.stable;
   };
@@ -165,29 +259,30 @@ const Home = () => {
       {/* Enhanced Society360 at a Glance Section */}
       <div className="bg-gradient-to-r from-[#E0F7FA] to-[#D4DBE9] rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold mb-2" style={{color: '#071426'}}>
-            Society360 at a glance
+          <h2 className="text-3xl font-bold mb-2">
+            <span style={{color: '#16808D'}}>Society360</span>{' '}
+            <span style={{color: '#071426', textDecoration: 'underline', textUnderlineOffset: '4px'}}>at a glance</span>
           </h2>
           <p className="text-gray-600">Real-time insights into your community's performance and engagement</p>
         </div>
         
-        <div className="grid grid-cols-7 gap-2 max-w-9xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-7xl mx-auto">
           {communityOverviewData.map((metric, index) => {
             const trend = getTrendIndicator(metric.trendDirection);
             const TrendIcon = trend.icon;
             
             return (
-              <div key={index} className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+              <div key={index} className="bg-white rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
                 <div className="flex flex-col items-center text-center">
-                  <div className="flex justify-center mb-3">
-                    <metric.metricIcon className="h-8 w-8" style={{ color: metric.metricColor }} />
+                  <div className="flex justify-center mb-4">
+                    <metric.metricIcon className="h-10 w-10" style={{ color: metric.metricColor }} />
                   </div>
-                  <div className="text-2xl font-bold mb-2" style={{color: metric.metricColor}}>
+                  <div className="text-3xl font-bold mb-3" style={{color: metric.metricColor}}>
                     {metric.metricValue}
                   </div>
-                  <div className="text-gray-700 font-medium mb-2 text-xs">{metric.metricLabel}</div>
+                  <div className="text-gray-700 font-medium mb-3 text-sm">{metric.metricLabel}</div>
                   <div className={`flex items-center ${trend.color}`}>
-                    <TrendIcon className="h-3 w-3 mr-1" />
+                    <TrendIcon className="h-4 w-4 mr-1" />
                     <span className="text-xs">{metric.metricTrend}</span>
                   </div>
                 </div>
@@ -223,111 +318,96 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Enhanced Features Showcase */}
+      {/* Enhanced Features Showcase with Carousel */}
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8" style={{color: '#071426'}}>
-          Powerful Features at Your Fingertips
+        <h2 className="text-3xl font-bold text-center mb-8">
+          <span style={{color: '#16808D'}}>Powerful Features</span>{' '}
+          <span style={{color: '#071426', textDecoration: 'underline', textUnderlineOffset: '4px'}}>at Your Fingertips</span>
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              featureIcon: Users,
-              featureTitle: "Smart Visitor Management",
-              featureDescription: "Digital visitor registration with QR codes and real-time tracking for enhanced security",
-              featureColor: "#0C4A50",
-              featureLink: "/features/visitor-management"
-            },
-            {
-              featureIcon: Building,
-              featureTitle: "Automated Maintenance",
-              featureDescription: "AI-powered maintenance scheduling and tracking system for efficient operations",
-              featureColor: "#22C55E",
-              featureLink: "/features/maintenance"
-            },
-            {
-              featureIcon: DollarSign,
-              featureTitle: "Financial Dashboard",
-              featureDescription: "Comprehensive billing, payments, and expense management with real-time insights",
-              featureColor: "#1B9AAA",
-              featureLink: "/features/financial"
-            },
-            {
-              featureIcon: MessageSquare,
-              featureTitle: "Community Communication",
-              featureDescription: "Built-in messaging, announcements, and discussion forums for better engagement",
-              featureColor: "#142C52",
-              featureLink: "/features/communication"
-            },
-            {
-              featureIcon: Shield,
-              featureTitle: "Advanced Security Systems",
-              featureDescription: "24/7 monitoring with smart access control and surveillance capabilities",
-              featureColor: "#02394A",
-              featureLink: "/features/security"
-            },
-            {
-              featureIcon: Calendar,
-              featureTitle: "Amenity Booking Platform",
-              featureDescription: "Online booking system for community facilities and resource management",
-              featureColor: "#4C97A8",
-              featureLink: "/features/amenities"
-            },
-            {
-              featureIcon: Bell,
-              featureTitle: "Smart Notifications",
-              featureDescription: "Real-time alerts and notifications for important community updates and events",
-              featureColor: "#16808D",
-              featureLink: "/features/notifications"
-            },
-            {
-              featureIcon: Wrench,
-              featureTitle: "Service Request Portal",
-              featureDescription: "Streamlined service request management with tracking and resolution monitoring",
-              featureColor: "#178740",
-              featureLink: "/features/service-requests"
-            }
-          ].map((featureDetail, index) => (
-            <div 
-              key={index} 
-              className="group relative bg-gradient-to-br from-gray-50 to-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer border border-gray-100"
-            >
-              <div className="flex flex-col items-center text-center">
-                <div className="flex justify-center mb-4">
-                  <div 
-                    className="p-3 rounded-full shadow-sm"
-                    style={{ backgroundColor: featureDetail.featureColor }}
-                  >
-                    <featureDetail.featureIcon className="h-6 w-6 text-white" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-900 group-hover:text-blue-600 transition-colors">
-                  {featureDetail.featureTitle}
-                </h3>
-                <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-                  {featureDetail.featureDescription}
-                </p>
-                <Link
-                  to={featureDetail.featureLink}
-                  className="inline-flex items-center text-sm font-medium text-[#1B9AAA] hover:text-[#16808D] transition-colors group-hover:translate-x-1 transform"
-                >
-                  <span>Learn more</span>
-                  <ChevronRight className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-              
-              {/* Subtle hover effect overlay */}
+        
+        {/* Carousel Container */}
+        <div className="relative">
+          {/* Left Arrow */}
+          <button
+            onClick={handlePrevSlide}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200"
+            style={{ color: '#142C52' }}
+            aria-label="Previous features"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+
+          {/* Right Arrow */}
+          <button
+            onClick={handleNextSlide}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-3 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 border border-gray-200"
+            style={{ color: '#142C52' }}
+            aria-label="Next features"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mx-12">
+            {visibleFeatures.map((featureDetail, index) => (
               <div 
-                className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-5 transition-opacity pointer-events-none"
-                style={{ backgroundColor: featureDetail.featureColor }}
-              />
-            </div>
+                key={`${currentFeatureIndex}-${index}`} 
+                className="group relative bg-gradient-to-br from-gray-50 to-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all duration-300 transform hover:scale-105 cursor-pointer border border-gray-100"
+              >
+                <div className="flex flex-col items-center text-center">
+                  <div className="flex justify-center mb-4">
+                    <div 
+                      className="p-3 rounded-full shadow-sm"
+                      style={{ backgroundColor: featureDetail.featureColor }}
+                    >
+                      <featureDetail.featureIcon className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-semibold mb-3 text-gray-900 group-hover:text-blue-600 transition-colors">
+                    {featureDetail.featureTitle}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4 leading-relaxed">
+                    {featureDetail.featureDescription}
+                  </p>
+                  <Link
+                    to={featureDetail.featureLink}
+                    className="inline-flex items-center text-sm font-medium text-[#1B9AAA] hover:text-[#16808D] transition-colors group-hover:translate-x-1 transform"
+                  >
+                    <span>Learn more</span>
+                    <ChevronRight className="h-4 w-4 ml-1 transform group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </div>
+                
+                {/* Subtle hover effect overlay */}
+                <div 
+                  className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-5 transition-opacity pointer-events-none"
+                  style={{ backgroundColor: featureDetail.featureColor }}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Dots Indicator */}
+        <div className="flex justify-center mt-6 space-x-2">
+          {Array.from({ length: maxIndex + 1 }, (_, index) => (
+            <button
+              key={index}
+              onClick={() => handleDotClick(index)}
+              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                currentFeatureIndex === index
+                  ? 'bg-[#142C52] w-8'
+                  : 'bg-gray-300 hover:bg-gray-400'
+              }`}
+              aria-label={`Go to slide ${index + 1}`}
+            />
           ))}
         </div>
         
-        {/* Additional Features CTA */}
+        {/* Explore All Features Button */}
         <div className="mt-8 text-center">
           <p className="text-gray-600 mb-4">
-            Discover all 20+ features designed to transform your community management
+            Discover all {allFeatures.length} features designed to transform your community management
           </p>
           <Link
             to="/features"
@@ -342,8 +422,9 @@ const Home = () => {
 
       {/* How Society360 Works Section */}
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8" style={{color: '#071426'}}>
-          How Society360 Transforms Communities
+        <h2 className="text-3xl font-bold text-center mb-8">
+          <span style={{color: '#16808D'}}>How Society360</span>{' '}
+          <span style={{color: '#071426', textDecoration: 'underline', textUnderlineOffset: '4px'}}>Transforms Communities</span>
         </h2>
         <div className="grid grid-cols-4 gap-2 max-w-9xl mx-auto">
           {[
@@ -401,8 +482,9 @@ const Home = () => {
 
       {/* Comprehensive Pricing Plans */}
       <div className="bg-gradient-to-br from-[#E0F7FA] to-[#D4DBE9] rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8" style={{color: '#071426'}}>
-          Choose Your Perfect Plan
+        <h2 className="text-3xl font-bold text-center mb-8">
+          <span style={{color: '#16808D'}}>Choose Your</span>{' '}
+          <span style={{color: '#071426', textDecoration: 'underline', textUnderlineOffset: '4px'}}>Perfect Plan</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {[
@@ -496,8 +578,9 @@ const Home = () => {
 
       {/* Trusted Communities Section */}
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8" style={{color: '#071426'}}>
-          Trusted by Leading Communities
+        <h2 className="text-3xl font-bold text-center mb-8">
+          <span style={{color: '#16808D'}}>Trusted by</span>{' '}
+          <span style={{color: '#071426', textDecoration: 'underline', textUnderlineOffset: '4px'}}>Leading Communities</span>
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           {[
@@ -524,8 +607,9 @@ const Home = () => {
 
       {/* Comprehensive FAQ Section */}
       <div className="bg-gradient-to-r from-[#D4DBE9] to-[#E0F7FA] rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8" style={{color: '#071426'}}>
-          Frequently Asked Questions
+        <h2 className="text-3xl font-bold text-center mb-8">
+          <span style={{color: '#16808D'}}>Frequently</span>{' '}
+          <span style={{color: '#071426', textDecoration: 'underline', textUnderlineOffset: '4px'}}>Asked Questions</span>
         </h2>
         <div className="max-w-3xl mx-auto space-y-4">
           {[
@@ -561,53 +645,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Contact Information Section */}
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-3xl font-bold text-center mb-8" style={{color: '#071426'}}>
-          Get in Touch With Our Team
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-          <div>
-            <h3 className="text-xl font-semibold mb-4" style={{color: '#142C52'}}>
-              Contact Information
-            </h3>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <Mail className="h-5 w-5 mr-3" style={{color: '#142C52'}} />
-                <span className="text-gray-700">support@society360.com</span>
-              </div>
-              <div className="flex items-center">
-                <Phone className="h-5 w-5 mr-3" style={{color: '#142C52'}} />
-                <span className="text-gray-700">1-800-SOCIETY</span>
-              </div>
-              <div className="flex items-center">
-                <Clock className="h-5 w-5 mr-3" style={{color: '#142C52'}} />
-                <span className="text-gray-700">24/7 Support Available</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-xl font-semibold mb-4" style={{color: '#142C52'}}>
-              Quick Access Links
-            </h3>
-            <div className="space-y-3">
-              <Link to="/demo" className="block text-blue-600 hover:text-blue-800 transition-colors">
-                Request a Live Demo →
-              </Link>
-              <Link to="/pricing" className="block text-blue-600 hover:text-blue-800 transition-colors">
-                View Detailed Pricing Plans →
-              </Link>
-              <Link to="/documentation" className="block text-blue-600 hover:text-blue-800 transition-colors">
-                Read Complete Documentation →
-              </Link>
-              <Link to="/support" className="block text-blue-600 hover:text-blue-800 transition-colors">
-                Visit Support Center →
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
-    </div>
   );
 };
 
