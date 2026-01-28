@@ -405,7 +405,7 @@ const Dashboard = () => {
           break;
           
         case 6: // Security Support
-          window.location.href = '/security';
+          window.location.href = '/safety';
           break;
           
         default:
@@ -499,10 +499,10 @@ const Dashboard = () => {
   ]);
 
   const securityOptions = [
-    { id: 1, title: 'Amenities', icon: Zap, path: '/amenities' },
-    { id: 2, title: 'Security', icon: Shield, path: '/security' },
-    { id: 3, title: 'Complaint', icon: FileText, path: '/complaints' },
-    { id: 4, title: 'Emergency', icon: AlertCircle, path: '/emergency' }
+    { id: 1, title: 'Amenities', icon: Zap, path: '/facilities' },
+    { id: 2, title: 'Security', icon: Shield, path: '/safety' },
+    { id: 3, title: 'Complaint', icon: FileText, path: '/issues' },
+    { id: 4, title: 'Emergency', icon: AlertCircle, path: '/crisis' }
   ];
 
   useEffect(() => {

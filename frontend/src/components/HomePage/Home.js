@@ -12,56 +12,56 @@ const Home = () => {
       featureTitle: "Smart Visitor Management",
       featureDescription: "Digital visitor registration with QR codes and real-time tracking for enhanced security",
       featureColor: "#0C4A50",
-      featureLink: "/features/visitor-management"
+      featureLink: "/guest-registration"
     },
     {
       featureIcon: Building,
       featureTitle: "Automated Maintenance",
       featureDescription: "AI-powered maintenance scheduling and tracking system for efficient operations",
       featureColor: "#22C55E",
-      featureLink: "/features/maintenance"
+      featureLink: "/repair-services"
     },
     {
       featureIcon: DollarSign,
       featureTitle: "Financial Dashboard",
       featureDescription: "Comprehensive billing, payments, and expense management with real-time insights",
       featureColor: "#1B9AAA",
-      featureLink: "/features/financial"
+      featureLink: "/accounting"
     },
     {
       featureIcon: MessageSquare,
       featureTitle: "Community Communication",
       featureDescription: "Built-in messaging, announcements, and discussion forums for better engagement",
       featureColor: "#142C52",
-      featureLink: "/features/communication"
+      featureLink: "/messaging"
     },
     {
       featureIcon: Shield,
       featureTitle: "Advanced Security Systems",
       featureDescription: "24/7 monitoring with smart access control and surveillance capabilities",
       featureColor: "#02394A",
-      featureLink: "/features/security"
+      featureLink: "/safety"
     },
     {
       featureIcon: Calendar,
       featureTitle: "Amenity Booking Platform",
       featureDescription: "Online booking system for community facilities and resource management",
       featureColor: "#4C97A8",
-      featureLink: "/features/amenities"
+      featureLink: "/facilities"
     },
     {
       featureIcon: Bell,
       featureTitle: "Smart Notifications",
       featureDescription: "Real-time alerts and notifications for important community updates and events",
       featureColor: "#16808D",
-      featureLink: "/features/notifications"
+      featureLink: "/dashboard"
     },
     {
       featureIcon: Wrench,
       featureTitle: "Service Request Portal",
       featureDescription: "Streamlined service request management with tracking and resolution monitoring",
       featureColor: "#178740",
-      featureLink: "/features/service-requests"
+      featureLink: "/issues"
     }
   ];
 
@@ -584,14 +584,14 @@ const Home = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           {[
-            { communityName: "Green Valley Estates", partnerLogo: "/partner1.png" },
-            { communityName: "Sunset Apartments Complex", partnerLogo: "/partner2.png" },
-            { communityName: "Riverside Community Living", partnerLogo: "/partner3.png" },
-            { communityName: "Mountain View Residences", partnerLogo: "/partner4.png" },
-            { communityName: "Lakeside Gardens Society", partnerLogo: "/partner5.png" },
-            { communityName: "Urban Heights Community", partnerLogo: "/partner6.png" },
-            { communityName: "Coastal Living Properties", partnerLogo: "/partner7.png" },
-            { communityName: "Forest Park Homes Association", partnerLogo: "/partner8.png" }
+            { communityName: "Green Valley Estates", partnerLogo: "/short_logo.png" },
+            { communityName: "Sunset Apartments Complex", partnerLogo: "/short_logo.png" },
+            { communityName: "Riverside Community Living", partnerLogo: "/short_logo.png" },
+            { communityName: "Mountain View Residences", partnerLogo: "/short_logo.png" },
+            { communityName: "Lakeside Gardens Society", partnerLogo: "/short_logo.png" },
+            { communityName: "Urban Heights Community", partnerLogo: "/short_logo.png" },
+            { communityName: "Coastal Living Properties", partnerLogo: "/short_logo.png" },
+            { communityName: "Forest Park Homes Association", partnerLogo: "/short_logo.png" }
           ].map((communityPartner, index) => (
             <div key={index} className="text-center">
               <img 

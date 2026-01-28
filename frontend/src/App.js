@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import MainLayout from './components/Layout/MainLayout';
 import HomePage from './components/HomePage/Home';
 import AboutPage from './components/AboutPage/About';
@@ -22,9 +22,28 @@ import HelpCenter from './components/HelpCenter/Support';
 import FeaturesPage from './components/FeaturesPage/Features';
 import './App.css';
 
+// Component to control scroll behavior
+const ScrollToTop = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Only scroll to top for specific routes, not for feature navigation
+    const shouldScrollToTop = !location.pathname.startsWith('/features/');
+    if (shouldScrollToTop) {
+      window.scrollTo(0, 0);
+    }
+  }, [location]);
+
+  return null;
+};
+
 function Application() {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+    <Router 
+      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+      scrollRestoration="manual"
+    >
+      <ScrollToTop />
       <MainLayout>
         <Routes>
           <Route path="/" element={<HomePage />} />
