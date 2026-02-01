@@ -27,24 +27,24 @@ const Login = () => {
 
   const attemptLogin = async (event) => {
     event.preventDefault();
-    setIsAuthenticating(true);
-    setLoginError('');
+    setIsLoading(true);
+    setError('');
 
     try {
-      const authenticationResult = await authenticateUser(userCredentials);
+      const authenticationResult = await authenticateUser(formData);
       
       if (authenticationResult.success) {
         console.log('User authenticated successfully:', authenticationResult.user);
         localStorage.setItem('currentUser', JSON.stringify(authenticationResult.user));
-        navigateToDashboard('/dashboard');
+        navigate('/dashboard');
       } else {
-        setLoginError(authenticationResult.message);
+        setError(authenticationResult.message);
       }
     } catch (authenticationError) {
       console.error('Login process failed:', authenticationError);
-      setLoginError('Login service unavailable. Please try again later.');
+      setError('Login service unavailable. Please try again later.');
     } finally {
-      setIsAuthenticating(false);
+      setIsLoading(false);
     }
   };
   
@@ -94,13 +94,13 @@ const Login = () => {
         
         console.log('Google authentication successful');
         localStorage.setItem('currentUser', JSON.stringify(userData));
-        navigateToDashboard('/dashboard');
+        navigate('/dashboard');
       } else {
-        setLoginError('Google sign-in failed. Please try again.');
+        setError('Google sign-in failed. Please try again.');
       }
     } catch (googleError) {
       console.error('Google sign-in error:', googleError);
-      setLoginError('Google sign-in temporarily unavailable.');
+      setError('Google sign-in temporarily unavailable.');
     }
   };
 
@@ -120,13 +120,13 @@ const Login = () => {
         
         console.log('Twitter authentication successful');
         localStorage.setItem('currentUser', JSON.stringify(userData));
-        navigateToDashboard('/dashboard');
+        navigate('/dashboard');
       } else {
-        setLoginError('Twitter sign-in failed. Please try again.');
+        setError('Twitter sign-in failed. Please try again.');
       }
     } catch (twitterError) {
       console.error('Twitter sign-in error:', twitterError);
-      setLoginError('Twitter sign-in temporarily unavailable.');
+      setError('Twitter sign-in temporarily unavailable.');
     }
   };
 
@@ -146,13 +146,13 @@ const Login = () => {
         
         console.log('GitHub authentication successful');
         localStorage.setItem('currentUser', JSON.stringify(userData));
-        navigateToDashboard('/dashboard');
+        navigate('/dashboard');
       } else {
-        setLoginError('GitHub sign-in failed. Please try again.');
+        setError('GitHub sign-in failed. Please try again.');
       }
     } catch (githubError) {
       console.error('GitHub sign-in error:', githubError);
-      setLoginError('GitHub sign-in temporarily unavailable.');
+      setError('GitHub sign-in temporarily unavailable.');
     }
   };
 
@@ -172,7 +172,7 @@ const Login = () => {
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={attemptLogin}>
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded">
                 {error}
@@ -312,7 +312,7 @@ const Login = () => {
 
               <button
                 type="button"
-                onClick={handleGoogleSignIn}
+                onClick={initiateGoogleAuth}
                 className="p-3 rounded-full bg-white border border-gray-300 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1B9AAA] transition-all hover:scale-105"
               >
                 <img 

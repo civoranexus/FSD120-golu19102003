@@ -37,7 +37,10 @@ import {
   Smartphone,
   Wifi,
   Car,
-  Coffee
+  Coffee,
+  Smile,
+  Paperclip,
+  ThumbsUp
 } from 'lucide-react';
 
 const Contact = () => {
@@ -312,74 +315,79 @@ const Contact = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Contact Form - Left Column */}
-          <div className="bg-white rounded-2xl shadow-xl p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">Send us a Message</h2>
-                <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-sm text-gray-600">We typically respond within 2-4 hours</span>
-                </div>
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-8">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900">Send us a Message</h2>
+                <p className="text-gray-600 mt-2">We typically respond within 2-4 hours</p>
               </div>
-
-              {/* Progress Steps */}
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    currentStep >= 1 ? 'bg-[#16808D] text-white' : 'bg-gray-200 text-gray-600'
-                  }`}>
-                    1
-                  </div>
-                  <span className={`ml-2 text-sm font-medium ${
-                    currentStep >= 1 ? 'text-[#16808D]' : 'text-gray-600'
-                  }`}>
-                    Contact Info
-                  </span>
-                </div>
-                <div className="flex-1 h-1 bg-gray-200 mx-4">
-                  <div 
-                    className="h-1 bg-[#16808D] transition-all duration-300"
-                    style={{ width: currentStep >= 2 ? '100%' : '0%' }}
-                  ></div>
-                </div>
-                <div className="flex items-center">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-                    currentStep >= 2 ? 'bg-[#16808D] text-white' : 'bg-gray-200 text-gray-600'
-                  }`}>
-                    2
-                  </div>
-                  <span className={`ml-2 text-sm font-medium ${
-                    currentStep >= 2 ? 'text-[#16808D]' : 'text-gray-600'
-                  }`}>
-                    Message Details
-                  </span>
-                </div>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                <span className="text-sm text-gray-600">Online</span>
               </div>
+            </div>
 
-              {success && (
-                <div className="bg-green-50 border border-green-200 text-green-600 px-4 py-3 rounded-lg mb-6 flex items-center">
-                  <CheckCircle className="h-5 w-5 mr-2" />
-                  {success}
+            {/* Progress Steps */}
+            <div className="flex items-center justify-between mb-8">
+              <div className="flex items-center">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+                  currentStep >= 1 ? 'bg-[#16808D] text-white shadow-lg' : 'bg-gray-200 text-gray-600'
+                }`}>
+                  {currentStep > 1 ? <CheckCircle className="h-5 w-5" /> : '1'}
                 </div>
-              )}
-
-              {errors.submit && (
-                <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 flex items-center">
-                  <AlertCircle className="h-5 w-5 mr-2" />
-                  {errors.submit}
+                <span className={`ml-3 text-sm font-medium ${
+                  currentStep >= 1 ? 'text-[#16808D]' : 'text-gray-600'
+                }`}>
+                  Contact Information
+                </span>
+              </div>
+              <div className="flex-1 h-2 bg-gray-200 mx-4 rounded-full">
+                <div 
+                  className="h-2 bg-[#16808D] rounded-full transition-all duration-500"
+                  style={{ width: currentStep >= 2 ? '100%' : '0%' }}
+                ></div>
+              </div>
+              <div className="flex items-center">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all ${
+                  currentStep >= 2 ? 'bg-[#16808D] text-white shadow-lg' : 'bg-gray-200 text-gray-600'
+                }`}>
+                  2
                 </div>
-              )}
+                <span className={`ml-3 text-sm font-medium ${
+                  currentStep >= 2 ? 'text-[#16808D]' : 'text-gray-600'
+                }`}>
+                  Message Details
+                </span>
+              </div>
+            </div>
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {currentStep === 1 && (
-                  <>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                          Full Name <span className="text-red-500">*</span>
-                        </label>
+            {success && (
+              <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6 flex items-center animate-pulse">
+                <CheckCircle className="h-5 w-5 mr-3" />
+                <span className="font-medium">{success}</span>
+              </div>
+            )}
+
+            {errors.submit && (
+              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-lg mb-6 flex items-center">
+                <AlertCircle className="h-5 w-5 mr-3" />
+                <span className="font-medium">{errors.submit}</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {currentStep === 1 && (
+                <>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                        Full Name <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                         <input
                           id="name"
                           name="name"
@@ -387,20 +395,26 @@ const Contact = () => {
                           required
                           value={formData.name}
                           onChange={handleChange}
-                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent ${
-                            errors.name ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all ${
+                            errors.name ? 'border-red-500 bg-red-50' : 'border-gray-300'
                           }`}
                           placeholder="John Doe"
                         />
-                        {errors.name && (
-                          <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                        )}
                       </div>
+                      {errors.name && (
+                        <p className="text-red-500 text-sm mt-1 flex items-center">
+                          <AlertCircle className="h-4 w-4 mr-1" />
+                          {errors.name}
+                        </p>
+                      )}
+                    </div>
 
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Address <span className="text-red-500">*</span>
-                        </label>
+                    <div>
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                        Email Address <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                         <input
                           id="email"
                           name="email"
@@ -408,22 +422,28 @@ const Contact = () => {
                           required
                           value={formData.email}
                           onChange={handleChange}
-                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent ${
-                            errors.email ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all ${
+                            errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300'
                           }`}
                           placeholder="john@example.com"
                         />
-                        {errors.email && (
-                          <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                        )}
                       </div>
+                      {errors.email && (
+                        <p className="text-red-500 text-sm mt-1 flex items-center">
+                          <AlertCircle className="h-4 w-4 mr-1" />
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
+                  </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-                          Phone Number <span className="text-red-500">*</span>
-                        </label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                        Phone Number <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                         <input
                           id="phone"
                           name="phone"
@@ -431,88 +451,107 @@ const Contact = () => {
                           required
                           value={formData.phone}
                           onChange={handleChange}
-                          className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent ${
-                            errors.phone ? 'border-red-500' : 'border-gray-300'
+                          className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all ${
+                            errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-300'
                           }`}
                           placeholder="+91 98765 43210"
                         />
-                        {errors.phone && (
-                          <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-                        )}
                       </div>
+                      {errors.phone && (
+                        <p className="text-red-500 text-sm mt-1 flex items-center">
+                          <AlertCircle className="h-4 w-4 mr-1" />
+                          {errors.phone}
+                        </p>
+                      )}
+                    </div>
 
-                      <div>
-                        <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                          Company/Organization
-                        </label>
+                    <div>
+                      <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+                        Company/Organization
+                      </label>
+                      <div className="relative">
+                        <Building className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                         <input
                           id="company"
                           name="company"
                           type="text"
                           value={formData.company}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent"
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all"
                           placeholder="Your Society/Company Name"
                         />
                       </div>
                     </div>
+                  </div>
 
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                       <label htmlFor="department" className="block text-sm font-medium text-gray-700 mb-2">
                         Department
                       </label>
-                      <select
-                        id="department"
-                        name="department"
-                        value={formData.department}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent"
-                      >
-                        {departments.map(dept => (
-                          <option key={dept.id} value={dept.id}>
-                            {dept.name}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="relative">
+                        <Users className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                        <select
+                          id="department"
+                          name="department"
+                          value={formData.department}
+                          onChange={handleChange}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all appearance-none"
+                        >
+                          {departments.map(dept => (
+                            <option key={dept.id} value={dept.id}>
+                              {dept.name}
+                            </option>
+                          ))}
+                        </select>
+                        <ChevronDown className="absolute right-3 top-3 h-5 w-5 text-gray-400 pointer-events-none" />
+                      </div>
                     </div>
 
                     <div>
                       <label htmlFor="priority" className="block text-sm font-medium text-gray-700 mb-2">
                         Priority Level
                       </label>
-                      <select
-                        id="priority"
-                        name="priority"
-                        value={formData.priority}
-                        onChange={handleChange}
-                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent"
-                      >
-                        <option value="low">Low - General Inquiry</option>
-                        <option value="normal">Normal - Standard Response</option>
-                        <option value="high">High - Urgent Matter</option>
-                        <option value="critical">Critical - Emergency</option>
-                      </select>
+                      <div className="relative">
+                        <Zap className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
+                        <select
+                          id="priority"
+                          name="priority"
+                          value={formData.priority}
+                          onChange={handleChange}
+                          className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all appearance-none"
+                        >
+                          <option value="low">Low - General Inquiry</option>
+                          <option value="normal">Normal - Standard Response</option>
+                          <option value="high">High - Urgent Matter</option>
+                          <option value="critical">Critical - Emergency</option>
+                        </select>
+                        <ChevronDown className="absolute right-3 top-3 h-5 w-5 text-gray-400 pointer-events-none" />
+                      </div>
                     </div>
+                  </div>
 
-                    <div className="flex justify-end">
-                      <button
-                        type="button"
-                        onClick={nextStep}
-                        className="flex items-center px-6 py-3 bg-[#16808D] text-white rounded-lg hover:bg-[#142C52] transition-colors"
-                      >
-                        Next Step
-                        <ChevronRight className="h-5 w-5 ml-2" />
-                      </button>
-                    </div>
-                  </>
-                )}
+                  <div className="flex justify-end">
+                    <button
+                      type="button"
+                      onClick={nextStep}
+                      className="flex items-center px-6 py-3 bg-[#16808D] text-white rounded-lg hover:bg-[#142C52] transition-all transform hover:scale-105 shadow-lg"
+                    >
+                      Next Step
+                      <ChevronRight className="h-5 w-5 ml-2" />
+                    </button>
+                  </div>
+                </>
+              )}
 
-                {currentStep === 2 && (
-                  <>
-                    <div>
-                      <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                        Subject <span className="text-red-500">*</span>
-                      </label>
+              {currentStep === 2 && (
+                <>
+                  <div>
+                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+                      Subject <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <FileText className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <input
                         id="subject"
                         name="subject"
@@ -520,20 +559,26 @@ const Contact = () => {
                         required
                         value={formData.subject}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent ${
-                          errors.subject ? 'border-red-500' : 'border-gray-300'
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all ${
+                          errors.subject ? 'border-red-500 bg-red-50' : 'border-gray-300'
                         }`}
                         placeholder="How can we help you?"
                       />
-                      {errors.subject && (
-                        <p className="text-red-500 text-sm mt-1">{errors.subject}</p>
-                      )}
                     </div>
+                    {errors.subject && (
+                      <p className="text-red-500 text-sm mt-1 flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" />
+                        {errors.subject}
+                      </p>
+                    )}
+                  </div>
 
-                    <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                        Message <span className="text-red-500">*</span>
-                      </label>
+                  <div>
+                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                      Message <span className="text-red-500">*</span>
+                    </label>
+                    <div className="relative">
+                      <MessageSquare className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
                       <textarea
                         id="message"
                         name="message"
@@ -541,109 +586,539 @@ const Contact = () => {
                         required
                         value={formData.message}
                         onChange={handleChange}
-                        className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent ${
-                          errors.message ? 'border-red-500' : 'border-gray-300'
+                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-[#16808D] focus:border-transparent transition-all resize-none ${
+                          errors.message ? 'border-red-500 bg-red-50' : 'border-gray-300'
                         }`}
                         placeholder="Please provide detailed information about your inquiry..."
                       ></textarea>
-                      {errors.message && (
-                        <p className="text-red-500 text-sm mt-1">{errors.message}</p>
-                      )}
-                      <p className="text-sm text-gray-500 mt-1">
+                    </div>
+                    {errors.message && (
+                      <p className="text-red-500 text-sm mt-1 flex items-center">
+                        <AlertCircle className="h-4 w-4 mr-1" />
+                        {errors.message}
+                      </p>
+                    )}
+                    <div className="flex justify-between items-center mt-2">
+                      <p className="text-sm text-gray-500">
                         {formData.message.length}/500 characters
                       </p>
+                      <div className="flex space-x-2">
+                        <button
+                          type="button"
+                          className="text-gray-400 hover:text-gray-600 transition-colors"
+                          title="Add emoji"
+                        >
+                          <Smile className="h-5 w-5" />
+                        </button>
+                        <button
+                          type="button"
+                          className="text-gray-400 hover:text-gray-600 transition-colors"
+                          title="Attach file"
+                          onClick={() => fileInputRef.current?.click()}
+                        >
+                          <Paperclip className="h-5 w-5" />
+                        </button>
+                      </div>
                     </div>
+                  </div>
 
-                    <div className="flex justify-between">
-                      <button
-                        type="button"
-                        onClick={prevStep}
-                        className="flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                      >
-                        <ChevronRight className="h-5 w-5 mr-2 rotate-180" />
-                        Previous
-                      </button>
-                      <button
-                        type="submit"
-                        disabled={isLoading}
-                        className="flex items-center px-8 py-3 bg-[#16808D] text-white rounded-lg hover:bg-[#142C52] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        {isLoading ? (
-                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                        ) : (
-                          <>
-                            <Send className="h-5 w-5 mr-2" />
-                            Send Message
-                          </>
-                        )}
-                      </button>
+                  {formData.attachments.length > 0 && (
+                    <div className="space-y-2">
+                      {formData.attachments.map((file, index) => (
+                        <div key={index} className="flex items-center justify-between p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                          <div className="flex items-center">
+                            <FileText className="h-5 w-5 text-blue-600 mr-2" />
+                            <span className="text-sm text-blue-900">{file.name}</span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => removeAttachment(index)}
+                            className="text-blue-600 hover:text-blue-800"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      ))}
                     </div>
-                  </>
-                )}
-              </form>
+                  )}
+
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                    accept=".pdf,.doc,.docx,.txt,.jpg,.png"
+                    multiple
+                  />
+
+                  <div className="flex justify-between">
+                    <button
+                      type="button"
+                      onClick={prevStep}
+                      className="flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all"
+                    >
+                      <ChevronRight className="h-5 w-5 mr-2 rotate-180" />
+                      Previous
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="flex items-center px-8 py-3 bg-[#16808D] text-white rounded-lg hover:bg-[#142C52] transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg"
+                    >
+                      {isLoading ? (
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      ) : (
+                        <>
+                          <Send className="h-5 w-5 mr-2" />
+                          Send Message
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </>
+              )}
+            </form>
+
+            {/* Additional Form Features */}
+            <div className="mt-8 pt-8 border-t border-gray-200">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* FAQ Section */}
+                <div className="bg-gradient-to-r from-[#16808D]/10 to-[#1B9AAA]/10 rounded-xl p-6 border border-[#16808D]/20">
+                  <div className="flex items-center mb-4">
+                    <div className="p-2 bg-[#16808D] rounded-lg mr-3">
+                      <HelpCircle className="h-5 w-5 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900">Quick Help</h4>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="text-sm">
+                      <p className="font-medium text-gray-700 mb-1">How quickly will you respond?</p>
+                      <p className="text-gray-600">We typically respond within 2-4 hours during business hours.</p>
+                    </div>
+                    <div className="text-sm">
+                      <p className="font-medium text-gray-700 mb-1">What information should I include?</p>
+                      <p className="text-gray-600">Include your society name, current management system, and specific requirements.</p>
+                    </div>
+                    <div className="text-sm">
+                      <p className="font-medium text-gray-700 mb-1">Can I schedule a demo?</p>
+                      <p className="text-gray-600">Yes! Click the "Schedule Call" button above to book a personalized demo.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Support Metrics */}
+                <div className="bg-gradient-to-r from-[#1B9AAA]/10 to-[#16808D]/10 rounded-xl p-6 border border-[#1B9AAA]/20">
+                  <div className="flex items-center mb-4">
+                    <div className="p-2 bg-[#1B9AAA] rounded-lg mr-3">
+                      <TrendingUp className="h-5 w-5 text-white" />
+                    </div>
+                    <h4 className="text-lg font-semibold text-gray-900">Our Support Excellence</h4>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Response Time</span>
+                      <span className="text-sm font-semibold text-[#16808D]">2.5 hours avg</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Satisfaction Rate</span>
+                      <span className="text-sm font-semibold text-[#1B9AAA]">98.5%</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Issues Resolved</span>
+                      <span className="text-sm font-semibold text-[#142C52]">15,000+</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Support Staff</span>
+                      <span className="text-sm font-semibold text-[#16808D]">45 experts</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Active Clients</span>
+                      <span className="text-sm font-semibold text-[#1B9AAA]">2,500+</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Avg Resolution</span>
+                      <span className="text-sm font-semibold text-[#142C52]">4.2 hours</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">First Contact</span>
+                      <span className="text-sm font-semibold text-[#16808D]">95% rate</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">Uptime SLA</span>
+                      <span className="text-sm font-semibold text-[#1B9AAA]">99.97%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonials Section */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-[#142C52]/10 to-[#16808D]/10 rounded-xl p-6 border border-[#142C52]/20">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-[#142C52] rounded-lg mr-3">
+                    <Star className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">What Our Clients Say</h4>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="bg-white rounded-lg p-4 shadow-sm border border-[#16808D]/10">
+                    <div className="flex items-center mb-2">
+                      <div className="flex text-yellow-400">
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 italic">"Excellent support team! They helped us migrate smoothly."</p>
+                    <p className="text-xs text-gray-500 mt-2 font-medium">- Green Valley Estates</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 shadow-sm border border-[#1B9AAA]/10">
+                    <div className="flex items-center mb-2">
+                      <div className="flex text-yellow-400">
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 italic">"Best decision we made. Response time is amazing!"</p>
+                    <p className="text-xs text-gray-500 mt-2 font-medium">- Sunset Apartments</p>
+                  </div>
+                  <div className="bg-white rounded-lg p-4 shadow-sm border border-[#142C52]/10">
+                    <div className="flex items-center mb-2">
+                      <div className="flex text-yellow-400">
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                        <Star className="h-4 w-4 fill-current" />
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 italic">"Professional team and great product. Highly recommended!"</p>
+                    <p className="text-xs text-gray-500 mt-2 font-medium">- Riverside Community</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Additional Resources */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-[#16808D]/10 to-[#1B9AAA]/10 rounded-xl p-6 border border-[#16808D]/20">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-[#16808D] rounded-lg mr-3">
+                    <FileText className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Additional Resources</h4>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                  <a href="#" className="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-all group border border-[#16808D]/10">
+                    <Download className="h-4 w-4 text-[#16808D] mr-2 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Product Brochure</p>
+                      <p className="text-xs text-gray-500">PDF • 2.5 MB</p>
+                    </div>
+                  </a>
+                  <a href="#" className="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-all group border border-[#1B9AAA]/10">
+                    <FileText className="h-4 w-4 text-[#1B9AAA] mr-2 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Pricing Guide</p>
+                      <p className="text-xs text-gray-500">PDF • 1.8 MB</p>
+                    </div>
+                  </a>
+                  <a href="#" className="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-all group border border-[#142C52]/10">
+                    <Video className="h-4 w-4 text-[#142C52] mr-2 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Demo Video</p>
+                      <p className="text-xs text-gray-500">5 min watch</p>
+                    </div>
+                  </a>
+                  <a href="#" className="flex items-center p-3 bg-white rounded-lg hover:shadow-md transition-all group border border-[#16808D]/10">
+                    <HelpCircle className="h-4 w-4 text-[#1B9AAA] mr-2 group-hover:scale-110 transition-transform" />
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">Help Center</p>
+                      <p className="text-xs text-gray-500">FAQs & Guides</p>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Media Integration */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-[#142C52]/10 to-[#16808D]/10 rounded-xl p-6 border border-[#142C52]/20">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-[#142C52] rounded-lg mr-3">
+                    <Users className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Connect With Us</h4>
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="text-sm text-gray-600">
+                    <p>Follow us for updates, tips, and community management insights</p>
+                  </div>
+                  <div className="flex space-x-3">
+                    <a href="#" className="p-2 bg-[#16808D] text-white rounded-lg hover:bg-[#142C52] transition-colors">
+                      <MessageCircle className="h-4 w-4" />
+                    </a>
+                    <a href="#" className="p-2 bg-[#1B9AAA] text-white rounded-lg hover:bg-[#16808D] transition-colors">
+                      <MessageCircle className="h-4 w-4" />
+                    </a>
+                    <a href="#" className="p-2 bg-[#142C52] text-white rounded-lg hover:bg-[#16808D] transition-colors">
+                      <MessageCircle className="h-4 w-4" />
+                    </a>
+                    <a href="#" className="p-2 bg-[#16808D] text-white rounded-lg hover:bg-[#142C52] transition-colors">
+                      <Video className="h-4 w-4" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Why Choose Society360 */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-xl p-6">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-indigo-600 rounded-lg mr-3">
+                    <Award className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Why Choose Society360?</h4>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-start space-x-3">
+                    <div className="p-2 bg-indigo-100 rounded-lg mt-1">
+                      <Shield className="h-4 w-4 text-indigo-600" />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900 text-sm">Bank-Level Security</h5>
+                      <p className="text-xs text-gray-600 mt-1">256-bit encryption and regular security audits</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="p-2 bg-green-100 rounded-lg mt-1">
+                      <Zap className="h-4 w-4 text-green-600" />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900 text-sm">Lightning Fast</h5>
+                      <p className="text-xs text-gray-600 mt-1">99.97% uptime with instant response times</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="p-2 bg-purple-100 rounded-lg mt-1">
+                      <Users className="h-4 w-4 text-purple-600" />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900 text-sm">24/7 Support</h5>
+                      <p className="text-xs text-gray-600 mt-1">Round-the-clock assistance for all queries</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start space-x-3">
+                    <div className="p-2 bg-orange-100 rounded-lg mt-1">
+                      <TrendingUp className="h-4 w-4 text-orange-600" />
+                    </div>
+                    <div>
+                      <h5 className="font-semibold text-gray-900 text-sm">Scalable Solution</h5>
+                      <p className="text-xs text-gray-600 mt-1">Grows with your community needs</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Updates */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl p-6">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-emerald-600 rounded-lg mr-3">
+                    <Calendar className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Recent Updates</h4>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">New AI-Powered Features Launched</p>
+                        <p className="text-xs text-gray-500">Automated maintenance scheduling and predictive analytics</p>
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-400">2 days ago</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Mobile App Update v2.5</p>
+                        <p className="text-xs text-gray-500">Enhanced UI and offline capabilities</p>
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-400">1 week ago</span>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Integration with Payment Gateways</p>
+                        <p className="text-xs text-gray-500">Support for 10+ payment methods</p>
+                      </div>
+                    </div>
+                    <span className="text-xs text-gray-400">2 weeks ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Industry Recognition */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-[#142C52]/10 to-[#16808D]/10 rounded-xl p-6 border border-[#142C52]/20">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-[#142C52] rounded-lg mr-3">
+                    <Star className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Industry Recognition</h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="text-center">
+                    <div className="p-3 bg-white rounded-lg mb-2 border border-[#142C52]/10">
+                      <Award className="h-8 w-8 mx-auto text-[#142C52]" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">Best PropTech Solution</p>
+                    <p className="text-xs text-gray-500">2024</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="p-3 bg-white rounded-lg mb-2 border border-[#16808D]/10">
+                      <Shield className="h-8 w-8 mx-auto text-[#16808D]" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">Security Excellence</p>
+                    <p className="text-xs text-gray-500">2024</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="p-3 bg-white rounded-lg mb-2 border border-[#1B9AAA]/10">
+                      <Users className="h-8 w-8 mx-auto text-[#1B9AAA]" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">Customer Choice</p>
+                    <p className="text-xs text-gray-500">2023</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="p-3 bg-white rounded-lg mb-2 border border-[#142C52]/10">
+                      <TrendingUp className="h-8 w-8 mx-auto text-[#142C52]" />
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">Fastest Growing</p>
+                    <p className="text-xs text-gray-500">2023</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Technology Stack */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-[#16808D]/10 to-[#1B9AAA]/10 rounded-xl p-6 border border-[#16808D]/20">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-[#16808D] rounded-lg mr-3">
+                    <Settings className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Powered by Modern Technology</h4>
+                </div>
+                <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+                  {[
+                    { name: 'React', color: '#16808D' },
+                    { name: 'Node.js', color: '#1B9AAA' },
+                    { name: 'AWS', color: '#142C52' },
+                    { name: 'MongoDB', color: '#16808D' },
+                    { name: 'Docker', color: '#1B9AAA' },
+                    { name: 'AI/ML', color: '#142C52' }
+                  ].map((tech, index) => (
+                    <div key={index} className="text-center p-3 bg-white rounded-lg hover:shadow-md transition-all border border-[#16808D]/10">
+                      <div className="w-8 h-8 bg-gray-100 rounded-lg mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: tech.color + '20' }}>
+                        <div className="w-4 h-4 rounded" style={{ backgroundColor: tech.color }}></div>
+                      </div>
+                      <p className="text-sm font-medium text-gray-700">{tech.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Partner Network */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-[#1B9AAA]/10 to-[#16808D]/10 rounded-xl p-6 border border-[#1B9AAA]/20">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-[#1B9AAA] rounded-lg mr-3">
+                    <Globe className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Trusted by Leading Communities</h4>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {[
+                    'Premium Residences',
+                    'Garden City Society',
+                    'Metropolitan Towers',
+                    'Green Valley Homes',
+                    'Sunset Apartments',
+                    'Riverside Complex',
+                    'Urban Oasis',
+                    'Elite Communities'
+                  ].map((partner, index) => (
+                    <div key={index} className="text-center p-3 bg-white rounded-lg hover:shadow-md transition-all border border-[#1B9AAA]/10">
+                      <Building className="h-6 w-6 mx-auto mb-2 text-[#1B9AAA]" />
+                      <p className="text-sm font-medium text-gray-700">{partner}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Emergency Information */}
+            <div className="mt-6">
+              <div className="bg-gradient-to-r from-red-50 to-orange-50 rounded-xl p-6 border border-red-200">
+                <div className="flex items-center mb-4">
+                  <div className="p-2 bg-red-600 rounded-lg mr-3">
+                    <AlertCircle className="h-5 w-5 text-white" />
+                  </div>
+                  <h4 className="text-lg font-semibold text-gray-900">Emergency Support Information</h4>
+                </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-red-200">
+                    <div className="flex items-center space-x-3">
+                      <Phone className="h-4 w-4 text-red-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">24/7 Emergency Hotline</p>
+                        <p className="text-xs text-gray-500">For critical system failures and security issues</p>
+                      </div>
+                    </div>
+                    <a href="tel:+919680211602" className="text-sm font-semibold text-red-600 hover:text-red-700">+91 9680211602</a>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-orange-200">
+                    <div className="flex items-center space-x-3">
+                      <Mail className="h-4 w-4 text-orange-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Emergency Email</p>
+                        <p className="text-xs text-gray-500">Urgent issues only - response within 30 minutes</p>
+                      </div>
+                    </div>
+                    <a href="mailto:emergency@society360.com" className="text-sm font-semibold text-orange-600 hover:text-orange-700">emergency@society360.com</a>
+                  </div>
+                  <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-red-200">
+                    <div className="flex items-center space-x-3">
+                      <Globe className="h-4 w-4 text-red-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">Emergency Website</p>
+                        <p className="text-xs text-gray-500">Access emergency portal and resources</p>
+                      </div>
+                    </div>
+                    <a href="https://www.residentialhub.com" target="_blank" rel="noopener noreferrer" className="text-sm font-semibold text-red-600 hover:text-red-700">www.residentialhub.com</a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Contact Information Sidebar */}
-          <div className="space-y-8">
-            {/* Department Contacts */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-              <div className="flex items-center mb-6">
-                <div className="p-3 bg-gradient-to-r from-[#16808D] to-[#1B9AAA] rounded-xl mr-4">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900">Department Contacts</h3>
-                  <p className="text-sm text-gray-600">Choose the right department for faster response</p>
-                </div>
-              </div>
-              <div className="space-y-4">
-                {departments.map(dept => (
-                  <div 
-                    key={dept.id}
-                    onClick={() => setSelectedDepartment(dept.id)}
-                    className={`p-5 rounded-xl border-2 cursor-pointer transition-all transform hover:scale-102 ${
-                      selectedDepartment === dept.id 
-                        ? 'border-[#16808D] bg-gradient-to-r from-[#16808D]/5 to-[#1B9AAA]/5 shadow-lg' 
-                        : 'border-gray-200 hover:border-[#1B9AAA] hover:shadow-md'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between mb-3">
-                      <div className="flex items-center">
-                        <div className={`p-2 rounded-lg mr-3 ${
-                          selectedDepartment === dept.id 
-                            ? 'bg-[#16808D]' 
-                            : 'bg-gray-100'
-                        }`}>
-                          <dept.icon className={`h-5 w-5 ${
-                            selectedDepartment === dept.id ? 'text-white' : 'text-[#16808D]'
-                          }`} />
-                        </div>
-                        <div>
-                          <span className="font-semibold text-gray-900 text-base">{dept.name}</span>
-                          <p className="text-xs text-gray-500 mt-1">{dept.email}</p>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                        <span className="text-xs text-green-600 font-medium">Online</span>
-                      </div>
-                    </div>
-                    <p className="text-sm text-gray-600 mb-3 leading-relaxed">{dept.description}</p>
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex items-center text-xs text-gray-500">
-                          <Clock className="h-3 w-3 mr-1" />
-                          <span>{dept.responseTime}</span>
-                        </div>
-                      </div>
-                      <ExternalLink className="h-4 w-4 text-[#1B9AAA] hover:text-[#16808D] transition-colors" />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
+          {/* Right Column - Contact Information Sidebar */}
+          <div className="space-y-6">
             {/* Quick Contact Methods */}
             <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
               <div className="flex items-center mb-6">
@@ -655,6 +1130,7 @@ const Contact = () => {
                   <p className="text-sm text-gray-600">Multiple ways to reach us</p>
                 </div>
               </div>
+              
               <div className="space-y-4">
                 <a href="tel:+919680211602" className="flex items-center p-4 bg-gradient-to-r from-green-50 to-green-100 rounded-xl hover:from-green-100 hover:to-green-200 transition-all group">
                   <div className="p-3 bg-green-600 rounded-lg mr-4 group-hover:scale-110 transition-transform">
@@ -706,6 +1182,63 @@ const Contact = () => {
               </div>
             </div>
 
+            {/* Department Contacts */}
+            <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+              <div className="flex items-center mb-6">
+                <div className="p-3 bg-gradient-to-r from-[#16808D] to-[#1B9AAA] rounded-xl mr-4">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">Department Contacts</h3>
+                  <p className="text-sm text-gray-600">Choose the right department for faster response</p>
+                </div>
+              </div>
+              
+              <div className="space-y-4">
+                {departments.map(dept => (
+                  <div 
+                    key={dept.id}
+                    onClick={() => setSelectedDepartment(dept.id)}
+                    className={`p-5 rounded-xl border-2 cursor-pointer transition-all transform hover:scale-102 ${
+                      selectedDepartment === dept.id 
+                        ? 'border-[#16808D] bg-gradient-to-r from-[#16808D]/5 to-[#1B9AAA]/5 shadow-lg' 
+                        : 'border-gray-200 hover:border-[#1B9AAA] hover:shadow-md'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-center">
+                        <div className={`p-2 rounded-lg mr-3 ${
+                          selectedDepartment === dept.id 
+                            ? 'bg-[#16808D]' 
+                            : 'bg-gray-100'
+                        }`}>
+                          <dept.icon className={`h-5 w-5 ${
+                            selectedDepartment === dept.id ? 'text-white' : 'text-[#16808D]'
+                          }`} />
+                        </div>
+                        <div>
+                          <span className="font-semibold text-lg">{dept.name}</span>
+                          <p className="text-xs text-gray-500 mt-1">{dept.email}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                        <span className="text-xs text-green-600 font-medium">Online</span>
+                      </div>
+                    </div>
+                    <p className="text-sm text-gray-600 mb-3 leading-relaxed">{dept.description}</p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Clock className="h-3 w-3 mr-1" />
+                        <span>{dept.responseTime}</span>
+                      </div>
+                      <ExternalLink className="h-4 w-4 text-[#1B9AAA] hover:text-[#16808D] transition-colors" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
             {/* Support Hours */}
             <div className="bg-gradient-to-r from-[#142C52] via-[#16808D] to-[#1B9AAA] rounded-2xl p-8 text-white shadow-xl">
               <div className="flex items-center mb-6">
@@ -717,11 +1250,12 @@ const Contact = () => {
                   <p className="text-sm opacity-90">We're here when you need us</p>
                 </div>
               </div>
+              
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-sm rounded-xl">
                   <div className="flex items-center">
                     <div className="p-2 bg-white/20 rounded-lg mr-3">
-                      <Calendar className="h-5 w-5 text-white" />
+                      <Calendar className="h-4 w-4 text-white" />
                     </div>
                     <div>
                       <p className="font-semibold text-lg">Monday - Friday</p>
@@ -736,7 +1270,7 @@ const Contact = () => {
                 <div className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-sm rounded-xl">
                   <div className="flex items-center">
                     <div className="p-2 bg-white/20 rounded-lg mr-3">
-                      <Calendar className="h-5 w-5 text-white" />
+                      <Calendar className="h-4 w-4 text-white" />
                     </div>
                     <div>
                       <p className="font-semibold text-lg">Saturday</p>
@@ -751,7 +1285,7 @@ const Contact = () => {
                 <div className="flex items-center justify-between p-4 bg-white/10 backdrop-blur-sm rounded-xl">
                   <div className="flex items-center">
                     <div className="p-2 bg-white/20 rounded-lg mr-3">
-                      <AlertCircle className="h-5 w-5 text-white" />
+                      <AlertCircle className="h-4 w-4 text-red-300" />
                     </div>
                     <div>
                       <p className="font-semibold text-lg">Sunday</p>
@@ -767,9 +1301,9 @@ const Contact = () => {
               {/* Emergency Contact */}
               <div className="mt-6 p-4 bg-red-500/20 backdrop-blur-sm rounded-xl border border-red-400/30">
                 <div className="flex items-center">
-                  <AlertCircle className="h-5 w-5 mr-2 text-red-300" />
+                  <AlertCircle className="h-4 w-4 mr-2 text-red-300" />
                   <div>
-                    <p className="font-semibold text-red-100">Emergency Support</p>
+                    <p className="font-semibold text-red-100 text-sm">Emergency Support</p>
                     <p className="text-sm text-red-200">For critical issues: +91 9680211602 (24/7)</p>
                   </div>
                 </div>
@@ -779,31 +1313,104 @@ const Contact = () => {
             {/* Response Time Guarantee */}
             <div className="bg-gradient-to-r from-[#16808D] to-[#1B9AAA] rounded-2xl p-6 text-white shadow-xl">
               <div className="flex items-center mb-4">
-                <Shield className="h-6 w-6 mr-3" />
-                <h3 className="text-xl font-bold">Response Time Guarantee</h3>
+                <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl mr-3">
+                  <Shield className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Response Guarantee</h3>
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg">
-                  <p className="text-2xl font-bold">2-4h</p>
+                  <Clock className="h-5 w-5 mx-auto mb-2 text-white/80" />
+                  <p className="text-lg font-bold">2-4h</p>
                   <p className="text-xs opacity-90">General Inquiry</p>
                 </div>
                 <div className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg">
-                  <p className="text-2xl font-bold">30m</p>
+                  <Zap className="h-5 w-5 mx-auto mb-2 text-white/80" />
+                  <p className="text-lg font-bold">30m</p>
                   <p className="text-xs opacity-90">Critical Issues</p>
                 </div>
                 <div className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg">
-                  <p className="text-2xl font-bold">98.5%</p>
+                  <ThumbsUp className="h-5 w-5 mx-auto mb-2 text-white/80" />
+                  <p className="text-lg font-bold">98.5%</p>
                   <p className="text-xs opacity-90">Satisfaction Rate</p>
                 </div>
                 <div className="text-center p-3 bg-white/10 backdrop-blur-sm rounded-lg">
-                  <p className="text-2xl font-bold">24/7</p>
+                  <Shield className="h-5 w-5 mx-auto mb-2 text-white/80" />
+                  <p className="text-lg font-bold">24/7</p>
                   <p className="text-xs opacity-90">Emergency Support</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Extended Response Guarantee */}
+            <div className="bg-gradient-to-r from-[#142C52] to-[#16808D] rounded-2xl p-6 text-white shadow-xl">
+              <div className="flex items-center mb-4">
+                <div className="p-3 bg-white/20 backdrop-blur-sm rounded-xl mr-3">
+                  <Award className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold">Premium Service Promise</h3>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg">
+                  <div className="flex items-center">
+                    <CheckCircle className="h-4 w-4 mr-3 text-green-400" />
+                    <div>
+                      <p className="font-semibold text-sm">First Response</p>
+                      <p className="text-xs opacity-90">Within 30 minutes</p>
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold text-green-400">30m</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg">
+                  <div className="flex items-center">
+                    <CheckCircle className="h-4 w-4 mr-3 text-blue-400" />
+                    <div>
+                      <p className="font-semibold text-sm">Issue Resolution</p>
+                      <p className="text-xs opacity-90">Same day service</p>
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold text-blue-400">24h</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg">
+                  <div className="flex items-center">
+                    <CheckCircle className="h-4 w-4 mr-3 text-purple-400" />
+                    <div>
+                      <p className="font-semibold text-sm">Complex Problems</p>
+                      <p className="text-xs opacity-90">Expert team assigned</p>
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold text-purple-400">48h</span>
+                </div>
+                <div className="flex items-center justify-between p-3 bg-white/10 backdrop-blur-sm rounded-lg">
+                  <div className="flex items-center">
+                    <CheckCircle className="h-4 w-4 mr-3 text-yellow-400" />
+                    <div>
+                      <p className="font-semibold text-sm">Feature Requests</p>
+                      <p className="text-xs opacity-90">Development roadmap</p>
+                    </div>
+                  </div>
+                  <span className="text-lg font-bold text-yellow-400">2w</span>
+                </div>
+              </div>
+              
+              <div className="mt-4 p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/20">
+                <div className="flex items-center">
+                  <Shield className="h-4 w-4 mr-2 text-green-400" />
+                  <div>
+                    <p className="font-semibold text-green-400 text-sm">100% Satisfaction Guarantee</p>
+                    <p className="text-xs opacity-90">If you're not satisfied, we'll make it right</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
   );
 };
 
