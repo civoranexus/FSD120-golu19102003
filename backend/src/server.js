@@ -48,6 +48,7 @@ application.use('/api/finance', require('./routes/finance'));
 application.use('/api/communication', require('./routes/communication'));
 application.use('/api/administration', require('./routes/administration'));
 application.use('/api/amenities', require('./routes/amenities'));
+application.use('/api/payments', require('./routes/payments'));
 
 application.use((error, request, response, next) => {
   console.error(error.stack);

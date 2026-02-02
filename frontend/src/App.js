@@ -20,6 +20,8 @@ import ConfidentialityPolicy from './components/PrivacyPage/Privacy';
 import TermsOfService from './components/TermsPage/Terms';
 import HelpCenter from './components/HelpCenter/Support';
 import FeaturesPage from './components/FeaturesPage/Features';
+import GetStartedPage from './components/GetStartedPage/GetStarted';
+import CheckoutPage from './components/CheckoutPage/Checkout';
 import './App.css';
 
 // Component to control scroll behavior
@@ -51,6 +53,8 @@ function Application() {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/signin" element={<SignInPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/get-started" element={<GetStartedPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/dashboard" element={<UserDashboard />} />
           <Route path="/guest-registration" element={<GuestRegistration />} />
           <Route path="/repair-services" element={<RepairServices />} />
