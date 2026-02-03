@@ -1,61 +1,10 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Users, Building, DollarSign, Clock, AlertCircle, TrendingUp, 
   Activity, BarChart3, PieChart, Calendar, Filter, Download, 
   RefreshCw, Settings, Bell, Search, ChevronUp, ChevronDown,
   Home, Wrench, CreditCard, Shield, FileText, Zap, Target,
-  MessageSquare, Megaphone, X, Smartphone, Wifi, Battery, 
-  Server, Database, Cloud, Lock, Globe, MapPin, Navigation,
-  Eye, EyeOff, Maximize2, Minimize2, Grid, List, Layers,
-  Terminal, Code, Cpu, HardDrive, Monitor, Router, 
-  UserCheck, UserX, AlertTriangle, CheckCircle, XCircle,
-  ArrowUp, ArrowDown, ArrowRight, MoreVertical, Edit,
-  Trash2, Copy, Share2, Link2, ExternalLink, Play,
-  Pause, SkipForward, SkipBack, Volume2, VolumeX,
-  Sun, Moon, CloudRain, CloudSnow, Wind, Thermometer,
-  Car, Package, ShoppingCart, Receipt,
-  Building2, Home2, Building3, Store, Factory, Hotel,
-  Stethoscope, Heart, Brain, Tooth,
-  Dumbbell, Trophy, Gamepad2,
-  Music, Video, Camera, Radio, Tv,
-  Mail, Phone, MessageCircle, Send, Paperclip,
-  FolderOpen, Folder, File, Archive, Save, Upload,
-  Printer, Scan, Barcode,
-  QrCode, Fingerprint, IdCard, Key, Lock as LockIcon,
-  Shield as ShieldIcon, ShieldCheck, ShieldX, ShieldAlert,
-  ZapOff, BatteryCharging, BatteryLow,
-  Signal, SignalHigh, SignalLow, SignalZero,
-  Wifi as WifiIcon, WifiOff, WifiHigh, WifiLow, WifiZero,
-  Globe as GlobeIcon, Globe2, GlobeX, GlobeLock,
-  Map as MapIcon, MapPin as MapPinIcon, MapPinOff,
-  Navigation as NavigationIcon, NavigationOff,
-  Compass, CompassOff, Route, RouteOff,
-  Clock as ClockIcon, ClockOff, Clock1, Clock2, Clock3,
-  Timer, TimerOff, Timer1, Timer2, Timer3,
-  Calendar as CalendarIcon, CalendarOff, Calendar1, Calendar2,
-  DateRange, DateRangeOff,
-  TrendingUp as TrendingUpIcon, TrendingDown, TrendingFlat,
-  BarChart as BarChartIcon, BarChart2, BarChart3 as BarChart3Icon,
-  BarChart4, BarChartHorizontal, BarChartVertical,
-  PieChart as PieChartIcon, PieChart2, PieChart3,
-  LineChart, LineChart2, LineChart3,
-  AreaChart, AreaChart2, AreaChart3,
-  ScatterChart, ScatterChart2, ScatterChart3,
-  RadarChart, RadarChart2, RadarChart3,
-  Donut, Donut2, Donut3,
-  Activity as ActivityIcon, ActivityOff,
-  Pulse, PulseOff,
-  Heartbeat, HeartbeatOff,
-  Wind as WindIcon, WindOff,
-  ZapOff as ZapOffIcon,
-  Sparkles, SparklesOff,
-  Star, StarOff, StarHalf,
-  ThumbsUp, ThumbsDown,
-  Heart as HeartIcon, HeartOff,
-  Smile, Frown, Meh,
-  Laugh, Angry, Sad,
-  Eye as EyeIcon2, EyeOff as EyeOffIcon,
-  Sparkles as SparklesIcon
+  MessageSquare, Megaphone, X
 } from 'lucide-react';
 
 const Dashboard = () => {
@@ -104,49 +53,6 @@ const Dashboard = () => {
     storage: 'operational',
     backup: 'operational'
   });
-  
-  // Advanced Dashboard States
-  const [workspaceLayout, setWorkspaceLayout] = useState('grid'); // grid, list, kanban
-  const [activeWidgets, setActiveWidgets] = useState([
-    'metrics', 'charts', 'activities', 'notifications', 'services', 'realtime'
-  ]);
-  const [widgetConfigs, setWidgetConfigs] = useState({
-    metrics: { size: 'large', position: { x: 0, y: 0 }, minimized: false },
-    charts: { size: 'medium', position: { x: 1, y: 0 }, minimized: false },
-    activities: { size: 'medium', position: { x: 0, y: 1 }, minimized: false },
-    notifications: { size: 'small', position: { x: 1, y: 1 }, minimized: false },
-    services: { size: 'medium', position: { x: 2, y: 0 }, minimized: false },
-    realtime: { size: 'small', position: { x: 2, y: 1 }, minimized: false }
-  });
-  const [serviceConnections, setServiceConnections] = useState({
-    maintenance: { status: 'connected', lastSync: new Date(), data: [] },
-    finance: { status: 'connected', lastSync: new Date(), data: [] },
-    visitors: { status: 'connected', lastSync: new Date(), data: [] },
-    communication: { status: 'connected', lastSync: new Date(), data: [] },
-    security: { status: 'connected', lastSync: new Date(), data: [] },
-    amenities: { status: 'disconnected', lastSync: null, data: [] }
-  });
-  const [realtimeActivities, setRealtimeActivities] = useState([]);
-  const [systemMetrics, setSystemMetrics] = useState({
-    cpu: 45,
-    memory: 67,
-    disk: 78,
-    network: 23,
-    database: 34,
-    api: 12,
-    cache: 89,
-    bandwidth: 56
-  });
-  const [alerts, setAlerts] = useState([]);
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const [selectedTheme, setSelectedTheme] = useState('default');
-  const [autoRefresh, setAutoRefresh] = useState(true);
-  const [refreshInterval, setRefreshInterval] = useState(10000);
-  const [showActivityFeed, setShowActivityFeed] = useState(true);
-  const [showServicePanel, setShowServicePanel] = useState(true);
-  const [showSystemMonitor, setShowSystemMonitor] = useState(false);
-  const [draggableWidgets, setDraggableWidgets] = useState(false);
-  const [widgetAnimations, setWidgetAnimations] = useState(true);
 
   const colorPalettes = {
     primary: {
@@ -599,50 +505,35 @@ const Dashboard = () => {
     { id: 4, title: 'Emergency', icon: AlertCircle, path: '/crisis' }
   ];
 
-  // Enhanced Real-time Data Fetching
-  const fetchRealTimeData = useCallback(async () => {
-    try {
-      const [healthRes, authRes, visitorsRes, maintenanceRes, financeRes, communicationRes] = await Promise.all([
-        fetch('/api/health'),
-        fetch('/api/auth/users'),
-        fetch('/api/visitors'),
-        fetch('/api/maintenance/requests'),
-        fetch('/api/finance/transactions'),
-        fetch('/api/communication/announcements')
-      ]);
-
-      const healthData = await healthRes.json();
-      const authData = await authRes.json();
-      const visitorsData = await visitorsRes.json();
-      const maintenanceData = await maintenanceRes.json();
-      const financeData = await financeRes.json();
-      const communicationData = await communicationRes.json();
-
-      setRealTimeData(prev => ({
-        ...prev,
-        totalUsers: authData.success ? authData.data.users.length : prev.totalUsers,
-        activeUnits: authData.success ? authData.data.users.filter(u => u.status === 'Active').length : prev.activeUnits,
-        totalRevenue: financeData.success ? financeData.data.transactions.reduce((sum, t) => sum + t.amount, 0) : prev.totalRevenue,
-        pendingTasks: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingTasks,
-        newVisitors: visitorsData.success ? visitorsData.data.visitors.filter(v => {
-          const today = new Date();
-          const visitDate = new Date(v.checkIn);
-          return visitDate.toDateString() === today.toDateString();
-        }).length : prev.newVisitors,
-        pendingMaintenance: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingMaintenance,
-        openComplaints: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.category === 'complaint' && r.status !== 'resolved').length : prev.openComplaints,
-        recentPayments: financeData.success ? financeData.data.transactions.filter(t => {
-          const today = new Date();
-          const paymentDate = new Date(t.date);
-          return paymentDate.toDateString() === today.toDateString();
-        }).length : prev.recentPayments,
-        serverLoad: healthData.success ? Math.floor(Math.random() * 30 + 10) : prev.serverLoad,
-        lastUpdated: new Date()
-      }));
-    } catch (error) {
-      console.error('Error fetching real-time data:', error);
-    }
+  useEffect(() => {
+    fetchDashboardData();
+    fetchNotifications();
+    fetchActivities();
+    fetchRealTimeData();
+    
+    const realTimeInterval = setInterval(fetchRealTimeData, 10000);
+    const notificationInterval = setInterval(fetchNotifications, 30000);
+    const activityInterval = setInterval(fetchActivities, 60000);
+    
+    return () => {
+      clearInterval(realTimeInterval);
+      clearInterval(notificationInterval);
+      clearInterval(activityInterval);
+    };
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (showSecurityDropdown && securityModalRef.current && !securityModalRef.current.contains(event.target)) {
+        setShowSecurityDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showSecurityDropdown]);
 
   const fetchDashboardData = async () => {
     try {
@@ -702,312 +593,48 @@ const Dashboard = () => {
     pendingTasks: 23
   };
 
-  // Advanced Dashboard Functions
-  const fetchServiceConnections = useCallback(async () => {
+  const fetchRealTimeData = async () => {
     try {
-      const services = ['maintenance', 'finance', 'visitors', 'communication', 'security', 'amenities'];
-      const connectionPromises = services.map(service => 
-        fetch(`/api/${service}/health`).then(res => res.json()).catch(() => ({ status: 'disconnected' }))
-      );
-      
-      const results = await Promise.all(connectionPromises);
-      
-      setServiceConnections(prev => {
-        const updated = { ...prev };
-        services.forEach((service, index) => {
-          updated[service] = {
-            ...updated[service],
-            status: results[index].status || 'disconnected',
-            lastSync: results[index].status === 'connected' ? new Date() : updated[service].lastSync
-          };
-        });
-        return updated;
-      });
+      const [healthRes, authRes, visitorsRes, maintenanceRes, financeRes, communicationRes] = await Promise.all([
+        fetch('/api/health'),
+        fetch('/api/auth/users'),
+        fetch('/api/visitors'),
+        fetch('/api/maintenance/requests'),
+        fetch('/api/finance/transactions'),
+        fetch('/api/communication/announcements')
+      ]);
+
+      const healthData = await healthRes.json();
+      const authData = await authRes.json();
+      const visitorsData = await visitorsRes.json();
+      const maintenanceData = await maintenanceRes.json();
+      const financeData = await financeRes.json();
+      const communicationData = await communicationRes.json();
+
+      setRealTimeData(prev => ({
+        ...prev,
+        totalUsers: authData.success ? authData.data.users.length : prev.totalUsers,
+        activeUnits: authData.success ? authData.data.users.filter(u => u.status === 'Active').length : prev.activeUnits,
+        totalRevenue: financeData.success ? financeData.data.transactions.reduce((sum, t) => sum + t.amount, 0) : prev.totalRevenue,
+        pendingTasks: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingTasks,
+        newVisitors: visitorsData.success ? visitorsData.data.visitors.filter(v => {
+          const today = new Date();
+          const visitDate = new Date(v.checkIn);
+          return visitDate.toDateString() === today.toDateString();
+        }).length : prev.newVisitors,
+        pendingMaintenance: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingMaintenance,
+        openComplaints: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.category === 'complaint' && r.status !== 'resolved').length : prev.openComplaints,
+        recentPayments: financeData.success ? financeData.data.transactions.filter(t => {
+          const today = new Date();
+          const paymentDate = new Date(t.date);
+          return paymentDate.toDateString() === today.toDateString();
+        }).length : prev.recentPayments,
+        serverLoad: healthData.success ? Math.floor(Math.random() * 30 + 10) : prev.serverLoad,
+        lastUpdated: new Date()
+      }));
     } catch (error) {
-      console.error('Error fetching service connections:', error);
+      console.error('Error fetching real-time data:', error);
     }
-  }, []);
-
-  const fetchRealtimeActivities = useCallback(async () => {
-    try {
-      const response = await fetch('/api/activities/realtime');
-      const data = await response.json();
-      
-      if (data.success) {
-        setRealtimeActivities(data.activities || []);
-        
-        // Add new activities to the feed
-        if (data.activities.length > 0) {
-          setActivities(prev => {
-            const newActivities = data.activities.map(activity => ({
-              id: `realtime-${activity.id}`,
-              type: activity.type,
-              title: activity.title,
-              description: activity.description,
-              time: new Date(activity.timestamp).toLocaleString(),
-              priority: activity.priority || 'medium',
-              realtime: true
-            }));
-            
-            // Combine with existing activities and keep only the latest 20
-            const combined = [...newActivities, ...prev];
-            return combined.sort((a, b) => new Date(b.time) - new Date(a.time)).slice(0, 20);
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching realtime activities:', error);
-    }
-  }, []);
-
-  const fetchSystemMetrics = useCallback(async () => {
-    try {
-      const response = await fetch('/api/system/metrics');
-      const data = await response.json();
-      
-      if (data.success) {
-        setSystemMetrics(data.metrics || {
-          cpu: Math.floor(Math.random() * 30 + 30),
-          memory: Math.floor(Math.random() * 20 + 60),
-          disk: Math.floor(Math.random() * 15 + 70),
-          network: Math.floor(Math.random() * 40 + 10),
-          database: Math.floor(Math.random() * 25 + 25),
-          api: Math.floor(Math.random() * 20 + 5),
-          cache: Math.floor(Math.random() * 10 + 85),
-          bandwidth: Math.floor(Math.random() * 30 + 40)
-        });
-      }
-    } catch (error) {
-      console.error('Error fetching system metrics:', error);
-    }
-  }, []);
-
-  const fetchAlerts = useCallback(async () => {
-    try {
-      const response = await fetch('/api/alerts');
-      const data = await response.json();
-      
-      if (data.success) {
-        setAlerts(data.alerts || []);
-      }
-    } catch (error) {
-      console.error('Error fetching alerts:', error);
-    }
-  }, []);
-
-  const handleWidgetToggle = (widgetId) => {
-    setActiveWidgets(prev => 
-      prev.includes(widgetId) 
-        ? prev.filter(id => id !== widgetId)
-        : [...prev, widgetId]
-    );
-  };
-
-  const handleWidgetMinimize = (widgetId) => {
-    setWidgetConfigs(prev => ({
-      ...prev,
-      [widgetId]: {
-        ...prev[widgetId],
-        minimized: !prev[widgetId].minimized
-      }
-    }));
-  };
-
-  const handleWidgetResize = (widgetId, size) => {
-    setWidgetConfigs(prev => ({
-      ...prev,
-      [widgetId]: {
-        ...prev[widgetId],
-        size
-      }
-    }));
-  };
-
-  const handleServiceAction = async (service, action) => {
-    try {
-      setIsLoading(true);
-      
-      switch (action) {
-        case 'sync':
-          const response = await fetch(`/api/${service}/sync`, { method: 'POST' });
-          if (response.ok) {
-            setServiceConnections(prev => ({
-              ...prev,
-              [service]: {
-                ...prev[service],
-                lastSync: new Date(),
-                status: 'connected'
-              }
-            }));
-          }
-          break;
-          
-        case 'disconnect':
-          setServiceConnections(prev => ({
-            ...prev,
-            [service]: {
-              ...prev[service],
-              status: 'disconnected',
-              lastSync: null
-            }
-          }));
-          break;
-          
-        case 'connect':
-          setServiceConnections(prev => ({
-            ...prev,
-            [service]: {
-              ...prev[service],
-              status: 'connecting',
-              lastSync: new Date()
-            }
-          }));
-          
-          // Simulate connection process
-          setTimeout(() => {
-            setServiceConnections(prev => ({
-              ...prev,
-              [service]: {
-                ...prev[service],
-                status: 'connected',
-                lastSync: new Date()
-              }
-            }));
-          }, 2000);
-          break;
-          
-        default:
-          console.log('Unknown action:', action);
-      }
-    } catch (error) {
-      console.error('Error in service action:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleAlertAction = async (alertId, action) => {
-    try {
-      setIsLoading(true);
-      
-      switch (action) {
-        case 'acknowledge':
-          await fetch(`/api/alerts/${alertId}/acknowledge`, { method: 'POST' });
-          setAlerts(prev => prev.map(alert => 
-            alert.id === alertId ? { ...alert, acknowledged: true } : alert
-          ));
-          break;
-          
-        case 'resolve':
-          await fetch(`/api/alerts/${alertId}/resolve`, { method: 'POST' });
-          setAlerts(prev => prev.filter(alert => alert.id !== alertId));
-          break;
-          
-        case 'dismiss':
-          setAlerts(prev => prev.filter(alert => alert.id !== alertId));
-          break;
-          
-        default:
-          console.log('Unknown action:', action);
-      }
-    } catch (error) {
-      console.error('Error in alert action:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleLayoutChange = (layout) => {
-    setWorkspaceLayout(layout);
-    localStorage.setItem('dashboard-layout', layout);
-  };
-
-  const handleThemeChange = (theme) => {
-    setSelectedTheme(theme);
-    setIsDarkMode(theme === 'dark');
-    localStorage.setItem('dashboard-theme', theme);
-  };
-
-  const handleAutoRefreshToggle = () => {
-    setAutoRefresh(prev => !prev);
-  };
-
-  const handleRefreshIntervalChange = (interval) => {
-    setRefreshInterval(interval);
-    localStorage.setItem('refresh-interval', interval);
-  };
-
-  const exportDashboardData = async () => {
-    try {
-      setIsLoading(true);
-      
-      const exportData = {
-        timestamp: new Date().toISOString(),
-        dashboardStats: realTimeData,
-        activities: activities,
-        realtimeActivities: realtimeActivities,
-        systemMetrics: systemMetrics,
-        serviceConnections: serviceConnections,
-        alerts: alerts,
-        widgetConfigs: widgetConfigs,
-        workspaceLayout: workspaceLayout
-      };
-
-      const response = await fetch('/api/dashboard/export', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(exportData)
-      });
-
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `dashboard-export-${new Date().toISOString().split('T')[0]}.json`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      }
-    } catch (error) {
-      console.error('Error exporting dashboard:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const importDashboardData = async (file) => {
-    try {
-      setIsLoading(true);
-      
-      const text = await file.text();
-      const data = JSON.parse(text);
-      
-      // Restore dashboard state
-      if (data.widgetConfigs) setWidgetConfigs(data.widgetConfigs);
-      if (data.workspaceLayout) setWorkspaceLayout(data.workspaceLayout);
-      if (data.dashboardStats) setRealTimeData(data.dashboardStats);
-      
-      console.log('Dashboard data imported successfully');
-    } catch (error) {
-      console.error('Error importing dashboard:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const resetDashboard = () => {
-    setWidgetConfigs({
-      metrics: { size: 'large', position: { x: 0, y: 0 }, minimized: false },
-      charts: { size: 'medium', position: { x: 1, y: 0 }, minimized: false },
-      activities: { size: 'medium', position: { x: 0, y: 1 }, minimized: false },
-      notifications: { size: 'small', position: { x: 1, y: 1 }, minimized: false },
-      services: { size: 'medium', position: { x: 2, y: 0 }, minimized: false },
-      realtime: { size: 'small', position: { x: 2, y: 1 }, minimized: false }
-    });
-    setWorkspaceLayout('grid');
-    setActiveWidgets(['metrics', 'charts', 'activities', 'notifications', 'services', 'realtime']);
   };
 
   const handleChartTimePeriodChange = (period) => {
@@ -1021,139 +648,6 @@ const Dashboard = () => {
   const getChartLabel = (data) => {
     return data.month || data.label || data.year || 'Unknown';
   };
-
-  useEffect(() => {
-    // Initialize dashboard
-    fetchDashboardData();
-    fetchNotifications();
-    fetchActivities();
-    fetchRealTimeData();
-    fetchServiceConnections();
-    fetchSystemMetrics();
-    fetchAlerts();
-    
-    // Load saved preferences
-    const savedLayout = localStorage.getItem('dashboard-layout');
-    const savedTheme = localStorage.getItem('dashboard-theme');
-    const savedRefreshInterval = localStorage.getItem('refresh-interval');
-    
-    if (savedLayout) setWorkspaceLayout(savedLayout);
-    if (savedTheme) {
-      setSelectedTheme(savedTheme);
-      setIsDarkMode(savedTheme === 'dark');
-    }
-    if (savedRefreshInterval) setRefreshInterval(parseInt(savedRefreshInterval));
-    
-    // Set up real-time intervals
-    let realTimeInterval, notificationInterval, activityInterval, serviceInterval, metricsInterval, alertsInterval;
-    
-    if (autoRefresh) {
-      realTimeInterval = setInterval(fetchRealTimeData, refreshInterval);
-      notificationInterval = setInterval(fetchNotifications, 30000);
-      activityInterval = setInterval(fetchActivities, 60000);
-      serviceInterval = setInterval(fetchServiceConnections, 120000);
-      metricsInterval = setInterval(fetchSystemMetrics, 15000);
-      alertsInterval = setInterval(fetchAlerts, 20000);
-    }
-    
-    return () => {
-      clearInterval(realTimeInterval);
-      clearInterval(notificationInterval);
-      clearInterval(activityInterval);
-      clearInterval(serviceInterval);
-      clearInterval(metricsInterval);
-      clearInterval(alertsInterval);
-    };
-  }, [autoRefresh, refreshInterval, fetchRealTimeData, fetchServiceConnections, fetchSystemMetrics, fetchAlerts]);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showSecurityDropdown && securityModalRef.current && !securityModalRef.current.contains(event.target)) {
-        setShowSecurityDropdown(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showSecurityDropdown]);
-
-  // Simulate real-time activities
-  useEffect(() => {
-    const activityInterval = setInterval(() => {
-      const activities = [
-        { type: 'visitor', title: 'New visitor check-in', description: 'Guest registered for Unit A-101', priority: 'medium' },
-        { type: 'payment', title: 'Payment received', description: 'Monthly maintenance fee from Unit B-205', priority: 'low' },
-        { type: 'maintenance', title: 'Maintenance completed', description: 'AC repair in Block C completed', priority: 'medium' },
-        { type: 'system', title: 'System update', description: 'Security patch applied successfully', priority: 'high' },
-        { type: 'communication', title: 'New announcement', description: 'Community meeting scheduled for tomorrow', priority: 'medium' }
-      ];
-      
-      const randomActivity = activities[Math.floor(Math.random() * activities.length)];
-      
-      setRealtimeActivities(prev => {
-        const newActivity = {
-          id: `realtime-${Date.now()}`,
-          ...randomActivity,
-          time: new Date().toLocaleString(),
-          realtime: true
-        };
-        
-        return [newActivity, ...prev].slice(0, 10);
-      });
-    }, 30000); // Add new activity every 30 seconds
-    
-    return () => clearInterval(activityInterval);
-  }, []);
-
-  // Simulate system metrics updates
-  useEffect(() => {
-    const metricsInterval = setInterval(() => {
-      setSystemMetrics(prev => ({
-        cpu: Math.max(10, Math.min(90, prev.cpu + (Math.random() - 0.5) * 10)),
-        memory: Math.max(20, Math.min(95, prev.memory + (Math.random() - 0.5) * 8)),
-        disk: Math.max(30, Math.min(95, prev.disk + (Math.random() - 0.5) * 5)),
-        network: Math.max(5, Math.min(80, prev.network + (Math.random() - 0.5) * 15)),
-        database: Math.max(10, Math.min(70, prev.database + (Math.random() - 0.5) * 12)),
-        api: Math.max(5, Math.min(60, prev.api + (Math.random() - 0.5) * 8)),
-        cache: Math.max(70, Math.min(98, prev.cache + (Math.random() - 0.5) * 10)),
-        bandwidth: Math.max(20, Math.min(85, prev.bandwidth + (Math.random() - 0.5) * 12))
-      }));
-    }, 5000); // Update metrics every 5 seconds
-    
-    return () => clearInterval(metricsInterval);
-  }, []);
-
-  // Simulate alerts
-  useEffect(() => {
-    const alertInterval = setInterval(() => {
-      if (Math.random() > 0.7) { // 30% chance of new alert
-        const alertTypes = [
-          { type: 'warning', title: 'High server load', description: 'CPU usage exceeded 80%', severity: 'medium' },
-          { type: 'error', title: 'Database connection failed', description: 'Unable to connect to primary database', severity: 'high' },
-          { type: 'info', title: 'Service update', description: 'Maintenance service updated successfully', severity: 'low' },
-          { type: 'warning', title: 'Storage space low', description: 'Available storage below 20%', severity: 'medium' },
-          { type: 'error', title: 'API rate limit', description: 'API requests exceeded rate limit', severity: 'high' }
-        ];
-        
-        const randomAlert = alertTypes[Math.floor(Math.random() * alertTypes.length)];
-        
-        setAlerts(prev => {
-          const newAlert = {
-            id: `alert-${Date.now()}`,
-            ...randomAlert,
-            timestamp: new Date().toISOString(),
-            acknowledged: false
-          };
-          
-          return [newAlert, ...prev].slice(0, 10);
-        });
-      }
-    }, 45000); // Check for alerts every 45 seconds
-    
-    return () => clearInterval(alertInterval);
-  }, []);
 
   const getMaxRevenue = (data) => {
     return Math.max(...data.map(d => d.revenue), ...data.map(d => d.target));

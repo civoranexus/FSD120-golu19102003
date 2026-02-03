@@ -553,49 +553,28 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Enhanced Platform Highlights Section */}
+      {/* Platform Highlights Section */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {platformHighlights.map((highlight, index) => (
-          <div key={index} className="group relative bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-2xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 cursor-pointer overflow-hidden">
-            {/* Animated background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            {/* Icon with enhanced animation */}
-            <div className="flex justify-center mb-4 relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-150"></div>
-              <div className="relative z-10 p-4 rounded-full bg-gradient-to-br from-gray-50 to-white group-hover:from-white group-hover:to-gray-50 transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-6">
-                <highlight.highlightIcon className="h-12 w-12 transition-all duration-300 group-hover:scale-110" style={{ color: highlight.highlightColor }} />
+          <div key={index} className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300">
+            <div className="flex justify-center mb-4">
+              <div className="p-4 rounded-full bg-gray-50">
+                <highlight.highlightIcon className="h-12 w-12" style={{ color: highlight.highlightColor }} />
               </div>
             </div>
             
-            {/* Title with hover effect */}
-            <h3 className="text-xl font-semibold text-gray-900 mb-3 group-hover:text-gray-800 transition-colors relative">
-              <span className="relative z-10">{highlight.highlightTitle}</span>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-200/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-xl"></div>
-            </h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-3">{highlight.highlightTitle}</h3>
             
-            {/* Description with improved readability */}
-            <p className="text-gray-600 mb-4 group-hover:text-gray-700 transition-colors leading-relaxed">{highlight.highlightDescription}</p>
+            <p className="text-gray-600 mb-4">{highlight.highlightDescription}</p>
             
-            {/* Features with enhanced animations */}
-            <div className="space-y-3">
+            <div className="space-y-2">
               {highlight.features.map((feature, featureIndex) => (
-                <div key={featureIndex} className="flex items-center justify-center text-sm text-gray-500 group-hover:text-gray-600 transition-all duration-300 transform group-hover:translate-x-1">
-                  <CheckCircle className="h-3 w-3 mr-2 transition-all duration-300 group-hover:scale-125 group-hover:rotate-12" style={{ color: highlight.highlightColor }} />
-                  <span className="font-medium">{feature}</span>
+                <div key={featureIndex} className="flex items-center justify-center text-sm text-gray-500">
+                  <CheckCircle className="h-3 w-3 mr-2" style={{ color: highlight.highlightColor }} />
+                  <span>{feature}</span>
                 </div>
               ))}
             </div>
-            
-            {/* Interactive hover indicator */}
-            <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-100">
-              <div className="p-2 rounded-full bg-gradient-to-r from-yellow-200 to-yellow-300">
-                <ChevronRight className="h-4 w-4 text-gray-700 transform group-hover:translate-x-1 transition-transform duration-300" />
-              </div>
-            </div>
-            
-            {/* Subtle border animation */}
-            <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-gray-200 transition-all duration-500"></div>
           </div>
         ))}
       </div>
@@ -616,103 +595,59 @@ const Home = () => {
             const TrendIcon = trend.icon;
             
             return (
-              <div key={index} className={`group relative bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 cursor-pointer overflow-hidden flex-1 min-w-[150px] max-w-[200px] ${index >= 3 && index <= 4 ? 'mx-auto' : ''}`}>
-                {/* Animated background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                {/* Icon with enhanced animation */}
-                <div className="flex justify-center mb-4 relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-all duration-500 transform scale-200"></div>
-                  <div className="relative z-10 p-3 rounded-full bg-gradient-to-br from-gray-50 to-white group-hover:from-white group-hover:to-gray-50 transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-12">
-                    <metric.metricIcon className="h-10 w-10 transition-all duration-300 group-hover:scale-125" style={{ color: metric.metricColor }} />
+              <div key={index} className={`bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all duration-300 flex-1 min-w-[150px] max-w-[200px] ${index >= 3 && index <= 4 ? 'mx-auto' : ''}`}>
+                <div className="flex justify-center mb-4">
+                  <div className="p-3 rounded-full bg-gray-50">
+                    <metric.metricIcon className="h-10 w-10" style={{ color: metric.metricColor }} />
                   </div>
                 </div>
                 
-                {/* Value with enhanced styling */}
-                <div className="text-3xl font-bold mb-3 transition-all duration-300 group-hover:scale-110 text-center" style={{color: metric.metricColor}}>
+                <div className="text-3xl font-bold mb-3 text-center" style={{color: metric.metricColor}}>
                   {metric.metricValue}
                 </div>
                 
-                {/* Label with hover effect */}
-                <div className="text-gray-700 font-medium mb-3 text-sm group-hover:text-gray-800 transition-colors text-center">{metric.metricLabel}</div>
+                <div className="text-gray-700 font-medium mb-3 text-sm text-center">{metric.metricLabel}</div>
                 
-                {/* Trend with enhanced animation */}
-                <div className={`flex items-center justify-center ${trend.color} transition-all duration-300 group-hover:scale-110 text-center ${index >= 3 && index <= 4 ? 'flex-col' : ''} ${index === 5 ? 'gap-1' : ''}`}>
-                  <TrendIcon className={`h-4 w-4 transition-all duration-300 group-hover:rotate-12 ${index >= 3 && index <= 4 ? 'mr-0 mb-1' : index === 5 ? 'mr-1' : 'mr-1'} ${index === 5 ? 'align-baseline' : ''}`} />
+                <div className={`flex items-center justify-center ${trend.color} text-center ${index >= 3 && index <= 4 ? 'flex-col' : ''} ${index === 5 ? 'gap-1' : ''}`}>
+                  <TrendIcon className={`h-4 w-4 ${index >= 3 && index <= 4 ? 'mr-0 mb-1' : index === 5 ? 'mr-1' : 'mr-1'} ${index === 5 ? 'align-baseline' : ''}`} />
                   <span className="text-xs font-medium">{metric.metricTrend}</span>
                 </div>
-                
-                {/* Interactive hover indicator */}
-                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  <div className="p-1 rounded-full bg-gradient-to-r from-blue-200 to-blue-300">
-                    <ChevronRight className="h-3 w-3 text-gray-600" />
-                  </div>
-                </div>
-                
-                {/* Subtle border animation */}
-                <div className="absolute inset-0 rounded-lg border-2 border-transparent group-hover:border-blue-200 transition-all duration-500"></div>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Enhanced Call-to-Action Section */}
-      <div className="bg-gradient-to-r from-[#16808D] to-[#142C52] rounded-lg shadow-lg p-8 text-center text-white relative overflow-hidden">
-        {/* Animated background elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-32 h-32 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse delay-500"></div>
-        </div>
-        
-        <div className="relative z-10 max-w-3xl mx-auto">
-          <h2 className="text-4xl font-bold mb-4 group">
-            <span className="inline-block transition-all duration-300 group-hover:scale-105">Ready to Transform</span>{' '}
-            <span className="inline-block text-yellow-300 transition-all duration-300 group-hover:scale-110">Your Community?</span>
+      {/* Call-to-Action Section */}
+      <div className="bg-gradient-to-r from-[#16808D] to-[#142C52] rounded-lg shadow-lg p-8 text-center text-white">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold mb-4">
+            <span className="text-yellow-300">Ready to Transform</span>{' '}
+            <span>Your Community?</span>
           </h2>
-          <p className="text-xl mb-8 opacity-90 group-hover:opacity-100 transition-opacity">
+          <p className="text-xl mb-8 opacity-90">
             Join thousands of communities already experiencing the Society360 advantage
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               to="/signup"
-              className="group relative inline-flex items-center justify-center px-8 py-4 bg-white text-[#142C52] rounded-lg font-semibold hover:bg-yellow-50 transition-all transform hover:scale-105 shadow-lg hover:shadow-xl overflow-hidden"
+              className="inline-flex items-center justify-center px-8 py-4 bg-white text-[#142C52] rounded-lg font-semibold hover:bg-yellow-50 transition-all transform hover:scale-105 shadow-lg"
             >
-              {/* Button animation overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Button content */}
-              <span className="relative z-10 flex items-center">
-                <Zap className="mr-2 h-5 w-5 transition-all duration-300 group-hover:rotate-12" />
-                Get Started Now
-                <ChevronRight className="ml-2 h-5 w-5 transition-all duration-300 group-hover:translate-x-1" />
-              </span>
-              
-              {/* Border animation */}
-              <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-lg transition-all duration-500"></div>
+              <Zap className="mr-2 h-5 w-5" />
+              Get Started Now
+              <ChevronRight className="ml-2 h-5 w-5" />
             </Link>
             <Link
-              to="/demo"
-              className="group relative inline-flex items-center justify-center px-8 py-4 bg-transparent text-white border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-[#142C52] transition-all transform hover:scale-105 overflow-hidden"
+              to="/checkout"
+              className="inline-flex items-center justify-center px-8 py-4 bg-transparent text-white border-2 border-white rounded-lg font-semibold hover:bg-white hover:text-[#142C52] transition-all transform hover:scale-105"
             >
-              {/* Button animation overlay */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Button content */}
-              <span className="relative z-10 flex items-center">
-                <MessageSquare className="mr-2 h-5 w-5 transition-all duration-300 group-hover:rotate-12" />
-                Schedule Demo
-                <ChevronRight className="ml-2 h-5 w-5 transition-all duration-300 group-hover:translate-x-1" />
-              </span>
-              
-              {/* Border animation */}
-              <div className="absolute inset-0 border-2 border-white group-hover:border-white/50 rounded-lg transition-all duration-500"></div>
+              <MessageSquare className="mr-2 h-5 w-5" />
+              Get Started Today
+              <ChevronRight className="ml-2 h-5 w-5" />
             </Link>
           </div>
           
-          {/* Additional interactive elements */}
-          <div className="mt-8 flex justify-center space-x-8 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+          <div className="mt-8 flex justify-center space-x-8">
             <div className="flex items-center text-sm">
               <CheckCircle className="h-4 w-4 mr-1 text-yellow-300" />
               <span>14-day free trial</span>

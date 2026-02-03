@@ -1,70 +1,57 @@
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
-const application = express();
-const SERVER_PORT = process.env.PORT || 5000;
+const app = express();
+const PORT = process.env.PORT || 5000;
 
-application.use(helmet());
-application.use(cors({
+app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true
 }));
 
-const requestLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100, 
-  message: 'Excessive requests detected. Please try again later.'
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'Society360 API',
+    version: '1.0.0',
+    status: 'active'
+  });
 });
-application.use('/api/', requestLimiter);
 
-application.use(express.json({ limit: '10mb' }));
-application.use(express.urlencoded({ extended: true }));
-
-application.get('/', (request, response) => {
-  response.json({
-    message: 'ResidentialHub API Service',
-    version: '2.0.0',
-    status: 'operational',
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'healthy',
     timestamp: new Date().toISOString()
   });
 });
 
-application.get('/api/health', (request, response) => {
-  response.json({
-    status: 'healthy',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/users', require('./routes/users'));
+app.use('/api/visitors', require('./routes/visitors'));
+app.use('/api/maintenance', require('./routes/maintenance'));
+app.use('/api/finance', require('./routes/finance'));
+app.use('/api/communication', require('./routes/communication'));
+app.use('/api/administration', require('./routes/administration'));
+app.use('/api/amenities', require('./routes/amenities'));
+app.use('/api/payments', require('./routes/payments'));
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).json({
+    message: 'Server error',
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal server error'
   });
 });
 
-application.use('/api/auth', require('./routes/auth'));
-application.use('/api/users', require('./routes/users'));
-application.use('/api/visitors', require('./routes/visitors'));
-application.use('/api/maintenance', require('./routes/maintenance'));
-application.use('/api/finance', require('./routes/finance'));
-application.use('/api/communication', require('./routes/communication'));
-application.use('/api/administration', require('./routes/administration'));
-application.use('/api/amenities', require('./routes/amenities'));
-application.use('/api/payments', require('./routes/payments'));
-
-application.use((error, request, response, next) => {
-  console.error(error.stack);
-  response.status(500).json({
-    message: 'An unexpected error occurred!',
-    error: process.env.NODE_ENV === 'development' ? error.message : 'Service unavailable'
+app.use('*', (req, res) => {
+  res.status(404).json({
+    message: 'Route not found'
   });
 });
 
-application.use('*', (request, response) => {
-  response.status(404).json({
-    message: 'Requested resource not found'
-  });
-});
-
-application.listen(SERVER_PORT, () => {
-  console.log(`ResidentialHub service initialized on port ${SERVER_PORT}`);
-  console.log(`Operating environment: ${process.env.NODE_ENV || 'development'}`);
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });

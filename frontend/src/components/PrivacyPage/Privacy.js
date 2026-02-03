@@ -464,7 +464,7 @@ const Privacy = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar Navigation */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-xl p-6">
+            <div className="bg-white rounded-2xl shadow-xl p-6 h-full flex flex-col">
               <h3 className="font-semibold text-gray-900 mb-4">Quick Navigation</h3>
               <nav className="space-y-2">
                 {sections.map((section) => (
@@ -487,7 +487,7 @@ const Privacy = () => {
 
           {/* Main Content */}
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-2xl shadow-xl p-8">
+            <div className="bg-white rounded-2xl shadow-xl p-8 h-full flex flex-col">
               {renderContent()}
             </div>
           </div>

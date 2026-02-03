@@ -1,24 +1,9 @@
 const express = require('express');
-const visitorRoutes = express.Router();
+const router = express.Router();
 
-let visitors = [
-  {
-    id: 1,
-    name: 'Rahul Sharma',
-    purpose: 'Delivery',
-    unit: 'A-101',
-    time: '10:30 AM',
-    status: 'approved',
-    email: 'rahul@email.com',
-    phone: '9876543210',
-    hostName: 'John Doe',
-    hostUnit: 'A-101',
-    expectedArrival: '2024-01-15 10:30',
-    expectedDeparture: '2024-01-15 11:30'
-  }
-];
+let visitors = [];
 
-visitorRoutes.get('/', (req, res) => {
+router.get('/', (req, res) => {
   try {
     res.json({
       success: true,
@@ -26,28 +11,80 @@ visitorRoutes.get('/', (req, res) => {
       count: visitors.length
     });
   } catch (error) {
-    console.error('Error fetching visitors:', error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch visitor records'
+      message: 'Failed to fetch visitors'
     });
   }
 });
 
-visitorRoutes.post('/', (req, res) => {
+router.post('/', (req, res) => {
   try {
-    const {
+    const { name, email, phone, purpose, unit } = req.body;
+    
+    if (!name || !email || !phone || !purpose || !unit) {
+      return res.status(400).json({
+        success: false,
+        message: 'All fields required'
+      });
+    }
+    
+    const newVisitor = {
+      id: visitors.length + 1,
       name,
       email,
       phone,
       purpose,
       unit,
-      expectedArrival,
-      expectedDeparture,
-      hostName,
-      hostUnit,
-      vehicleNumber
-    } = req.body;
+      status: 'pending',
+      createdAt: new Date().toISOString()
+    };
+    
+    visitors.push(newVisitor);
+    
+    res.status(201).json({
+      success: true,
+      message: 'Visitor registered successfully',
+      data: newVisitor
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to register visitor'
+    });
+  }
+});
+
+router.put('/:id', (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    
+    const visitorIndex = visitors.findIndex(v => v.id === parseInt(id));
+    
+    if (visitorIndex === -1) {
+      return res.status(404).json({
+        success: false,
+        message: 'Visitor not found'
+      });
+    }
+    
+    visitors[visitorIndex].status = status;
+    
+    res.json({
+      success: true,
+      message: 'Visitor status updated',
+      data: visitors[visitorIndex]
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to update visitor'
+    });
+  }
+});
+
+module.exports = router;
 
     if (!name || !purpose || !unit) {
       return res.status(400).json({
