@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
+import { AppProvider } from './contexts/AppContext';
 import MainLayout from './components/Layout/MainLayout';
 import HomePage from './components/HomePage/Home';
 import AboutPage from './components/AboutPage/About';
@@ -19,6 +21,7 @@ import CrisisManagement from './components/ServiceModules/Emergency';
 import ConfidentialityPolicy from './components/PrivacyPage/Privacy';
 import TermsOfService from './components/TermsPage/Terms';
 import HelpCenter from './components/HelpCenter/Support';
+import SupportPage from './components/SupportPage/Support';
 import FeaturesPage from './components/FeaturesPage/Features';
 import GetStartedPage from './components/GetStartedPage/GetStarted';
 import CheckoutPage from './components/CheckoutPage/Checkout';
@@ -41,37 +44,42 @@ const ScrollToTop = () => {
 
 function Application() {
   return (
-    <Router 
-      future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
-      scrollRestoration="manual"
-    >
-      <ScrollToTop />
-      <MainLayout>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/signin" element={<SignInPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/get-started" element={<GetStartedPage />} />
-          <Route path="/checkout" element={<CheckoutPage />} />
-          <Route path="/dashboard" element={<UserDashboard />} />
-          <Route path="/guest-registration" element={<GuestRegistration />} />
-          <Route path="/repair-services" element={<RepairServices />} />
-          <Route path="/accounting" element={<AccountingModule />} />
-          <Route path="/messaging" element={<MessagingHub />} />
-          <Route path="/management" element={<ManagementPanel />} />
-          <Route path="/facilities" element={<FacilityBooking />} />
-          <Route path="/safety" element={<SafetyMonitoring />} />
-          <Route path="/issues" element={<IssueReporting />} />
-          <Route path="/crisis" element={<CrisisManagement />} />
-          <Route path="/confidentiality" element={<ConfidentialityPolicy />} />
-          <Route path="/terms" element={<TermsOfService />} />
-          <Route path="/help" element={<HelpCenter />} />
-          <Route path="/features" element={<FeaturesPage />} />
-        </Routes>
-      </MainLayout>
-    </Router>
+    <ErrorBoundary>
+      <AppProvider>
+        <Router 
+          future={{ v7_startTransition: true, v7_relativeSplatPath: true }}
+          scrollRestoration="manual"
+        >
+          <ScrollToTop />
+          <MainLayout>
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/signin" element={<SignInPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/get-started" element={<GetStartedPage />} />
+              <Route path="/checkout" element={<CheckoutPage />} />
+              <Route path="/dashboard" element={<UserDashboard />} />
+              <Route path="/guest-registration" element={<GuestRegistration />} />
+              <Route path="/repair-services" element={<RepairServices />} />
+              <Route path="/accounting" element={<AccountingModule />} />
+              <Route path="/messaging" element={<MessagingHub />} />
+              <Route path="/management" element={<ManagementPanel />} />
+              <Route path="/facilities" element={<FacilityBooking />} />
+              <Route path="/safety" element={<SafetyMonitoring />} />
+              <Route path="/issues" element={<IssueReporting />} />
+              <Route path="/crisis" element={<CrisisManagement />} />
+              <Route path="/confidentiality" element={<ConfidentialityPolicy />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/help" element={<HelpCenter />} />
+              <Route path="/support" element={<SupportPage />} />
+              <Route path="/features" element={<FeaturesPage />} />
+            </Routes>
+          </MainLayout>
+        </Router>
+      </AppProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -613,18 +613,18 @@ const Dashboard = () => {
 
       setRealTimeData(prev => ({
         ...prev,
-        totalUsers: authData.success ? authData.data.users.length : prev.totalUsers,
-        activeUnits: authData.success ? authData.data.users.filter(u => u.status === 'Active').length : prev.activeUnits,
-        totalRevenue: financeData.success ? financeData.data.transactions.reduce((sum, t) => sum + t.amount, 0) : prev.totalRevenue,
-        pendingTasks: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingTasks,
-        newVisitors: visitorsData.success ? visitorsData.data.visitors.filter(v => {
+        totalUsers: authData.success && authData.data?.users ? authData.data.users.length : prev.totalUsers,
+        activeUnits: authData.success && authData.data?.users ? authData.data.users.filter(u => u.status === 'Active').length : prev.activeUnits,
+        totalRevenue: financeData.success && financeData.data?.transactions ? financeData.data.transactions.reduce((sum, t) => sum + t.amount, 0) : prev.totalRevenue,
+        pendingTasks: maintenanceData.success && maintenanceData.data?.requests ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingTasks,
+        newVisitors: visitorsData.success && visitorsData.data?.visitors ? visitorsData.data.visitors.filter(v => {
           const today = new Date();
           const visitDate = new Date(v.checkIn);
           return visitDate.toDateString() === today.toDateString();
         }).length : prev.newVisitors,
-        pendingMaintenance: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingMaintenance,
-        openComplaints: maintenanceData.success ? maintenanceData.data.requests.filter(r => r.category === 'complaint' && r.status !== 'resolved').length : prev.openComplaints,
-        recentPayments: financeData.success ? financeData.data.transactions.filter(t => {
+        pendingMaintenance: maintenanceData.success && maintenanceData.data?.requests ? maintenanceData.data.requests.filter(r => r.status === 'pending').length : prev.pendingMaintenance,
+        openComplaints: maintenanceData.success && maintenanceData.data?.requests ? maintenanceData.data.requests.filter(r => r.category === 'complaint' && r.status !== 'resolved').length : prev.openComplaints,
+        recentPayments: financeData.success && financeData.data?.transactions ? financeData.data.transactions.filter(t => {
           const today = new Date();
           const paymentDate = new Date(t.date);
           return paymentDate.toDateString() === today.toDateString();

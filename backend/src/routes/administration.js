@@ -1,6 +1,21 @@
 const express = require('express');
+const { body, query, validationResult } = require('express-validator');
 const adminRoutes = express.Router();
 
+// Validation middleware
+const handleValidationErrors = (req, res, next) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({
+      success: false,
+      message: 'Validation failed',
+      errors: errors.array()
+    });
+  }
+  next();
+};
+
+// Mock data (in production, this would come from database)
 let systemUsers = [
   {
     id: 1,
@@ -45,6 +60,7 @@ const systemMetrics = {
   lastUpdated: new Date().toISOString()
 };
 
+// Get admin dashboard data
 adminRoutes.get('/dashboard', (req, res) => {
   try {
     res.json({
@@ -69,7 +85,14 @@ adminRoutes.get('/dashboard', (req, res) => {
   }
 });
 
-adminRoutes.get('/users', (req, res) => {
+// Get all users with filtering and pagination
+adminRoutes.get('/users', [
+  query('search').optional().isString().trim(),
+  query('role').optional().isIn(['all', 'Resident', 'Management', 'Staff']),
+  query('status').optional().isIn(['all', 'Active', 'Inactive']),
+  query('page').optional().isInt({ min: 1 }),
+  query('limit').optional().isInt({ min: 1, max: 100 })
+], handleValidationErrors, (req, res) => {
   try {
     const { search, role, status, page = 1, limit = 10 } = req.query;
     
@@ -101,8 +124,8 @@ adminRoutes.get('/users', (req, res) => {
           currentPage: parseInt(page),
           totalPages: Math.ceil(filteredUsers.length / limit),
           totalUsers: filteredUsers.length,
-          hasNext: startIndex + limit < filteredUsers.length,
-          hasPrev: page > 1
+          hasNextPage: startIndex + limit < filteredUsers.length,
+          hasPreviousPage: page > 1
         }
       }
     });
@@ -110,194 +133,169 @@ adminRoutes.get('/users', (req, res) => {
     console.error('Error fetching users:', error);
     res.status(500).json({
       success: false,
-      message: 'Failed to retrieve user list'
+      message: 'Failed to fetch users',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 });
 
-adminRoutes.post('/users', (req, res) => {
+// Create new user
+adminRoutes.post('/users', [
+  body('name').trim().isLength({ min: 1, max: 100 }).withMessage('Name must be between 1 and 100 characters'),
+  body('email').isEmail().normalizeEmail().withMessage('Please enter a valid email address'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+  body('role').isIn(['Resident', 'Management', 'Staff']).withMessage('Invalid role specified'),
+  body('unit').trim().isLength({ min: 1, max: 20 }).withMessage('Unit must be between 1 and 20 characters'),
+  body('phone').optional().isMobilePhone('en-IN').withMessage('Please enter a valid phone number')
+], handleValidationErrors, (req, res) => {
   try {
     const { name, email, password, role, unit, phone } = req.body;
     
-    const validationErrors = {};
-    
-    if (!name || !name.trim()) {
-      validationErrors.name = 'Name is required';
-    }
-    
-    if (!email || !email.trim()) {
-      validationErrors.email = 'Email is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      validationErrors.email = 'Please enter a valid email address';
-    }
-    
-    if (!password || password.length < 6) {
-      validationErrors.password = 'Password must be at least 6 characters long';
-    }
-    
-    if (!role) {
-      validationErrors.role = 'Role must be specified';
-    }
-    
-    if (Object.keys(validationErrors).length > 0) {
-      return res.status(400).json({
-        success: false,
-        message: 'Validation failed',
-        errors: validationErrors
-      });
-    }
-    
+    // Check if user already exists
     if (systemUsers.some(user => user.email === email)) {
       return res.status(409).json({
         success: false,
-        message: 'Email address already exists in the system'
+        message: 'User with this email already exists'
       });
     }
     
+    // Create new user
     const newUser = {
-      id: Math.max(...systemUsers.map(u => u.id)) + 1,
-      name: name.trim(),
-      email: email.trim(),
-      role: role,
-      unit: unit || 'N/A',
-      phone: phone || 'N/A',
+      id: systemUsers.length + 1,
+      name,
+      email,
+      role,
+      unit,
       status: 'Active',
+      phone: phone || '',
       createdAt: new Date().toISOString(),
-      lastLogin: null,
-      createdBy: req.headers['x-user-id'] || 'system'
+      lastLogin: null
     };
     
     systemUsers.push(newUser);
     
     res.status(201).json({
       success: true,
-      message: 'User account created successfully',
-      data: newUser
+      message: 'User created successfully',
+      data: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+        unit: newUser.unit,
+        status: newUser.status
+      }
     });
   } catch (error) {
     console.error('Error creating user:', error);
     res.status(500).json({
       success: false,
-      message: 'User creation failed due to server error'
+      message: 'Failed to create user',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 });
 
-adminRoutes.put('/users/:id', (req, res) => {
+// Update user status
+adminRoutes.put('/users/:id/status', [
+  body('status').isIn(['Active', 'Inactive']).withMessage('Invalid status specified')
+], handleValidationErrors, (req, res) => {
   try {
     const { id } = req.params;
-    const { name, email, role, unit, phone, status } = req.body;
+    const { status } = req.body;
     
     const userIndex = systemUsers.findIndex(user => user.id === parseInt(id));
     
     if (userIndex === -1) {
       return res.status(404).json({
         success: false,
-        message: 'User not found in the system'
+        message: 'User not found'
       });
     }
     
-    if (email && email !== systemUsers[userIndex].email) {
-      if (systemUsers.some(user => user.email === email && user.id !== parseInt(id))) {
-        return res.status(409).json({
-          success: false,
-          message: 'Email address is already assigned to another user'
-        });
-      }
-    }
-    
-    const updatedUser = {
-      ...systemUsers[userIndex],
-      name: name || systemUsers[userIndex].name,
-      email: email || systemUsers[userIndex].email,
-      role: role || systemUsers[userIndex].role,
-      unit: unit || systemUsers[userIndex].unit,
-      phone: phone || systemUsers[userIndex].phone,
-      status: status || systemUsers[userIndex].status,
-      updatedAt: new Date().toISOString(),
-      updatedBy: req.headers['x-user-id'] || 'system'
-    };
-    
-    systemUsers[userIndex] = updatedUser;
+    systemUsers[userIndex].status = status;
     
     res.json({
       success: true,
-      message: 'User information updated successfully',
-      data: updatedUser
+      message: 'User status updated successfully',
+      data: {
+        id: systemUsers[userIndex].id,
+        name: systemUsers[userIndex].name,
+        status: systemUsers[userIndex].status
+      }
     });
   } catch (error) {
-    console.error('Error updating user:', error);
+    console.error('Error updating user status:', error);
     res.status(500).json({
       success: false,
-      message: 'User update failed due to server error'
+      message: 'Failed to update user status',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 });
 
+// Delete user
 adminRoutes.delete('/users/:id', (req, res) => {
   try {
     const { id } = req.params;
+    
     const userIndex = systemUsers.findIndex(user => user.id === parseInt(id));
     
     if (userIndex === -1) {
       return res.status(404).json({
         success: false,
-        message: 'User not found in the system'
+        message: 'User not found'
       });
     }
     
-    const deletedUser = systemUsers[userIndex];
-    systemUsers.splice(userIndex, 1);
+    const deletedUser = systemUsers.splice(userIndex, 1)[0];
     
     res.json({
       success: true,
-      message: 'User account removed successfully',
-      data: deletedUser
+      message: 'User deleted successfully',
+      data: {
+        id: deletedUser.id,
+        name: deletedUser.name
+      }
     });
   } catch (error) {
     console.error('Error deleting user:', error);
     res.status(500).json({
       success: false,
-      message: 'User deletion failed due to server error'
+      message: 'Failed to delete user',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 });
 
-adminRoutes.get('/reports', (req, res) => {
+// Get system statistics
+adminRoutes.get('/statistics', (req, res) => {
   try {
-    const { type, startDate, endDate } = req.query;
-    
-    const reports = {
-      userActivity: {
-        totalLogins: 1245,
-        activeUsers: 89,
-        newRegistrations: 12,
-        period: 'Last 30 days'
+    const statistics = {
+      users: {
+        total: systemUsers.length,
+        active: systemUsers.filter(user => user.status === 'Active').length,
+        inactive: systemUsers.filter(user => user.status === 'Inactive').length,
+        byRole: {
+          Resident: systemUsers.filter(user => user.role === 'Resident').length,
+          Management: systemUsers.filter(user => user.role === 'Management').length,
+          Staff: systemUsers.filter(user => user.role === 'Staff').length
+        }
       },
-      systemUsage: {
-        apiCalls: 15420,
-        dataTransferred: '2.3 GB',
-        averageResponseTime: '120ms',
-        period: 'Last 30 days'
-      },
-      security: {
-        failedLogins: 23,
-        blockedAttempts: 156,
-        securityAlerts: 3,
-        period: 'Last 30 days'
-      }
+      system: systemMetrics,
+      lastUpdated: new Date().toISOString()
     };
     
     res.json({
       success: true,
-      data: reports,
-      generatedAt: new Date().toISOString()
+      data: statistics
     });
   } catch (error) {
-    console.error('Error generating reports:', error);
+    console.error('Error fetching statistics:', error);
     res.status(500).json({
       success: false,
-      message: 'Report generation failed'
+      message: 'Failed to fetch statistics',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 });
