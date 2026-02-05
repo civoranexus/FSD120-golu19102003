@@ -2,129 +2,201 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   ArrowLeft, 
+  Headphones, 
+  Users, 
   Shield, 
-  Eye, 
-  Database, 
-  UserCheck, 
-  Lock, 
-  MessageSquare,
-  Download,
-  Settings,
-  Cookie,
-  Smartphone,
-  Globe,
-  AlertCircle,
+  Clock, 
+  AlertTriangle, 
   CheckCircle,
-  Clock,
+  MessageCircle,
+  HelpCircle,
+  Phone,
   Mail,
-  Phone
+  Download,
+  Globe,
+  RefreshCw,
+  Ban,
+  User,
+  CreditCard,
+  Building,
+  FileText
 } from 'lucide-react';
 
 const Support = () => {
   const [activeSection, setActiveSection] = useState('overview');
+  const [expandedSections, setExpandedSections] = useState([]);
 
   const sections = [
-    { id: 'overview', name: 'Overview', icon: Eye },
-    { id: 'collection', name: 'Data Collection', icon: Database },
-    { id: 'usage', name: 'Data Usage', icon: Settings },
-    { id: 'protection', name: 'Data Protection', icon: Lock },
-    { id: 'rights', name: 'Your Rights', icon: UserCheck },
-    { id: 'cookies', name: 'Cookies', icon: Cookie },
-    { id: 'contact', name: 'Contact', icon: MessageSquare }
+    { id: 'overview', name: 'Overview', icon: Headphones },
+    { id: 'acceptance', name: 'Acceptance', icon: CheckCircle },
+    { id: 'responsibilities', name: 'User Responsibilities', icon: Users },
+    { id: 'services', name: 'Support Services', icon: Building },
+    { id: 'payments', name: 'Support Plans', icon: CreditCard },
+    { id: 'privacy', name: 'Privacy Support', icon: Shield },
+    { id: 'contact', name: 'Contact', icon: Mail }
   ];
 
-  const privacyFeatures = [
+  const supportKeyTerms = [
     {
-      title: 'GDPR Compliant',
-      description: 'Fully compliant with data protection regulations',
+      term: 'Live Chat',
+      definition: 'Real-time messaging platform for instant support from our team during business hours.',
+      category: 'communication'
+    },
+    {
+      term: 'Support Ticket',
+      definition: 'Formal request submitted through our system for tracking and resolution of issues.',
+      category: 'tracking'
+    },
+    {
+      term: 'Knowledge Base',
+      definition: 'Comprehensive library of articles, guides, and tutorials for self-service support.',
+      category: 'resources'
+    },
+    {
+      term: 'Response Time',
+      definition: 'Expected duration for our team to respond to your support request.',
+      category: 'service'
+    },
+    {
+      term: 'Priority Level',
+      definition: 'Classification system that determines the urgency and handling order of support requests.',
+      category: 'classification'
+    },
+    {
+      term: 'Escalation',
+      definition: 'Process of transferring complex issues to senior support specialists.',
+      category: 'process'
+    }
+  ];
+
+  const userResponsibilities = [
+    {
+      title: 'Secure Your Credentials',
+      description: 'Protect your login information and immediately report any suspicious account activity to our security team.',
       icon: Shield,
-      status: 'active'
+      priority: 'high'
     },
     {
-      title: 'SSL Encryption',
-      description: '256-bit SSL encryption for all data transfers',
-      icon: Lock,
-      status: 'active'
+      title: 'Provide Accurate Details',
+      description: 'Share precise and current information when seeking assistance to help us resolve your issues faster.',
+      icon: User,
+      priority: 'high'
     },
     {
-      title: 'Data Minimization',
-      description: 'We collect only necessary information',
-      icon: Database,
-      status: 'active'
+      title: 'Document Issues Thoroughly',
+      description: 'Take screenshots and record error messages to help our support team understand and reproduce your problems.',
+      icon: FileText,
+      priority: 'high'
     },
     {
-      title: 'Regular Audits',
-      description: 'Quarterly security and privacy audits',
-      icon: CheckCircle,
-      status: 'active'
+      title: 'Respect Support Team',
+      description: 'Maintain professional and courteous communication with our support representatives at all times.',
+      icon: Users,
+      priority: 'high'
+    },
+    {
+      title: 'Communicate Clearly',
+      description: 'Describe your concerns with specific details and context to enable our team to provide targeted solutions.',
+      icon: MessageCircle,
+      priority: 'medium'
+    },
+    {
+      title: 'Follow Support Protocols',
+      description: 'Adhere to established support procedures and guidelines for efficient issue resolution.',
+      icon: Shield,
+      priority: 'medium'
+    },
+    {
+      title: 'Test Before Contacting',
+      description: 'Try basic troubleshooting steps before reaching out to support to save time for both parties.',
+      icon: RefreshCw,
+      priority: 'medium'
+    },
+    {
+      title: 'Regular Data Backups',
+      description: 'Consistently backup important information to safeguard against potential data loss during troubleshooting.',
+      icon: RefreshCw,
+      priority: 'medium'
+    },
+    {
+      title: 'Maintain Browser Security',
+      description: 'Keep your browser updated with security patches and avoid suspicious downloads that may compromise your account.',
+      icon: Shield,
+      priority: 'medium'
+    },
+    {
+      title: 'Track Support Requests',
+      description: 'Monitor your support tickets and respond promptly to follow-up questions from our team.',
+      icon: Clock,
+      priority: 'low'
+    },
+    {
+      title: 'Keep Systems Updated',
+      description: 'Ensure your applications and browsers remain current for optimal compatibility with platform features.',
+      icon: Clock,
+      priority: 'low'
+    },
+    {
+      title: 'Provide Feedback',
+      description: 'Share your experience and suggestions to help us improve our support services and platform features.',
+      icon: MessageCircle,
+      priority: 'low'
     }
   ];
 
-  const dataCategories = [
+  const supportServiceTerms = [
     {
-      category: 'Personal Information',
-      items: ['Name and contact details', 'Email address and phone number', 'Residential address', 'Government ID numbers'],
-      purpose: 'Account management and communication',
-      retention: 'Until account deletion'
+      title: 'Service Availability',
+      content: 'We maintain high availability of support services but cannot guarantee uninterrupted access. Temporary suspensions may occur for system maintenance, updates, or technical issues.',
+      icon: Clock
     },
     {
-      category: 'Residential Data',
-      items: ['Unit number and block', 'Parking details', 'Family member information', 'Emergency contacts'],
-      purpose: 'Society management and security',
-      retention: 'Until residency ends'
+      title: 'Service Modifications',
+      content: 'We reserve the right to modify, suspend, or discontinue any aspect of support services at any time, including features, response times, or channels.',
+      icon: RefreshCw
     },
     {
-      category: 'Usage Data',
-      items: ['Login frequency and times', 'Pages visited and features used', 'Device information', 'IP address'],
-      purpose: 'Service improvement and security',
-      retention: '12 months'
+      title: 'Third-Party Integration',
+      content: 'Support services may integrate with third-party tools for ticket management, communication, or analytics. These services have their own terms and privacy policies.',
+      icon: Globe
     },
     {
-      category: 'Communication Data',
-      items: ['Messages and notices', 'Service requests', 'Complaints and feedback', 'Payment information'],
-      purpose: 'Service delivery and support',
-      retention: '7 years'
+      title: 'Support Restrictions',
+      content: 'Users may not use support services for illegal activities, harassment, or requests outside the scope of Society360 platform support.',
+      icon: Ban
     }
   ];
 
-  const userRights = [
+  const supportPaymentTerms = [
     {
-      right: 'Access',
-      description: 'Request a copy of your personal data',
-      action: 'Request Data',
-      timeline: '30 days'
+      title: 'Support Plans',
+      content: 'We offer various support plans including Free, Basic, Premium, and Enterprise tiers with different response times and features.',
+      icon: CreditCard
     },
     {
-      right: 'Correction',
-      description: 'Update inaccurate personal information',
-      action: 'Update Data',
-      timeline: 'Immediate'
+      title: 'Support Methods',
+      content: 'We provide multiple support channels including live chat, email, phone, and knowledge base access. All support interactions are secure and confidential.',
+      icon: MessageCircle
     },
     {
-      right: 'Deletion',
-      description: 'Request deletion of your personal data',
-      action: 'Delete Account',
-      timeline: '30 days'
+      title: 'Support Hours',
+      content: 'Support is available based on your subscription plan. Premium users receive 24/7 support while standard users get business hour support.',
+      icon: Clock
     },
     {
-      right: 'Portability',
-      description: 'Transfer your data to another service',
-      action: 'Export Data',
-      timeline: '30 days'
-    },
-    {
-      right: 'Objection',
-      description: 'Object to processing of your data',
-      action: 'Object Processing',
-      timeline: '14 days'
-    },
-    {
-      right: 'Restriction',
-      description: 'Limit how we use your data',
-      action: 'Restrict Usage',
-      timeline: '14 days'
+      title: 'Premium Support',
+      content: 'Premium support includes faster response times, dedicated support agents, and priority issue resolution. Additional fees may apply for premium services.',
+      icon: RefreshCw
     }
   ];
+
+  const toggleSection = (sectionId) => {
+    setExpandedSections(prev => 
+      prev.includes(sectionId) 
+        ? prev.filter(id => id !== sectionId)
+        : [...prev, sectionId]
+    );
+  };
 
   const renderContent = () => {
     switch(activeSection) {
@@ -133,33 +205,34 @@ const Support = () => {
           <div className="space-y-6">
             <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
               <div className="flex items-center space-x-3 mb-4">
-                <Shield className="h-8 w-8 text-blue-600" />
-                <h3 className="text-xl font-semibold text-gray-900">Privacy Policy Overview</h3>
+                <Headphones className="h-8 w-8 text-blue-600" />
+                <h3 className="text-xl font-semibold text-gray-900">Welcome to Society360 Assistance Hub</h3>
               </div>
               <p className="text-gray-700 leading-relaxed">
-                At Society360, we are committed to protecting your privacy and ensuring the security of your personal information. 
-                This Privacy Policy outlines how we collect, use, and protect your data when you use our residential management system.
+                At Society360, we understand that managing residential communities comes with unique challenges. 
+                Our dedicated support team is committed to ensuring you have smooth, uninterrupted access to all platform features. 
+                Whether you're a society manager, resident, or administrator, we're here to help you make the most of our comprehensive management solution.
               </p>
               <div className="mt-4 p-4 bg-white rounded-lg border border-blue-200">
                 <p className="text-sm text-gray-600">
-                  <strong>Last Updated:</strong> January 2026 | 
-                  <strong>Effective Date:</strong> January 1, 2026
+                  <strong>Recently Updated:</strong> January 2026 | 
+                  <strong>Premium Access:</strong> Round-the-clock assistance available
                 </p>
               </div>
             </div>
 
             <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <h4 className="font-semibold text-gray-900 mb-4">Privacy Features</h4>
+              <h4 className="font-semibold text-gray-900 mb-4">Key Support Definitions</h4>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {privacyFeatures.map((feature, index) => (
+                {supportKeyTerms.map((term, index) => (
                   <div key={index} className="border border-gray-200 rounded-lg p-4">
                     <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                        {feature.status}
+                      <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">
+                        {term.category}
                       </span>
-                      <h5 className="font-semibold text-gray-900">{feature.title}</h5>
+                      <h5 className="font-semibold text-gray-900">{term.term}</h5>
                     </div>
-                    <p className="text-sm text-gray-600">{feature.description}</p>
+                    <p className="text-sm text-gray-600">{term.definition}</p>
                   </div>
                 ))}
               </div>
@@ -167,219 +240,71 @@ const Support = () => {
           </div>
         );
 
-      case 'collection':
+      case 'acceptance':
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Information We Collect</h3>
-            <div className="space-y-4">
-              {dataCategories.map((category, index) => (
-                <div key={index} className="bg-white rounded-lg p-6 border border-gray-200">
-                  <h4 className="font-semibold text-gray-900 mb-3">{category.category}</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-2">Data Items:</p>
-                      <ul className="text-sm text-gray-600 space-y-1">
-                        {category.items.map((item, idx) => (
-                          <li key={idx} className="flex items-center space-x-2">
-                            <CheckCircle className="h-3 w-3 text-green-500" />
-                            <span>{item}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-2">Purpose:</p>
-                      <p className="text-sm text-gray-600">{category.purpose}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-700 mb-2">Retention:</p>
-                      <p className="text-sm text-gray-600">{category.retention}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'usage':
-        return (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">How We Use Your Information</h3>
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-5 w-5 text-blue-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Service Delivery</h4>
-                      <p className="text-sm text-gray-600">Provide and maintain residential management services</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-5 w-5 text-blue-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Request Processing</h4>
-                      <p className="text-sm text-gray-600">Process service requests and complaints efficiently</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-5 w-5 text-blue-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Communication</h4>
-                      <p className="text-sm text-gray-600">Send important notices and updates</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-5 w-5 text-blue-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Security</h4>
-                      <p className="text-sm text-gray-600">Ensure building security and access control</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-5 w-5 text-blue-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Analytics</h4>
-                      <p className="text-sm text-gray-600">Analyze usage patterns to improve services</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <CheckCircle className="h-5 w-5 text-blue-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Legal Compliance</h4>
-                      <p className="text-sm text-gray-600">Comply with legal and regulatory requirements</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'protection':
-        return (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Data Protection Measures</h3>
-            <div className="bg-white rounded-lg p-6 border border-gray-200">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <Lock className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Encryption</h4>
-                      <p className="text-sm text-gray-600">256-bit SSL encryption for all data transmission</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <Shield className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Secure Servers</h4>
-                      <p className="text-sm text-gray-600">Enterprise-grade servers with regular security updates</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <UserCheck className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Access Controls</h4>
-                      <p className="text-sm text-gray-600">Strict authentication and authorization systems</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-start space-x-3">
-                    <AlertCircle className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Regular Audits</h4>
-                      <p className="text-sm text-gray-600">Quarterly security and vulnerability assessments</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <Database className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Data Backup</h4>
-                      <p className="text-sm text-gray-600">Automated daily backups with disaster recovery</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start space-x-3">
-                    <Globe className="h-6 w-6 text-green-500 mt-1" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Compliance</h4>
-                      <p className="text-sm text-gray-600">GDPR and data protection regulation compliant</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 'rights':
-        return (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Your Privacy Rights</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {userRights.map((right, index) => (
-                <div key={index} className="bg-white rounded-lg p-4 border border-gray-200">
-                  <div className="flex items-center justify-between mb-2">
-                    <h4 className="font-semibold text-gray-900">{right.right}</h4>
-                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded">{right.timeline}</span>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-3">{right.description}</p>
-                  <button className="text-sm text-blue-600 hover:text-blue-700 font-medium">
-                    {right.action} →
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        );
-
-      case 'cookies':
-        return (
-          <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Cookie Preferences</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Acceptance of Support Terms</h3>
             <div className="bg-white rounded-lg p-6 border border-gray-200">
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Cookie className="h-5 w-5 text-gray-600" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Essential Cookies</h4>
-                      <p className="text-sm text-gray-600">Required for basic site functionality</p>
-                    </div>
-                  </div>
-                  <div className="w-12 h-6 bg-green-500 rounded-full relative">
-                    <div className="absolute right-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                <div className="flex items-start space-x-3">
+                  <CheckCircle className="h-6 w-6 text-green-500 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Agreement to Terms</h4>
+                    <p className="text-gray-600">By accessing and using Society360 support services, you accept and agree to be bound by these support terms and conditions.</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Smartphone className="h-5 w-5 text-gray-600" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Analytics Cookies</h4>
-                      <p className="text-sm text-gray-600">Help us improve our services</p>
-                    </div>
-                  </div>
-                  <div className="w-12 h-6 bg-gray-300 rounded-full relative">
-                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                <div className="flex items-start space-x-3">
+                  <AlertTriangle className="h-6 w-6 text-yellow-500 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Non-Acceptance</h4>
+                    <p className="text-gray-600">If you do not agree to abide by above, please do not use our support services.</p>
                   </div>
                 </div>
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div className="flex items-center space-x-3">
-                    <Mail className="h-5 w-5 text-gray-600" />
-                    <div>
-                      <h4 className="font-semibold text-gray-900">Marketing Cookies</h4>
-                      <p className="text-sm text-gray-600">Personalized content and ads</p>
-                    </div>
-                  </div>
-                  <div className="w-12 h-6 bg-gray-300 rounded-full relative">
-                    <div className="absolute left-1 top-1 w-4 h-4 bg-white rounded-full"></div>
+                <div className="flex items-start space-x-3">
+                  <RefreshCw className="h-6 w-6 text-blue-500 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Terms Updates</h4>
+                    <p className="text-gray-600">We may update these support terms from time to time. Continued use of support services constitutes acceptance of any changes.</p>
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
+        );
+
+      case 'faq':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Common Questions & Answers</h3>
+            <div className="space-y-4">
+              {[
+                {
+                  question: "How can I reset my account password?",
+                  answer: "Navigate to the login screen and select 'Forgot Password'. Follow the instructions sent to your registered email address to create a new password."
+                },
+                {
+                  question: "What's the process for upgrading my subscription?",
+                  answer: "Access your account settings, select 'Subscription Management', then choose 'Upgrade Plan' to review and select your preferred membership tier."
+                },
+                {
+                  question: "How secure is my personal information on Society360?",
+                  answer: "We implement enterprise-grade encryption and follow strict security protocols to safeguard your data. Detailed security information is available in our Privacy Policy."
+                },
+                {
+                  question: "How do I reach emergency support outside business hours?",
+                  answer: "For critical situations, call our emergency hotline at +91 9680211602 or email emergency@society360.com for immediate assistance."
+                }
+              ].map((faq, index) => (
+                <div key={index} className="bg-white rounded-lg p-6 border border-gray-200">
+                  <div className="flex items-start space-x-3">
+                    <HelpCircle className="h-6 w-6 text-blue-500 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{faq.question}</h4>
+                      <p className="text-gray-600 mt-1">{faq.answer}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         );
@@ -387,14 +312,14 @@ const Support = () => {
       case 'contact':
         return (
           <div className="space-y-6">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Contact Our Privacy Team</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Contact Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-white rounded-lg p-6 border border-gray-200">
                 <div className="flex items-center space-x-3 mb-4">
                   <Mail className="h-6 w-6 text-blue-500" />
                   <div>
                     <h4 className="font-semibold text-gray-900">Email Support</h4>
-                    <p className="text-sm text-gray-600">privacy@society360.com</p>
+                    <p className="text-sm text-gray-600">support@society360.com</p>
                   </div>
                 </div>
                 <p className="text-sm text-gray-600">Response time: 24-48 hours</p>
@@ -412,8 +337,80 @@ const Support = () => {
             </div>
             <div className="bg-blue-50 rounded-lg p-4 border border-blue-200">
               <p className="text-sm text-blue-700">
-                <strong>For privacy inquiries:</strong> Please include "Privacy Inquiry" in your email subject for faster response.
+                <strong>For support matters:</strong> Please include "Support Request" in your email subject for faster response.
               </p>
+            </div>
+          </div>
+        );
+
+      case 'services':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Support Service Terms</h3>
+            <div className="space-y-4">
+              {supportServiceTerms.map((term, index) => (
+                <div key={index} className="bg-white rounded-lg p-6 border border-gray-200">
+                  <div className="flex items-start space-x-3">
+                    <term.icon className="h-6 w-6 text-blue-500 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{term.title}</h4>
+                      <p className="text-gray-600 mt-1">{term.content}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'payments':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Support Plan Terms</h3>
+            <div className="space-y-4">
+              {supportPaymentTerms.map((term, index) => (
+                <div key={index} className="bg-white rounded-lg p-6 border border-gray-200">
+                  <div className="flex items-start space-x-3">
+                    <term.icon className="h-6 w-6 text-green-500 mt-1" />
+                    <div>
+                      <h4 className="font-semibold text-gray-900">{term.title}</h4>
+                      <p className="text-gray-600 mt-1">{term.content}</p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 'privacy':
+        return (
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-gray-900 mb-4">Privacy and Data Protection</h3>
+            <div className="bg-white rounded-lg p-6 border border-gray-200">
+              <div className="space-y-4">
+                <div className="flex items-start space-x-3">
+                  <Shield className="h-6 w-6 text-green-500 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Privacy Protection</h4>
+                    <p className="text-gray-600">Your privacy is important to us. Our Privacy Policy explains how we collect, use, and protect your support information.</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <FileText className="h-6 w-6 text-blue-500 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Data Usage Consent</h4>
+                    <p className="text-gray-600">By using Society360 support services, you consent to collection and use of information as described in our Privacy Policy.</p>
+                  </div>
+                </div>
+                <div className="flex items-start space-x-3">
+                  <Users className="h-6 w-6 text-purple-500 mt-1" />
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Data Sharing</h4>
+                    <p className="text-gray-600">We do not sell, rent, or lease your personal support information to third parties without your consent.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -439,10 +436,10 @@ const Support = () => {
         <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
           <div className="flex items-center mb-6">
             <div className="bg-[#16808D] p-3 rounded-full mr-4">
-              <Shield className="h-8 w-8 text-white" />
+              <Headphones className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Privacy Policy</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Support Center</h1>
               <p className="text-gray-600">Last updated: January 2026</p>
             </div>
           </div>
@@ -473,7 +470,7 @@ const Support = () => {
               <div className="mt-6 p-4 bg-gray-50 rounded-lg">
                 <button className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 text-sm font-medium">
                   <Download className="h-4 w-4" />
-                  <span>Download PDF</span>
+                  <span>Download Guide</span>
                 </button>
               </div>
             </div>

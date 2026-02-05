@@ -20,7 +20,6 @@ import SafetyMonitoring from './components/ServiceModules/Security';
 import CrisisManagement from './components/ServiceModules/Emergency';
 import ConfidentialityPolicy from './components/PrivacyPage/Privacy';
 import TermsOfService from './components/TermsPage/Terms';
-import HelpCenter from './components/HelpCenter/Support';
 import SupportPage from './components/SupportPage/Support';
 import FeaturesPage from './components/FeaturesPage/Features';
 import GetStartedPage from './components/GetStartedPage/GetStarted';
@@ -72,7 +71,6 @@ function Application() {
               <Route path="/crisis" element={<CrisisManagement />} />
               <Route path="/confidentiality" element={<ConfidentialityPolicy />} />
               <Route path="/terms" element={<TermsOfService />} />
-              <Route path="/help" element={<HelpCenter />} />
               <Route path="/support" element={<SupportPage />} />
               <Route path="/features" element={<FeaturesPage />} />
             </Routes>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Info, ChevronDown, Menu, X, MapPin, Phone, Mail, Globe, BarChart3, Building, Shield, AlertTriangle, FileText } from 'lucide-react';
+import { Home, Users, Wrench, DollarSign, MessageSquare, Settings, LogIn, Info, ChevronDown, Menu, X, MapPin, Phone, Mail, Globe, BarChart3, Building, Shield, AlertTriangle, FileText, Headphones } from 'lucide-react';
 import ScrollArrows from '../ScrollArrows/ScrollArrows';
 import Translate from '../Translate/Translate.js';
 import Chatbot from '../Chatbot/Chatbot.js';
@@ -33,6 +33,7 @@ const Layout = ({ children }) => {
     { path: '/about', label: 'About', icon: Info },
     { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
     { path: '/contact', label: 'Contact', icon: MessageSquare },
+    { path: '/support', label: 'Support', icon: Headphones },
     { path: '/login', label: 'Login', icon: LogIn },
   ];
 
@@ -317,22 +318,22 @@ const Layout = ({ children }) => {
                 Smart Residential Management System powered by Civora Nexus Pvt. Ltd.
               </p>
               <div className="flex space-x-4">
-                <a href="https:
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
                   <img src="/facebook.png" alt="Facebook" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
                   <img src="/instagram.png" alt="Instagram" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
                   <img src="/twitter.png" alt="Twitter" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
                   <img src="/linkedin.png" alt="LinkedIn" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
                   <img src="/youtube.png" alt="YouTube" className="w-5 h-5" />
                 </a>
-                <a href="https:
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer">
                   <img src="/github.png" alt="GitHub" className="w-5 h-5" />
                 </a>
               </div>
