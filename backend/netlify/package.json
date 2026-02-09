@@ -1,0 +1,22 @@
+{
+  "name": "society360-netlify-functions",
+  "version": "1.0.0",
+  "description": "Netlify Functions for Society360 Backend",
+  "main": "health.js",
+  "scripts": {
+    "serve": "netlify-lambda serve .",
+    "build": "netlify-lambda build ."
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "serverless-http": "^2.3.2"
+  },
+  "keywords": [
+    "netlify",
+    "serverless",
+    "functions",
+    "society360"
+  ],
+  "author": "Civora Nexus Pvt. Ltd.",
+  "license": "MIT"
+}
